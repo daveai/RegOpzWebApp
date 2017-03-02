@@ -10,6 +10,11 @@ export default class DashboardIndex extends Component {
                             <h2>Meta Data
                                 <small>History</small>
                             </h2>
+                            <ul className="nav navbar-right panel_toolbox">
+                                <li><a data-toggle="tooltip" data-placement="top" title="" data-original-title="Upload new"><i className="fa fa-plus"></i></a>
+                                </li>
+
+                            </ul>
                             <div className="clearfix"></div>
                         </div>
                         <div className="x_content">
@@ -19,15 +24,13 @@ export default class DashboardIndex extends Component {
                                         <div className="block">
                                             <div className="block_content">
                                                 <h2 className="title">
-                                                    <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                                    <a>MAS0003</a>
                                                 </h2>
                                                 <div className="byline">
-                                                    <span>13 hours ago</span>
-                                                    by
-                                                    <a>Jane Smith</a>
+                                                    <span>13 hours ago</span> Uploaded by <a> Dave</a>
                                                 </div>
-                                                <p className="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and…
-                                                    <a>Read&nbsp;More</a>
+                                                <p className="excerpt">
+                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                                                 </p>
                                             </div>
                                         </div>
@@ -36,49 +39,13 @@ export default class DashboardIndex extends Component {
                                         <div className="block">
                                             <div className="block_content">
                                                 <h2 className="title">
-                                                    <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                                    <a>MAS0004</a>
                                                 </h2>
                                                 <div className="byline">
-                                                    <span>13 hours ago</span>
-                                                    by
-                                                    <a>Jane Smith</a>
+                                                    <span>13 hours ago</span> Uploaded by <a> Dave</a>
                                                 </div>
-                                                <p className="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and…
-                                                    <a>Read&nbsp;More</a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="block">
-                                            <div className="block_content">
-                                                <h2 className="title">
-                                                    <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                                </h2>
-                                                <div className="byline">
-                                                    <span>13 hours ago</span>
-                                                    by
-                                                    <a>Jane Smith</a>
-                                                </div>
-                                                <p className="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and…
-                                                    <a>Read&nbsp;More</a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="block">
-                                            <div className="block_content">
-                                                <h2 className="title">
-                                                    <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
-                                                </h2>
-                                                <div className="byline">
-                                                    <span>13 hours ago</span>
-                                                    by
-                                                    <a>Jane Smith</a>
-                                                </div>
-                                                <p className="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and…
-                                                    <a>Read&nbsp;More</a>
+                                                <p className="excerpt">
+                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
                                                 </p>
                                             </div>
                                         </div>
