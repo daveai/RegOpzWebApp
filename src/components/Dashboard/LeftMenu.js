@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import custom from '../../../js/custom';
 class LeftMenu extends Component {
     render() {
         return (
@@ -42,6 +43,11 @@ class LeftMenu extends Component {
                 </div>
             </div>
         )
+    }
+    componentDidMount(){      
+      var customScript = new custom();
+      customScript.runScript();
+
     }
 }
 export default LeftMenu;

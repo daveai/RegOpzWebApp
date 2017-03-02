@@ -23,4 +23,7 @@ export default class RightPane extends Component {
       </div>
     )
   }
+  componentDidMount(){
+    document.title = "RegOpz Dashboard | Capture Report Template ";
+  }
 }

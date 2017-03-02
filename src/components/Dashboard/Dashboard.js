@@ -11,7 +11,6 @@ import {
     hashHistory,
     browserHistory
 } from 'react-router';
-import custom from '../../../js/custom';
 class Dashboard extends Component {
     render() {
       return(
@@ -30,13 +29,9 @@ class Dashboard extends Component {
     }
     componentDidMount() {
         document.body.classList.remove('login');
-        document.body.classList.toggle('nav-md');
-        var customScript = new custom();
-        customScript.runScript();
-
+        document.body.classList.add('nav-md');
+        document.title = "RegOpz Dashboard";
     }
-    componentWillMount() {
 
-    }
 }
 export default Dashboard;

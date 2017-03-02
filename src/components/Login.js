@@ -53,7 +53,9 @@ class Login extends Component {
         );
     }
     componentDidMount() {
-        document.body.classList.toggle('login');
+        document.body.classList.add('login');
+        document.title = "RegOpz Login";
+
     }
 }
 export default Login;
