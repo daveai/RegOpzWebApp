@@ -1839,7 +1839,7 @@ h4.graph_title {
     margin-right: 10px
 }
 .main_menu .fa {
-    width: 26px;
+    width: 20px;
     opacity: .99;
     display: inline-block;
     font-family: FontAwesome;
@@ -4240,4 +4240,27 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 
 .dataTables_wrapper > .row{
   overflow:auto !important; /*prevent datatables overflowing its container*/
+}
+
+
+/* Only for RegOpz */
+.x_panel_blank:hover {
+    -webkit-box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
+    -moz-box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
+    box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
+}
+.x_panel_blank > .x_content_plush {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    text-align: center;
+}
+.x_panel_blank > .x_content_plush > i {
+    transition: color 0.5s ease;
+    font-size: 48px;
+}
+.x_panel_blank:hover > .x_content_plush > i {
+    font-size: 48px;
+    color: rgba(38, 185, 154, 0.88);
 }

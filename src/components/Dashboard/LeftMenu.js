@@ -29,12 +29,76 @@ class LeftMenu extends Component {
                             <ul className="nav side-menu">
                                 <li>
                                     <a>
-                                        <i className="fa fa-home"></i> Meta Data<span className="fa fa-chevron-down"></span>
+                                        <i className="fa fa-home"></i> Meta Data Management<span className="fa fa-chevron-down"></span>
                                     </a>
                                     <ul className="nav child_menu">
                                         <li>
-                                            <a href="#/dashboard/capture-report-template">Capture Report Template1</a>
+                                            <a href="#/dashboard/capture-report-template"> Capture Report Template</a>
                                         </li>
+                                        <li>
+                                            <a href="#">Maintain Business Rules</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Maintain Report Rules</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Data Reteintion</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-rss"></i> Data Feed Management<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                        <li>
+                                            <a href="#">Maintain Sources</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">View Data</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-file-excel-o"></i> Reports Management<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-pencil-square-o"></i> Content Management<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-pie-chart"></i> KPIs<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-code-fork"></i> Work Flow Management<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-bar-chart"></i> Data Analytics<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i className="fa fa-users"></i> Access Management<span className="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul className="nav child_menu">
                                     </ul>
                                 </li>
                             </ul>
@@ -44,7 +108,7 @@ class LeftMenu extends Component {
             </div>
         )
     }
-    componentDidMount(){      
+    componentDidMount(){
       var customScript = new custom();
       customScript.runScript();
 

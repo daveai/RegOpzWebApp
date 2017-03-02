@@ -11,6 +11,7 @@ import {
 import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
+import DashboardIndex from './components/Dashboard/DashBoardIndex';
 import custom from '../js/custom';
 class Index extends Component {
     render() {
@@ -30,6 +31,7 @@ ReactDOM.render(
     <Route component={Index}>
         <Route path="/login" component={Login}/>
         <Route path="/dashboard" component={Dashboard} >
+            <IndexRoute component={DashboardIndex} />
             <Route path="capture-report-template" component={CaptureReportTemplate} />
         </Route>
     </Route>
