@@ -1,16 +1,16 @@
 
 html , body{
-	
+
  height:100%;
- 
+
 }
- 
+
 .full-width {
-	
+
  width:100%;
- 
+
  }
- 
+
 .full-height{
  height:100%;
  }
@@ -170,7 +170,8 @@ html , body{
     z-index: 2
 }
 .nav-sm .navbar.nav_title {
-    width: 70px
+    width: 70px;
+		border: 0;
 }
 .nav-sm .navbar.nav_title a span {
     display: none
@@ -358,7 +359,8 @@ body .container.body .right_col {
     float: left;
     background: #2A3F54;
     border-radius: 0;
-    height: 57px
+    height: 57px;
+    border: 0;
 }
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
@@ -4233,7 +4235,7 @@ ul.notifications {
 table thead .checkbox { margin-top:-7px;margin-top:-21px; }
 table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 */
-			
+
 .daterangepicker.xdisplay { width:228px; }
 
 .dataTables_wrapper > .row{

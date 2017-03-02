@@ -1,6 +1,17 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import {
+    Router,
+    Route,
+    Link,
+    IndexRoute,
+    hashHistory,
+    browserHistory
+} from 'react-router'
 class Login extends Component {
+    login(e){
+        e.preventDefault();
+    }
     render() {
         return (
             <div>
@@ -19,7 +30,7 @@ class Login extends Component {
                                     <input type="password" className="form-control" placeholder="Password" required=""/>
                                 </div>
                                 <div>
-                                    <a className="btn btn-default submit" href="#">Log in</a>
+                                    <a className="btn btn-default submit" href="#/dashboard">Log in</a>
                                 </div>
 
                                 <div className="clearfix"></div>
@@ -42,7 +53,9 @@ class Login extends Component {
         );
     }
     componentDidMount() {
-        document.body.classList.toggle('login');
+        document.body.classList.add('login');
+        document.title = "RegOpz Login";
+
     }
 }
 export default Login;
