@@ -12,6 +12,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
 import DashboardIndex from './components/Dashboard/DashBoardIndex';
+import DataGrid from './components/DataGrid/DataGrid';
 import custom from '../js/custom';
 class Index extends Component {
     render() {
@@ -33,6 +34,7 @@ ReactDOM.render(
         <Route path="/dashboard" component={Dashboard} >
             <IndexRoute component={DashboardIndex} />
             <Route path="capture-report-template" component={CaptureReportTemplate} />
+            <Route path="data-grid" component={DataGrid} />
         </Route>
     </Route>
 </Router>, document.querySelector(".react_container"));
