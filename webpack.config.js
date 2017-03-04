@@ -13,7 +13,8 @@ module.exports = {
                 query: {
                     presets: ['react', 'es2015', 'stage-1', 'react-hmre']
                 }
-            }
+            },
+            { test: /\.css$/, loader: "style-loader!css-loader" }
         ],
         rules: [
             {

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import LeftMenu from './LeftMenu'
 import TopNav from './TopNav';
-import RightPane from './RightPane';
 import {
     Router,
     Route,
@@ -19,8 +18,7 @@ class Dashboard extends Component {
                 <LeftMenu />
                 <TopNav />
                 <div className="right_col" role="main">
-                  <RightPane />
-                {this.props.children}
+                  {this.props.children}
                 </div>
             </div>
           </div>
