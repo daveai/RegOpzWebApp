@@ -34,7 +34,7 @@ ReactDOM.render(
         <Route path="/dashboard" component={Dashboard} >
             <IndexRoute component={DashboardIndex} />
             <Route path="capture-report-template" component={CaptureReportTemplate} />
-            <Route path="data-grid" component={DataGrid} />
+            <Route path="data-grid" row="10" col="10" component={DataGrid} />
         </Route>
     </Route>
 </Router>, document.querySelector(".react_container"));

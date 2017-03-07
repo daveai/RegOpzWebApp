@@ -1,0 +1,41 @@
+#dataGrid {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+
+#dataGrid td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+}
+#dataGrid th {
+    height: 30px;
+    background-repeat: no-repeat;
+    text-align: center;
+    min-width: 130px;
+}
+#dataGrid th:first-child {
+    height: 30px;
+    background-repeat: no-repeat;
+    text-align: center;
+    min-width: 30px;
+}
+#dataGrid tr td:first-child {
+  text-align: center;
+  font-weight: bold;
+}
+#dataGrid tr td {
+  height: 35px;
+}
+#dataGrid tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.dataGridHolder {
+  min-width: 1000000000px;
+  min-height: 80vh;
+}
+.right_col {
+  overflow: auto !important;
+}
+.nav_menu {
+  margin-bottom: 0px !important;
+}
