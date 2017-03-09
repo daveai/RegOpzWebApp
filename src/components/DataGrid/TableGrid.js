@@ -10,10 +10,9 @@ export default class TableGrid extends Component {
         console.log(props);
     }
     componentDidMount(){
-        /*$(this.table).colResizable({
-          liveDrag:true,
-          resizeMode:'flex'
-        });*/
+        $(this.table).colResizable({
+          resizeMode:'overflow'
+        });
     }
     render() {
         return (

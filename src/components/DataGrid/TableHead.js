@@ -12,19 +12,23 @@ export default class TableGrid extends Component {
     render(){
         var headerItems = [];
         headerItems.push("");
-        for (var i = 0; i < 20000; i++) {
+        for (var i = 0; i < 50; i++) {
             headerItems.push(this.alphaSequence(i));
         }
+        var self = this
       return(
         <thead>
             <tr>
                 {
                     headerItems.map(function(item,index){
-                        return <th key={ index }>{item}</th>;
+                        return <th key={ index }>{item}
+                        </th>;
                     })
                 }
             </tr>
         </thead>
       )
+
     }
+
 }

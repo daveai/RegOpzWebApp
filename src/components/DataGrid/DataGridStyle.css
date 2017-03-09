@@ -12,6 +12,7 @@
     background-repeat: no-repeat;
     text-align: center;
     min-width: 130px;
+    position: relative;
 }
 #dataGrid th:first-child {
     height: 30px;
@@ -25,12 +26,23 @@
 }
 #dataGrid tr td {
   height: 35px;
+  border: 1px solid #ababab;
+}
+#dataGrid tr td input {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#dataGrid tr td input:focus {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #1fc;
 }
 #dataGrid tr:nth-child(even) {
     background-color: #dddddd;
 }
 .dataGridHolder {
-  min-width: 1000000000px;
+  min-width: 100px;
   min-height: 80vh;
 }
 .right_col {
@@ -38,4 +50,13 @@
 }
 .nav_menu {
   margin-bottom: 0px !important;
+}
+.dragHandle {
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    background-color: red;
+    top: 0;
+    right: 0;
+    cursor: e-resize;
 }
