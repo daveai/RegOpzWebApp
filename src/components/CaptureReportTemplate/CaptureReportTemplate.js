@@ -12,7 +12,12 @@ export default class RightPane extends Component {
             </div>
             <div className="x_content">
               <p>Supported files are .xlsx .xlx, .csv, .odt</p>
-            <form action="form_upload.html" className="dropzone"></form>
+            <form action="form_upload.html" className="dropzone">
+              <input type="text" className="form-control" placeholder="Report Id" />
+              <div className="fileUploadIconHolder">
+                <i className="fa fa-file-excel-o" aria-hidden="true"></i>
+              </div>
+            </form>
               <br />
               <br />
               <br />
