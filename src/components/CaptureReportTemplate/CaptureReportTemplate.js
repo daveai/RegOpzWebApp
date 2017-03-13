@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { hashHistory } from 'react-router';
+import { routerContext } from 'react-router';
+import npro from '../../../bower_components/nprogress/nprogress';
+require('../../../bower_components/nprogress/nprogress.css');
 export default class RightPane extends Component {
+  constructor(props){
+    super(props);
+    this.fileInput = null;
+    this.uploadForm = null;
+  }
   render(){
     return(
       <div className="row">
@@ -12,10 +21,17 @@ export default class RightPane extends Component {
             </div>
             <div className="x_content">
               <p>Supported files are .xlsx .xlx, .csv, .odt</p>
-            <form action="form_upload.html" className="dropzone">
-              <input type="text" className="form-control" placeholder="Report Id" />
+            <form encType="multipart/form-data" id="uploadForm" ref={(uploadForm) => {this.uploadForm = uploadForm}} onSubmit={this.handleFormSubmit.bind(this)} className="dropzone">
+              <input type="text" name="report_id" className="form-control" placeholder="Report Id" />
+              <input id="file"
+                onChange={this.handleFileSelect.bind(this)}
+                ref={(fileInput) => {this.fileInput = fileInput}}
+                type="file"
+                className="form-control" />
               <div className="fileUploadIconHolder">
-                <i className="fa fa-file-excel-o" aria-hidden="true"></i>
+                <i className="fa fa-file-excel-o" aria-hidden="true" onClick={this.handleFileInputClick.bind(this)}></i>
+                <div className="clearfix"></div>
+                <div className="dz-default dz-message"><span>No File Selected</span></div>
               </div>
             </form>
               <br />
@@ -30,5 +46,40 @@ export default class RightPane extends Component {
   }
   componentDidMount(){
     document.title = "RegOpz Dashboard | Capture Report Template ";
+  }
+  handleFileInputClick(event){
+    this.fileInput.value = null;
+    this.fileInput.click();
+  }
+  handleFormSubmit(event){
+    event.preventDefault();
+  }
+  handleFileSelect(event){
+    
+    npro.start();
+    var data = new FormData($("#uploadForm")[0]);
+    $.each($('#file')[0].files, function(i, file) {
+        data.append('file', file);
+    });
+    $.ajax({
+      type: 'POST',
+      crossDomain: true,
+      async: true,
+      cache: false,
+      contentType: false,
+      processData: false,
+      data:data,
+      url: 'http://127.0.0.1:3000/api/v1.0.0/document',
+      success: function(response) {
+        npro.done();
+        hashHistory.push("/dashboard/data-grid");
+        console.log(response);
+
+      },
+      error:function(response){
+        npro.done();
+        alert(response.responseJSON.msg);
+      }
+    });
   }
 }

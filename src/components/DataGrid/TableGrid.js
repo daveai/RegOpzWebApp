@@ -7,7 +7,7 @@ export default class TableGrid extends Component {
     constructor(props) {
         super(props);
         this.table = null;
-        console.log(props);
+
     }
     componentDidMount(){
         $(this.table).colResizable({
@@ -18,7 +18,7 @@ export default class TableGrid extends Component {
         return (
             <div className="dataGridHolder">
               <table id="dataGrid" ref={(table) => {this.table = table}}>
-                  <TableHead col={this.props.col} />
+                  <TableHead />
                   <TableBody />
               </table>
               <br />

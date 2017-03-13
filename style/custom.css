@@ -4299,6 +4299,9 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     left: 50%;
     text-align: center;
 }
+.dropzone input[type='file'] {
+  display: none;
+}
 .fileUploadIconHolder > i {
   font-size: 72px;
   color: #42f4d7;
