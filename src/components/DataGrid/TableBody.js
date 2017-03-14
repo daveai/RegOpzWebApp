@@ -61,12 +61,43 @@ class TableBody extends Component {
             for(var i = 0; i < sheet_1.matrix.length; i++){
                 let cell = sheet_1.matrix[i];
                 let coords = cell.cell;
-                let x = coords.charAt(0);
-                let y = coords.charAt(1);
-                console.log("Coordinate: ", x,y, cell.value);
+                let merged = (typeof(cell.merged) != 'undefined')? cell.merged:null;
+                let split = coords.split("");
+
+                var x ="";
+                var y = "";
+                for (let i = 0; i < split.length; i++){
+                    if (split[i].match(/^[a-z]+$/i)){
+                        x = x + split[i];
+                    } else {
+                        y = y + split[i];
+                    }
+                }
+                console.log("map: ",x,y);
+                var colspan = 0, rowspan = 0;
+                if(merged){
+                    let split_merged = merged.split("");
+                    var x_merged ="";
+                    var y_merged = "";
+                    for (let i = 0; i < split_merged.length; i++){
+                        if (split_merged[i].match(/^[a-z]+$/i)){
+                            x_merged = x_merged + split_merged[i];
+                        } else {
+                            y_merged = y_merged + split_merged[i];
+                        }
+                    }
+                    console.log("Diplacement: ",x_merged, y_merged);
+                    colspan = lookup[x_merged] - lookup[x];
+                    rowspan = Math.abs(y_merged - y);
+                    console.log("colspan:rowspan",colspan,rowspan);
+                } else {
+                    x_merged = 0;
+                    y_merged = 0;
+                }
+
                 let real_x = lookup[x];
                 console.log("real x,y: ", real_x,y);
-                this.rows[y -1][real_x + 1] = cell.value;
+                this.rows[y -1][real_x + 1] = {value:cell.value,colspan:colspan,rowspan:rowspan};
             }
         }
     }
@@ -84,12 +115,10 @@ class TableBody extends Component {
                                 col.map(function(row,rindex){
                                     if (rindex != 0) {
                                         return(
-                                            <td key={rindex}>
-                                                <input className="gridInput" value={row} onChange={(input) => {
+                                            <td key={rindex} colSpan={row.colspan} rowSpan={row.rowspan}>
+                                                <input className="gridInput" value={row.value} onChange={(input) => {
                                                     self.rows[cindex][rindex] = input.target.value;
-                                                    self.setState({
-                                                        row:self.rows
-                                                    })
+
                                                   }} />
                                             </td>
                                         )

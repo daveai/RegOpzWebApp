@@ -4306,10 +4306,10 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
   font-size: 72px;
   color: #42f4d7;
   animation-name: pulse_animation;
-    animation-duration: 5000ms;
-    transform-origin:70% 70%;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+  animation-duration: 5000ms;
+  transform-origin:70% 70%;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 @keyframes pulse_animation {
 	0% { transform: scale(1); }
