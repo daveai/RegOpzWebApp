@@ -17,7 +17,9 @@ import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
 import DashboardIndex from './components/Dashboard/DashBoardIndex';
 import DataGrid from './components/DataGrid/DataGrid';
+import MaintainBusinessRules from './components/MaintainBusinessRules/MaintainBusinessRules';
 import custom from '../js/custom';
+import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -40,7 +42,8 @@ ReactDOM.render(
                 <Route path="/dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
-                    <Route path="data-grid" component={DataGrid} />
+                    <Route path="data-grid" component={RegOpzDataGrid} />
+                    <Route path="maintain-business-rules" component={MaintainBusinessRules} />
                 </Route>
             </Route>
         </Router>
