@@ -55,7 +55,7 @@ export default class RightPane extends Component {
     event.preventDefault();
   }
   handleFileSelect(event){
-    
+
     npro.start();
     var data = new FormData($("#uploadForm")[0]);
     $.each($('#file')[0].files, function(i, file) {
@@ -69,7 +69,7 @@ export default class RightPane extends Component {
       contentType: false,
       processData: false,
       data:data,
-      url: 'http://127.0.0.1:3000/api/v1.0.0/document',
+      url: 'http://ec2-54-169-118-137.ap-southeast-1.compute.amazonaws.com:3000/api/v1.0.0/document',
       success: function(response) {
         npro.done();
         hashHistory.push("/dashboard/data-grid");
