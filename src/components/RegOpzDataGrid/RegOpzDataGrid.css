@@ -5,7 +5,7 @@
   background-color: #ababab;
   border: 1px solid;
 }
-.reg_col:first-child {
+.reg_col_first {
   float: left;
   width: 20px;
   text-align: center;
