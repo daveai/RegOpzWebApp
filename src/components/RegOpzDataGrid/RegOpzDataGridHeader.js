@@ -17,8 +17,7 @@ export default class RegOpzDataGridHeader extends Component {
             {cell:'G4', value:"Sample"}
         ]
         this.matrix = [[]];
-        for(let k = 0; k < this.rows.length; k++){
-            console.log("Loop: ",k);
+        for(let k = 0; k < this.rows.length; k++){            
             this.matrix.push([]);
             for(let j = 0; j < this.columns.length; j++){
                 this.matrix[k][j] = k + "," + j;
@@ -51,6 +50,7 @@ export default class RegOpzDataGridHeader extends Component {
 
                 {
                     this.matrix.map(function(row,rindex){
+
                         return (
                             <div key={rindex}>
                                 <div className="clearfix"></div>
