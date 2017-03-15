@@ -24,8 +24,7 @@ class MaintainBusinessRules extends Component {
     componentDidMount(){
 
     }
-    render() {
-      alert(1);
+    render() {      
         if(!this.props.business_rules[0]){
           return (
             <h2>Loading...</h2>
