@@ -1,0 +1,26 @@
+.reg_col {
+  float: left;
+  width: 100px;
+  text-align: center;
+  background-color: #ababab;
+  border: 1px solid;
+}
+.reg_col_first {
+  float: left;
+  width: 20px;
+  text-align: center;
+  background-color: #ababab;
+  border: 1px solid;
+  min-height: 21px;
+}
+.reg_gridHolder {
+  float: left;
+  overflow: auto;
+  height: 80vh;
+  min-width: 100px;
+}
+.reg_header {
+  min-width: 5000px;
+  overflow: auto;
+  float: left;
+}

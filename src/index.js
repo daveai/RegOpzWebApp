@@ -7,13 +7,19 @@ import {
     IndexRoute,
     hashHistory,
     browserHistory
-} from 'react-router'
+} from 'react-router';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import promiseMiddleware from 'redux-promise';
+import reducers from './reducers';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
 import DashboardIndex from './components/Dashboard/DashBoardIndex';
-import DataGrid from './components/DataGrid/DataGrid';
+import MaintainBusinessRules from './components/MaintainBusinessRules/MaintainBusinessRules';
 import custom from '../js/custom';
+import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
         return (
@@ -28,13 +34,17 @@ class Index extends Component {
 }
 const Dme2 = () => <h1>Hello World 2!</h1>
 ReactDOM.render(
-    <Router history={hashHistory}>
-    <Route component={Index}>
-        <Route path="/login" component={Login}/>
-        <Route path="/dashboard" component={Dashboard} >
-            <IndexRoute component={DashboardIndex} />
-            <Route path="capture-report-template" component={CaptureReportTemplate} />
-            <Route path="data-grid" row="10" col="10" component={DataGrid} />
-        </Route>
-    </Route>
-</Router>, document.querySelector(".react_container"));
+    <Provider store={createStoreWithMiddleware(reducers)}>
+        <Router history={hashHistory}>
+            <Route component={Index}>
+                <Route path="/login" component={Login}/>
+                <Route path="/dashboard" component={Dashboard} >
+                    <IndexRoute component={DashboardIndex} />
+                    <Route path="capture-report-template" component={CaptureReportTemplate} />
+                    <Route path="data-grid" component={RegOpzDataGrid} />
+                    <Route path="maintain-business-rules" component={MaintainBusinessRules} />
+                </Route>
+            </Route>
+        </Router>
+    </Provider>
+, document.querySelector(".react_container"));

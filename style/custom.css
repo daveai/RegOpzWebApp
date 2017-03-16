@@ -4267,28 +4267,39 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 #gridCont {
   position: relative;
 }
-.RightSlidePanel {
-  position: absolute;
-  background-color: #ffffff;
-  border-left: 1px solid #ebebeb;
-  border-right: 1px solid #ebebeb;
-  border-top: 1px solid #ebebeb;
-  overflow: hidden;
-  width: 300px;
-  height: 90%;
-  z-index: 99;
-  top: 49px;
-  right: 10px;
-  transition: width 0.5s ease;
-}
-.btn {
-  display: block;
-  margin: 0 auto;
-}
 .slidePanelHeading {
   float: none !important;
   text-align: center;
 }
 .clearfix {
   clear: both;
+}
+.fileUploadIconHolder {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    text-align: center;
+}
+.dropzone input[type='file'] {
+  display: none;
+}
+.fileUploadIconHolder > i {
+  font-size: 72px;
+  color: #42f4d7;
+  animation-name: pulse_animation;
+  animation-duration: 5000ms;
+  transform-origin:70% 70%;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes pulse_animation {
+	0% { transform: scale(1); }
+	30% { transform: scale(1); }
+	40% { transform: scale(1.08); }
+	50% { transform: scale(1); }
+	60% { transform: scale(1); }
+	70% { transform: scale(1.05); }
+	80% { transform: scale(1); }
+	100% { transform: scale(1); }
 }
