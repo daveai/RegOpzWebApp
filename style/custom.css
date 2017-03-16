@@ -4267,24 +4267,6 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 #gridCont {
   position: relative;
 }
-.RightSlidePanel {
-  position: absolute;
-  background-color: #ffffff;
-  border-left: 1px solid #ebebeb;
-  border-right: 1px solid #ebebeb;
-  border-top: 1px solid #ebebeb;
-  overflow: hidden;
-  width: 300px;
-  height: 90%;
-  z-index: 99;
-  top: 49px;
-  right: 10px;
-  transition: width 0.5s ease;
-}
-.btn {
-  display: block;
-  margin: 0 auto;
-}
 .slidePanelHeading {
   float: none !important;
   text-align: center;
