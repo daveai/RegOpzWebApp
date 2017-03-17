@@ -1,9 +1,9 @@
 .reg_col {
-  float: left;
   width: 100px;
   text-align: center;
   background-color: #ababab;
   border: 1px solid;
+  display: table-cell;
 }
 .reg_col_first {
   float: left;
