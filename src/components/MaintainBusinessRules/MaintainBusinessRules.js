@@ -13,22 +13,10 @@ class MaintainBusinessRules extends Component {
     constructor(props) {
         super(props);
         this.cols = [
-          {"display":"Rule Execution Order", "identifier":"rule_execution_order"},
-          {"display":"Business Rule", "identifier":"business_rule"},
-          {"display":"Python Implementation", "identifier":"python_implementation"}
+
         ];
         this.data = [
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":1,"business_rule":"ACU","python_implementation":"abc=sdf"},
-          {"rule_execution_order":11,"business_rule":"DBU","python_implementation":"abc=sdf"}
+
         ]
     }
     componentWillMount(){
@@ -36,12 +24,20 @@ class MaintainBusinessRules extends Component {
     }
 
     render() {
-      return (
-        <div className="maintain_business_rules_container">
-          <h1>Maintain Business Rules</h1>
-          <RegOpzFlatGrid columns={this.cols} dataSource={this.data} />
-        </div>
-      )
+      if(this.props.business_rules.length){
+        this.cols = this.props.business_rules[0].cols;
+        this.data = this.props.business_rules[0].rows;
+        return (
+          <div className="maintain_business_rules_container">
+            <h1>Maintain Business Rules</h1>
+            <RegOpzFlatGrid columns={this.cols} dataSource={this.data} />
+          </div>
+        )
+      } else {
+        return(
+          <h1>Loading...</h1>
+        )
+      }
     }
 
 }

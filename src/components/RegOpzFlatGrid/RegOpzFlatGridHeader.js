@@ -10,8 +10,8 @@ export default class RegOpzFlatGridHeader extends Component {
                 {
                     this.props.columns.map(function(item,index){
                         return(
-                            <div key={index} className="flat_grid_header_cell">
-                                <span>{item.display}</span>
+                            <div key={item} className="flat_grid_header_cell">
+                                <span>{item}</span>
                             </div>
                         )
                     })

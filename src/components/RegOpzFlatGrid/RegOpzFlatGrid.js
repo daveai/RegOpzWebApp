@@ -10,18 +10,11 @@ export default class RegOpzFlatGrid extends Component {
         this.data = props.dataSource;
     }
     render(){
-      var _self = this;
         return(
             <div className="flat_grid_container">
                 <RegOpzFlatGridHeader columns={this.cols} />
                 <div className="clearfix"></div>
-                {
-                  this.data.map(function(item,index){
-                    return(
-                      <RegOpzFlatGridRow key={index} columns={_self.cols} data={item} />
-                    )
-                  })
-                }
+                <RegOpzFlatGridRow columns={this.cols} data={this.data} />
             </div>
         )
     }
