@@ -1,25 +1,21 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import RegOpzFlatGridCell from './RegOpzFlatGridCell';
 export default class RegOpzFlatGridRow extends Component {
     constructor(props){
         super(props);
-
+        this.textField = null;
     }
     render(){
-        var _self = this;
         return(
             <div>{
                 this.props.data.map(function(item,index){
                     return(
-                        <div className="flat_grid_row_container">
+                        <div key={index} className="flat_grid_row_container">
                             {
                                 this.props.columns.map(function(citem,cindex){
                                     return(
-                                        <div className="flat_grid_row_cell">
-                                            <span>                                              
-                                              <input value={item[citem]} />
-                                            </span>
-                                        </div>
+                                      <RegOpzFlatGridCell key={cindex} data={item} identifier={citem} />
                                     )
                                 }.bind(this))
                             }
