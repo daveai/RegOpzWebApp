@@ -5,39 +5,32 @@ export default class RegOpzFlatGridCell extends Component {
         super(props);
         this.state = {
             value: props.data[props.identifier],
-            style:{display:'none'}
         }
-
+        this.inputElem = null;
     }
     render() {
         return (
             <div className="flat_grid_row_cell">
                 <span onClick={this.handleCellClick.bind(this)}>
                     {this.state.value}
-                    <input
-                        value={this.state.value}
-                        style={this.state.style}
-                        onChange={this.handleChange.bind(this)}
-                        onBlur={this.handleBlur.bind(this)}
-                    />
                 </span>
             </div>
         )
     }
     handleCellClick(event) {
-        this.setState({
-            style:{display:'block'}
-        });
+        this.inputElem = document.createElement("input");
+        this.inputElem.value = this.state.value;
+        this.inputElem.addEventListener('change', this.handleChange.bind(this), false);
+        this.inputElem.addEventListener('blur', this.handleBlur.bind(this), false);
+        event.target.appendChild(this.inputElem);
     }
     handleChange(event){
         this.setState({
             value:event.target.value
         });
     }
-    handleBlur(event){
-        this.setState({
-            style:{display:'none'}
-        });
+    handleBlur(event){        
+        $(event.target).remove();
     }
 
 }
