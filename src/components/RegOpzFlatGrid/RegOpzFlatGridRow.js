@@ -5,15 +5,25 @@ export default class RegOpzFlatGridRow extends Component {
     constructor(props){
         super(props);
         this.textField = null;
+        this.data = props.data;
+        this.cols = props.columns;
+    }
+    componentWillReceiveProps(nextProps){
+        console.log("will receive props in row ",this.data);
+        this.cols = nextProps.columns;
+        this.data = nextProps.data;
     }
     render(){
+        console.log("will receive props in row render ",this.data);
         return(
             <div>{
-                this.props.data.map(function(item,index){
+                this.data.map(function(item,index){
                     return(
-                        <div key={index} className="flat_grid_row_container">
+                        <div onClick={(event) => {
+                            this.props.onSelect(index);
+                        } } key={index} className="flat_grid_row_container">
                             {
-                                this.props.columns.map(function(citem,cindex){
+                                this.cols.map(function(citem,cindex){
                                     return(
                                       <RegOpzFlatGridCell key={cindex} data={item} identifier={citem} />
                                     )
@@ -25,5 +35,5 @@ export default class RegOpzFlatGridRow extends Component {
                 }.bind(this))
             }</div>
         )
-    }
+    }        
 }

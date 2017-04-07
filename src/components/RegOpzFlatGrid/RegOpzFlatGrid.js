@@ -8,13 +8,19 @@ export default class RegOpzFlatGrid extends Component {
         super(props);
         this.cols = props.columns;
         this.data = props.dataSource;
+        console.log("The data in cnstructor ",this.data);
+    }
+    componentWillReceiveProps(nextProps){
+        console.log("will receive props ",this.data);
+        this.cols = nextProps.columns;
+        this.data = nextProps.dataSource;
     }
     render(){
         return(
             <div className="flat_grid_container">
                 <RegOpzFlatGridHeader columns={this.cols} />
                 <div className="clearfix"></div>
-                <RegOpzFlatGridRow columns={this.cols} data={this.data} />
+                <RegOpzFlatGridRow onSelect={this.props.onSelectRow} columns={this.cols} data={this.data} />
             </div>
         )
     }
