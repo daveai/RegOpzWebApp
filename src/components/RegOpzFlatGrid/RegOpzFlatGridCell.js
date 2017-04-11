@@ -39,9 +39,11 @@ export default class RegOpzFlatGridCell extends Component {
         this.setState({
             value:event.target.value
         });
+        this.props.data[this.props.identifier] = event.target.value;
     }
     handleBlur(event){        
-        $(event.target).remove();
+        $(event.target).remove();        
+        this.props.onUpdateRow(this.props.data)
     }   
 
 }

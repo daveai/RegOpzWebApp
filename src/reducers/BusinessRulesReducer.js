@@ -6,13 +6,13 @@ export default function(state=[],action){
       	return state.concat(action.payload.data)
       	break;
     case INSERT_RULES:
-    	console.log("state is",state[0].rows)
     	state[0].rows.splice(action.payload.at+1,0,action.payload.item);
     	return state.splice(0,1,state)
     	break;
     case DELETE_RULES:
     	state[0].rows.splice(action.payload.at,1);
     	return state.splice(0,1,state)
+    	break;
     default:
       return state;
 

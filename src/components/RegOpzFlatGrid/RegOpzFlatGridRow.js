@@ -9,12 +9,10 @@ export default class RegOpzFlatGridRow extends Component {
         this.cols = props.columns;
     }
     componentWillReceiveProps(nextProps){
-        console.log("will receive props in row ",this.data);
         this.cols = nextProps.columns;
         this.data = nextProps.data;
     }
     render(){
-        console.log("will receive props in row render ",this.data);
         return(
             <div>{
                 this.data.map(function(item,index){
@@ -25,7 +23,12 @@ export default class RegOpzFlatGridRow extends Component {
                             {
                                 this.cols.map(function(citem,cindex){
                                     return(
-                                      <RegOpzFlatGridCell key={cindex} data={item} identifier={citem} />
+                                      <RegOpzFlatGridCell 
+                                        key={cindex} 
+                                        data={item} 
+                                        identifier={citem}
+                                        onUpdateRow={this.props.onUpdateRow}
+                                     />
                                     )
                                 }.bind(this))
                             }

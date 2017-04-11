@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import ReactDOM from 'react-dom';
 import DataGrid from 'react-datagrid';
-import { actionFetchBusinessRules, actionInsertBusinessRule, actionDeleteBusinessRule } from '../../actions/BusinessRulesAction';
+import { actionFetchBusinessRules, actionInsertBusinessRule, actionDeleteBusinessRule, actionUpdateBusinessRule } from '../../actions/BusinessRulesAction';
 import RightSlidePanel from '../RightSlidePanel/RightSlidePanel';
 import ModalInstance from '../Modal/ModalInstance';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
@@ -28,7 +28,7 @@ class MaintainBusinessRules extends Component {
           "logical_condition": "",
           "python_implementation": "",
           "rule_description": "",
-          "rule_execution_order": "",
+          "rule_execution_order": 0,
           "rule_type": "",
           "source_id": "",
           "technical_implementation": "",
@@ -42,11 +42,9 @@ class MaintainBusinessRules extends Component {
     }
 
     render() {
-      console.log("The render function ", this.props.business_rules[0]);
       if(this.props.business_rules.length){
         this.cols = this.props.business_rules[0].cols;
         this.data = this.props.business_rules[0].rows; 
-        console.log("The data is ",this.data);
         return (
           <div className="maintain_business_rules_container">
             <h1>Maintain Business Rules</h1>
@@ -56,6 +54,7 @@ class MaintainBusinessRules extends Component {
              columns={this.cols} 
              dataSource={this.data} 
              onSelectRow={this.handleSelectRow.bind(this)}
+             onUpdateRow = {this.handleUpdateRow.bind(this)}
             />
           </div>
         )
@@ -75,6 +74,10 @@ class MaintainBusinessRules extends Component {
     handleDeleteClick(event){
       this.props.deleteBusinessRule(this.selectedRow);
     }
+    handleUpdateRow(item){      
+      console.log("The final value in MaintainBusinessRules component",item);
+      this.props.updateBusinessRule(item);
+    }
 
 }
 const mapDispatchToProps = (dispatch) => {
@@ -87,6 +90,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteBusinessRule: (at) => {
       dispatch(actionDeleteBusinessRule(at))
+    },
+    updateBusinessRule:(item) => {
+      dispatch(actionUpdateBusinessRule(item))
     }
 
   }
