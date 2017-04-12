@@ -6,7 +6,7 @@ export default function(state=[],action){
       	return state.concat(action.payload.data)
       	break;
     case INSERT_RULES:
-    	state[0].rows.splice(action.payload.at+1,0,action.payload.item);
+    	state[0].rows.splice(action.meta.at,0,action.payload.data);    	
     	return state.splice(0,1,state)
     	break;
     case DELETE_RULES:
