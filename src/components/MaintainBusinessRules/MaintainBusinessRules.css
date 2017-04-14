@@ -36,3 +36,9 @@
   right: 10px;
   transition: width 0.5s ease;
 }
+.reg_flat_grid_page_input > input {
+  height: 25px;
+  width: 40px;
+  text-align: center;
+  margin-right: 10px;
+}

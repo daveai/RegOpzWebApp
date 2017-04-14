@@ -5,8 +5,8 @@ export let FETCH_RULES = 'FETCH_RULES';
 export let INSERT_RULES = 'INSERT_RULES';
 export let DELETE_RULES = 'DELETE_RULES';
 export let UPDATE_RULES = 'UPDATE_RULES';
-export function actionFetchBusinessRules(){
-  const url = BASE_URL + "business-rules";
+export function actionFetchBusinessRules(page){
+  const url = BASE_URL + "business-rules/" + page;
   const request = axios.get(url);
   return{
     type:FETCH_RULES,

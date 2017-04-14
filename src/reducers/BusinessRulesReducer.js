@@ -3,6 +3,7 @@ export default function(state=[],action){
   console.log("Action received: ",action);
   switch(action.type){
     case FETCH_RULES:
+        state=[];        
       	return state.concat(action.payload.data)
       	break;
     case INSERT_RULES:
