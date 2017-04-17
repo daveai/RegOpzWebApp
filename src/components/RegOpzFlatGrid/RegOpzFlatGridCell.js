@@ -34,6 +34,7 @@ export default class RegOpzFlatGridCell extends Component {
         this.inputElem.addEventListener('blur', this.handleBlur.bind(this), false);
         event.target.appendChild(this.inputElem);
         this.inputElem.focus();
+        this.prevValue = $(event.target).text(); 
     }
     handleChange(event){
         this.setState({
@@ -41,8 +42,10 @@ export default class RegOpzFlatGridCell extends Component {
         });
         this.props.data[this.props.identifier] = event.target.value;
     }
-    handleBlur(event){        
+    handleBlur(event){  
+           
         $(event.target).remove();        
+        alert("Prev value: " + this.prevValue + " Current value: " + event.target.value)
         this.props.onUpdateRow(this.props.data)
     }   
 

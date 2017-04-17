@@ -14,7 +14,7 @@ export function actionFetchBusinessRules(page){
   }
 }
 export function actionInsertBusinessRule(item, at){	
-	const url = BASE_URL + "business-rules";
+	const url = BASE_URL + "business-rules/0";
 	console.log("item inserting ", item);	
 	const request = axios.post(url, item);
 	console.log("post request response ", request)
@@ -27,7 +27,7 @@ export function actionInsertBusinessRule(item, at){
 	}
 }
 export function actionUpdateBusinessRule(item){	
-	const url = BASE_URL + "business-rules";
+	const url = BASE_URL + "business-rule";
 	console.log("item updating", item);	
 	const request = axios.put(url + "/" + item['id'], item);
 	return {
@@ -35,9 +35,12 @@ export function actionUpdateBusinessRule(item){
 		payload:{result:"updated"}
 	}
 }
-export function actionDeleteBusinessRule(at){
+export function actionDeleteBusinessRule(item){
+	const url = BASE_URL + "business-rule";
+	console.log("item updating", item);	
+	const request = axios.delete(url + "/" + item);
 	return {
 		type:DELETE_RULES,
-		payload:{at:at}
+		payload:request
 	}
 }
