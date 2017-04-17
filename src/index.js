@@ -19,6 +19,7 @@ import DashboardIndex from './components/Dashboard/DashBoardIndex';
 import MaintainBusinessRules from './components/MaintainBusinessRules/MaintainBusinessRules';
 import custom from '../js/custom';
 import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
+import Permissions from './components/Permissions/Permissions';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -43,6 +44,7 @@ ReactDOM.render(
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
                     <Route path="data-grid" component={RegOpzDataGrid} />
                     <Route path="maintain-business-rules" component={MaintainBusinessRules} />
+                    <Route path="permissions" component={Permissions} />
                 </Route>
             </Route>
         </Router>

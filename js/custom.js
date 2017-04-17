@@ -51,7 +51,7 @@ export default class custom {
             // TODO: This is some kind of easy fix, maybe we can improve this
             var setContentHeight = function() {
                 // reset height
-                $RIGHT_COL.css('min-height', "50px");
+                $RIGHT_COL.css('min-height', "500px");
 
                 var bodyHeight = $BODY.outerHeight(),
                     footerHeight = $BODY.hasClass('footer_fixed')
@@ -65,7 +65,7 @@ export default class custom {
                 // normalize content
                 contentHeight -= $NAV_MENU.height() + footerHeight;
 
-                $RIGHT_COL.css('min-height', "50px");
+                $RIGHT_COL.css('min-height', "500px");
             };
 
             $SIDEBAR_MENU.find('a').on('click', function(ev) {
