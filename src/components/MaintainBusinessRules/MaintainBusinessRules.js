@@ -36,7 +36,9 @@ class MaintainBusinessRules extends Component {
           "valid_to": ""
         }
         this.selectedRow = 0;
+        this.selectedRowItem = null;
         this.currentPage = 0;
+        this.orderBy = null;
     }
     componentWillMount(){
       this.props.fetchBusinesRules(this.currentPage);
@@ -53,24 +55,24 @@ class MaintainBusinessRules extends Component {
             <h1>Maintain Business Rules</h1>            
             <div className="ops_icons">
                 <div className="btn-group">
-                    <button className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    <button data-toggle="tooltip" data-placement="top" title="Refresh" className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-refresh"></i>
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button onClick={this.handleInsertClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    <button data-toggle="tooltip" data-placement="top" title="New" onClick={this.handleInsertClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-newspaper-o"></i>
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button onClick={this.handleDeleteClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick={this.handleDeleteClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-remove"></i>
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button onClick={(event) => {
+                    <button data-toggle="tooltip" data-placement="top" title="First" onClick={(event) => {
                       this.currentPage = 0;
-                      this.props.fetchBusinesRules(this.currentPage);
+                      this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                       this.setState({});
                     }} 
                       className="btn btn-circle btn-primary business_rules_ops_buttons">
@@ -78,10 +80,10 @@ class MaintainBusinessRules extends Component {
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button onClick={(event) => {
+                    <button data-toggle="tooltip" data-placement="top" title="Prev" onClick={(event) => {
                       if(this.currentPage > 0){
                         this.currentPage--;
-                        this.props.fetchBusinesRules(this.currentPage);
+                        this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                         this.setState({});
                       }
                       
@@ -94,10 +96,10 @@ class MaintainBusinessRules extends Component {
                     <input type="text" value={this.currentPage + 1} className="form-control" />
                 </div>
                 <div className="btn-group">
-                    <button onClick={(event) => {
+                    <button data-toggle="tooltip" data-placement="top" title="Next" onClick={(event) => {
                       if(this.currentPage < this.pages - 1){
                         this.currentPage++;
-                        this.props.fetchBusinesRules(this.currentPage);
+                        this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                         this.setState({});
                       }
                     }} className="btn btn-circle btn-primary business_rules_ops_buttons">
@@ -105,20 +107,26 @@ class MaintainBusinessRules extends Component {
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button onClick={(event) => {
+                    <button data-toggle="tooltip" data-placement="top" title="End" onClick={(event) => {
                       this.currentPage = this.pages - 1;
-                      this.props.fetchBusinesRules(this.currentPage);
+                      this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                       this.setState({});
                     }} className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-fast-forward"></i>
                     </button>
-                </div>                
+                </div>         
+                 <div className="btn-group">
+                    <button onClick={this.showHistory.bind(this)} data-toggle="tooltip" data-placement="top" title="History" className="btn btn-circle btn-primary business_rules_ops_buttons">
+                      <i className="fa fa-history"></i>
+                    </button>
+                </div>        
             </div>            
             <RegOpzFlatGrid
              columns={this.cols} 
              dataSource={this.data} 
              onSelectRow={this.handleSelectRow.bind(this)}
              onUpdateRow = {this.handleUpdateRow.bind(this)}
+             onSort = {this.handleSort.bind(this)}
             />
           </div>
         )
@@ -128,32 +136,41 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
-     handlePageClick(event){
+    handlePageClick(event){
       event.preventDefault();
-      alert($(event.target).text());
       this.props.fetchBusinesRules($(event.target).text());
   
     }
-    handleSelectRow(rownum){
-      console.log("I am called at ", rownum);
+    handleSelectRow(rownum, item){
+      console.log("I am called at ", item);
       this.selectedRow = rownum;
+      this.selectedRowItem = item;
     }    
     handleInsertClick(event){      
       this.props.insertBusinessRule(this.newItem, this.selectedRow);
     }
     handleDeleteClick(event){
-      this.props.deleteBusinessRule(this.selectedRow);
+      this.props.deleteBusinessRule(this.selectedRowItem['id']);
     }
     handleUpdateRow(item){      
       console.log("The final value in MaintainBusinessRules component",item);
       this.props.updateBusinessRule(item);
     }
+    handleSort(colName, direction){    
+      this.orderBy = {colName:colName, direction:direction};  
+      this.props.fetchBusinesRules(this.currentPage, {colName:colName, direction:direction});
+    }
+    showHistory(event){
+      if(!this.selectedRowItem){
+        alert("Please select a row");
+      }
+    }
 
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchBusinesRules: (page) => {
-      dispatch(actionFetchBusinessRules(page))
+    fetchBusinesRules: (page,order) => {
+      dispatch(actionFetchBusinessRules(page, order))
     },
     insertBusinessRule: (item, at) => {
       dispatch(actionInsertBusinessRule(item, at))

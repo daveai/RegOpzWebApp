@@ -17,21 +17,35 @@ export default class RegOpzFlatGridRow extends Component {
             <div>{
                 this.data.map(function(item,index){
                     return(
-                        <div onClick={(event) => {
-                            this.props.onSelect(index);
-                        } } key={index} className="flat_grid_row_container">
-                            {
-                                this.cols.map(function(citem,cindex){
-                                    return(
-                                      <RegOpzFlatGridCell 
-                                        key={cindex} 
-                                        data={item} 
-                                        identifier={citem}
-                                        onUpdateRow={this.props.onUpdateRow}
-                                     />
-                                    )
-                                }.bind(this))
-                            }
+                        <div 
+                            onClick={
+                                (event) => {
+                                    this.props.onSelect(index,item);
+                                } 
+                            } 
+                            key={index} 
+                            className="flat_grid_row_container">
+                                <div 
+                                    onClick={
+                                        (event) => {
+                                            
+                                        }
+                                    }  
+                                    key={index} 
+                                    className="flat_grid_header_cell">
+                                </div>
+                                {
+                                    this.cols.map(function(citem,cindex){
+                                        return(
+                                          <RegOpzFlatGridCell 
+                                            key={cindex} 
+                                            data={item} 
+                                            identifier={citem}
+                                            onUpdateRow={this.props.onUpdateRow}
+                                         />
+                                        )
+                                    }.bind(this))
+                                }
 
                         </div>
                     )

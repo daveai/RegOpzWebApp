@@ -21,6 +21,9 @@
 .flat_grid_row_container:hover {
     background-color: #c1d9ff;
 }
+.flat_grid_row_container_active {
+    background-color: #c1d9ff;
+}
 .flat_grid_header_cell:last-child {
     border-right: 1px solid #a8a8a8;
 }
@@ -56,4 +59,7 @@
 .flat_grid_container {
     overflow: auto;
     height: 74vh;
+}
+.flat_grid_header_cell:first-child{
+    padding: 10px;
 }

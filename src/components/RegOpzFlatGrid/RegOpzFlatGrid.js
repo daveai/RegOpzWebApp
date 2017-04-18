@@ -16,7 +16,7 @@ export default class RegOpzFlatGrid extends Component {
     render(){
         return(
             <div className="flat_grid_container">
-                <RegOpzFlatGridHeader columns={this.cols} />
+                <RegOpzFlatGridHeader columns={this.cols} onSort={this.props.onSort} />
                 <div className="clearfix"></div>
                 <RegOpzFlatGridRow 
                     onSelect={this.props.onSelectRow} 

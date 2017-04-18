@@ -34,18 +34,21 @@ export default class RegOpzFlatGridCell extends Component {
         this.inputElem.addEventListener('blur', this.handleBlur.bind(this), false);
         event.target.appendChild(this.inputElem);
         this.inputElem.focus();
-        this.prevValue = $(event.target).text(); 
+        /*$(".flat_grid_row_container").css("background-color","transparent")
+        $(".flat_grid_row_container:hover").css("background-color","#c1d9ff")
+        $(event.target).parent().parent().css('background-color','#c1d9ff');*/
+        $(event.target).parent().parent().addClass('flat_grid_row_container_active');
     }
     handleChange(event){
         this.setState({
             value:event.target.value
         });
         this.props.data[this.props.identifier] = event.target.value;
+
     }
     handleBlur(event){  
-           
-        $(event.target).remove();        
-        alert("Prev value: " + this.prevValue + " Current value: " + event.target.value)
+        $(event.target).parent().parent().parent().removeClass('flat_grid_row_container_active');        
+        $(event.target).remove();                
         this.props.onUpdateRow(this.props.data)
     }   
 

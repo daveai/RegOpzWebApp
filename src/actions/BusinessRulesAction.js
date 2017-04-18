@@ -5,8 +5,13 @@ export let FETCH_RULES = 'FETCH_RULES';
 export let INSERT_RULES = 'INSERT_RULES';
 export let DELETE_RULES = 'DELETE_RULES';
 export let UPDATE_RULES = 'UPDATE_RULES';
-export function actionFetchBusinessRules(page){
-  const url = BASE_URL + "business-rules/" + page;
+export function actionFetchBusinessRules(page, order){
+
+  var url = BASE_URL + "business-rules/" + page;
+  if (typeof order != 'undefined'){
+  	let direction = (order.direction) ? 'DESC':'ASC'
+  	url = BASE_URL + "business-rules/" + page + '/orderby/' + order.colName + '?direction=' + direction;
+  }
   const request = axios.get(url);
   return{
     type:FETCH_RULES,
