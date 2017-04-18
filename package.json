@@ -40,6 +40,8 @@
     "react-data-grid": "^2.0.18",
     "react-datagrid": "^2.1.2",
     "react-dom": "^0.14.3",
+    "react-loading": "0.0.9",
+    "react-modal": "^1.7.6",
     "react-redux": "^4.0.0",
     "react-router": "^2.8.1",
     "redux": "^3.0.4",

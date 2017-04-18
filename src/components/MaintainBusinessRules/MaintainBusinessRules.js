@@ -5,8 +5,10 @@ import ReactDOM from 'react-dom';
 import DataGrid from 'react-datagrid';
 import { actionFetchBusinessRules, actionInsertBusinessRule, actionDeleteBusinessRule, actionUpdateBusinessRule } from '../../actions/BusinessRulesAction';
 import RightSlidePanel from '../RightSlidePanel/RightSlidePanel';
-import ModalInstance from '../Modal/ModalInstance';
+import ModalAlert from '../ModalAlert/ModalAlert';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
+import { Button, Modal } from 'react-bootstrap';
+import ReactLoading from 'react-loading';
 require('react-datagrid/dist/index.css');
 require('./MaintainBusinessRules.css');
 class MaintainBusinessRules extends Component {
@@ -39,6 +41,19 @@ class MaintainBusinessRules extends Component {
         this.selectedRowItem = null;
         this.currentPage = 0;
         this.orderBy = null;
+        this.customStyles = {
+          content : {
+            top                   : '50%',
+            left                  : '50%',
+            right                 : 'auto',
+            bottom                : 'auto',
+            marginRight           : '-50%',
+            transform             : 'translate(-50%, -50%)'
+          }
+        };
+        this.state = {isModalOpen:false};
+        this.msg = "";
+        this.modalInstance = null;
     }
     componentWillMount(){
       this.props.fetchBusinesRules(this.currentPage);
@@ -73,7 +88,7 @@ class MaintainBusinessRules extends Component {
                     <button data-toggle="tooltip" data-placement="top" title="First" onClick={(event) => {
                       this.currentPage = 0;
                       this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                      this.setState({});
+                      //this.forceUpdate();
                     }} 
                       className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-fast-backward"></i>
@@ -84,7 +99,7 @@ class MaintainBusinessRules extends Component {
                       if(this.currentPage > 0){
                         this.currentPage--;
                         this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                        this.setState({});
+                        this.forceUpdate();
                       }
                       
                     }}
@@ -93,14 +108,14 @@ class MaintainBusinessRules extends Component {
                     </button>
                 </div>
                 <div className="btn-group reg_flat_grid_page_input">
-                    <input type="text" value={this.currentPage + 1} className="form-control" />
+                    <input onChange={(event) => {}} type="text" value={this.currentPage + 1} className="form-control" />
                 </div>
                 <div className="btn-group">
                     <button data-toggle="tooltip" data-placement="top" title="Next" onClick={(event) => {
                       if(this.currentPage < this.pages - 1){
                         this.currentPage++;
                         this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                        this.setState({});
+                        this.forceUpdate();
                       }
                     }} className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-chevron-right"></i>
@@ -110,7 +125,7 @@ class MaintainBusinessRules extends Component {
                     <button data-toggle="tooltip" data-placement="top" title="End" onClick={(event) => {
                       this.currentPage = this.pages - 1;
                       this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                      this.setState({});
+                      this.setState();
                     }} className="btn btn-circle btn-primary business_rules_ops_buttons">
                       <i className="fa fa-fast-forward"></i>
                     </button>
@@ -128,7 +143,23 @@ class MaintainBusinessRules extends Component {
              onUpdateRow = {this.handleUpdateRow.bind(this)}
              onSort = {this.handleSort.bind(this)}
             />
-          </div>
+            <ModalAlert ref={(modal) => {this.modalInstance = modal}} /> 
+            <Modal show={this.state.isModalOpen}>
+              <Modal.Header>
+                <Modal.Title>Report Linked to Rule {this.selectedRowItem != null ? this.selectedRowItem['business_rule'] : ""}</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <ReactLoading align="center" type='bars' color='#204d74' />
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button onClick={(event) => {
+                    this.setState({isModalOpen:false})
+                  }}>Ok</Button>
+              </Modal.Footer>
+            </Modal>  
+          </div>          
         )
       } else {
         return(
@@ -162,7 +193,9 @@ class MaintainBusinessRules extends Component {
     }
     showHistory(event){
       if(!this.selectedRowItem){
-        alert("Please select a row");
+        this.modalInstance.open("Please select a row")
+      } else {
+        this.setState({isModalOpen:true})
       }
     }
 

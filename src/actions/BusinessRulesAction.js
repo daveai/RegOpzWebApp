@@ -6,9 +6,10 @@ export let INSERT_RULES = 'INSERT_RULES';
 export let DELETE_RULES = 'DELETE_RULES';
 export let UPDATE_RULES = 'UPDATE_RULES';
 export function actionFetchBusinessRules(page, order){
-
+  
   var url = BASE_URL + "business-rules/" + page;
-  if (typeof order != 'undefined'){
+  if (typeof order != 'undefined' && order != null){
+  	alert(order);
   	let direction = (order.direction) ? 'DESC':'ASC'
   	url = BASE_URL + "business-rules/" + page + '/orderby/' + order.colName + '?direction=' + direction;
   }

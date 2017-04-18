@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Modal, Button} from 'react-bootstrap';
-export default class ModalInstance extends Component {
+export default class ModalAlert extends Component {
   constructor(props) {
     super(props);
     this.state = { showModal: false };
