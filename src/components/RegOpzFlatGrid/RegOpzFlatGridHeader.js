@@ -14,17 +14,21 @@ export default class RegOpzFlatGridHeader extends Component {
                         return(
                             <div key={item} className="flat_grid_header_cell">
                                 <span>{item}</span>
-                                <button onClick={(event) => {                                 
-                                        this.props.onSort(item, this.direction)
+                                <button className="btn flat_grid_header_sort_button" onClick={(event) => {                                 
+                                        //this.props.onSort(item, this.direction)
                                         this.direction = ~this.direction;
                                         if (this.direction == false){
-                                            event.target.innerText = "Sort ASC";
+                                            $(event.target).children('i').addClass('fa-caret-down');
+                                            $(event.target).children('i').removeClass('fa-caret-up');
                                         } else {
-                                            event.target.innerText = "Sort DESC";
+                                            $(event.target).children('i').removeClass('fa-caret-down');
+                                            $(event.target).children('i').addClass('fa-caret-up');
                                         }
                                         
                                     }}
-                                >Sort ASC</button>
+                                >
+                                    <i className="fa fa-caret-down" aria-hidden="true"></i>
+                                </button>
                             </div>
                         )
                     }.bind(this))

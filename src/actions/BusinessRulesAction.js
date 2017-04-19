@@ -5,6 +5,7 @@ export let FETCH_RULES = 'FETCH_RULES';
 export let INSERT_RULES = 'INSERT_RULES';
 export let DELETE_RULES = 'DELETE_RULES';
 export let UPDATE_RULES = 'UPDATE_RULES';
+export let FETCH_REPORT_LINKAGE = 'FETCH_REPORT_LINKAGE';
 export function actionFetchBusinessRules(page, order){
   
   var url = BASE_URL + "business-rules/" + page;
@@ -41,12 +42,24 @@ export function actionUpdateBusinessRule(item){
 		payload:{result:"updated"}
 	}
 }
-export function actionDeleteBusinessRule(item){
+export function actionDeleteBusinessRule(item, at){
 	const url = BASE_URL + "business-rule";
 	console.log("item updating", item);	
 	const request = axios.delete(url + "/" + item);
 	return {
 		type:DELETE_RULES,
+		payload:request,
+		meta:{
+			at:at
+		}
+	}
+}
+
+export function actionFetchReportLinkage(business_rule){
+	const url = BASE_URL + "business-rule/linkage/" + business_rule;	
+	const request = axios.get(url);
+	return {
+		type:FETCH_REPORT_LINKAGE,
 		payload:request
 	}
 }

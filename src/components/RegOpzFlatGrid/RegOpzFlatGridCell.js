@@ -37,7 +37,8 @@ export default class RegOpzFlatGridCell extends Component {
         /*$(".flat_grid_row_container").css("background-color","transparent")
         $(".flat_grid_row_container:hover").css("background-color","#c1d9ff")
         $(event.target).parent().parent().css('background-color','#c1d9ff');*/
-        $(event.target).parent().parent().addClass('flat_grid_row_container_active');
+        $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');
+        $(event.target).parent().parent(".flat_grid_row_container").addClass('flat_grid_row_container_active');
     }
     handleChange(event){
         this.setState({
@@ -47,7 +48,7 @@ export default class RegOpzFlatGridCell extends Component {
 
     }
     handleBlur(event){  
-        $(event.target).parent().parent().parent().removeClass('flat_grid_row_container_active');        
+        $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');        
         $(event.target).remove();                
         this.props.onUpdateRow(this.props.data)
     }   

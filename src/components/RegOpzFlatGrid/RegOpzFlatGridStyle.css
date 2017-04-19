@@ -6,6 +6,7 @@
     background-color: #eaf2ff;
     border-left: 1px solid #a8a8a8;
     border-top: 1px solid #a8a8a8;
+    position: relative;
 }
 .flat_grid_row_cell {
     display: table-cell;
@@ -62,4 +63,13 @@
 }
 .flat_grid_header_cell:first-child{
     padding: 10px;
+}
+.flat_grid_header_sort_button {
+    background: transparent;
+    position: absolute;
+    top: 3px;
+    right: 0;
+}
+.flat_grid_header_sort_button:active {
+    background: transparent;
 }
