@@ -15,7 +15,7 @@ export default class RegOpzFlatGridHeader extends Component {
                             <div key={item} className="flat_grid_header_cell">
                                 <span>{item}</span>
                                 <button className="btn flat_grid_header_sort_button" onClick={(event) => {                                 
-                                        //this.props.onSort(item, this.direction)
+                                        this.props.onSort(item, this.direction)
                                         this.direction = ~this.direction;
                                         if (this.direction == false){
                                             $(event.target).children('i').addClass('fa-caret-down');

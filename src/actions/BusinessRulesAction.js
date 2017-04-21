@@ -10,7 +10,6 @@ export function actionFetchBusinessRules(page, order){
   
   var url = BASE_URL + "business-rules/" + page;
   if (typeof order != 'undefined' && order != null){
-  	alert(order);
   	let direction = (order.direction) ? 'DESC':'ASC'
   	url = BASE_URL + "business-rules/" + page + '/orderby/' + order.colName + '?direction=' + direction;
   }
