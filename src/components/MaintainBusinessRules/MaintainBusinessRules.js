@@ -14,6 +14,7 @@ import ModalAlert from '../ModalAlert/ModalAlert';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import { Button, Modal } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
+import _ from 'lodash';
 require('react-datagrid/dist/index.css');
 require('./MaintainBusinessRules.css');
 class MaintainBusinessRules extends Component {
@@ -60,6 +61,8 @@ class MaintainBusinessRules extends Component {
         this.msg = "";
         this.modalInstance = null;
         this.linkageData = null;
+        this.flatGrid = null;
+        this.filterConditions = {};
     }
     componentWillMount(){
       this.props.fetchBusinesRules(this.currentPage);
@@ -144,11 +147,13 @@ class MaintainBusinessRules extends Component {
                 </div>        
             </div>            
             <RegOpzFlatGrid
-             columns={this.cols} 
-             dataSource={this.data} 
-             onSelectRow={this.handleSelectRow.bind(this)}
-             onUpdateRow = {this.handleUpdateRow.bind(this)}
-             onSort = {this.handleSort.bind(this)}
+               columns={this.cols} 
+               dataSource={this.data} 
+               onSelectRow={this.handleSelectRow.bind(this)}
+               onUpdateRow = {this.handleUpdateRow.bind(this)}
+               onSort = {this.handleSort.bind(this)}
+               onFilter = {this.handleFilter.bind(this)}
+               ref={(flatGrid) => {this.flatGrid = flatGrid}}
             />
             <ModalAlert ref={(modal) => {this.modalInstance = modal}} /> 
             <Modal show={this.state.isModalOpen}>
@@ -229,6 +234,20 @@ class MaintainBusinessRules extends Component {
         this.props.fetchReportLinkage(this.selectedRowItem.business_rule);
         this.setState({isModalOpen:true})
       }
+    }
+    handleFilter(condition){   
+      this.filterConditions[condition.field_name] = condition.value;              
+      if(condition.field_name == "rule_execution_order") {
+        this.filterConditions[condition.field_name] = parseInt(condition.value);
+      }
+      if(condition.field_name == "id") {
+        this.filterConditions[condition.field_name] = parseInt(condition.value);
+      }      
+      if(condition.value == ""){
+        delete this.filterConditions[condition.field_name];
+      }
+      console.log("Filter condition", this.filterConditions) 
+      this.flatGrid.filterData(this.filterConditions);
     }
 
 }
