@@ -66,15 +66,14 @@ class MaintainBusinessRules extends Component {
     }
     componentWillMount(){
       this.props.fetchBusinesRules(this.currentPage);
-    }
-
+    }        
     render() {
       if(this.props.business_rules.length){
         this.cols = this.props.business_rules[0].cols;
         this.data = this.props.business_rules[0].rows; 
         this.count = this.props.business_rules[0].count;
         this.pages = Math.ceil(this.count / 100);
-        this.linkageData = this.props.report_linkage;
+        this.linkageData = this.props.report_linkage;                
         return (
           <div className="maintain_business_rules_container">
             <h1>Maintain Business Rules</h1>            

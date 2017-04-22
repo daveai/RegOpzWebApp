@@ -9,17 +9,23 @@ export default class RegOpzFlatGrid extends Component {
         super(props);
         this.cols = props.columns;
         this.data = props.dataSource;
+        this.filterConditions = null;
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
-        this.data = nextProps.dataSource;
+        if(this.filterConditions){
+            this.data = _.where( nextProps.dataSource,this.filterConditions);
+        } else {
+            this.data = nextProps.dataSource;
+        }
     }
     setDataSource(data){
         this.data = data;
         this.forceUpdate();
     }
     filterData(conditions){
-        this.data = _.where( this.props.dataSource,conditions);
+        this.filterConditions = conditions;
+        this.data = _.where( this.props.dataSource,this.filterConditions);
         this.forceUpdate();
     }
     render(){
