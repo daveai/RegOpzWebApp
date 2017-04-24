@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import ModalAlert from '../ModalAlert/ModalAlert';
 export default class RegOpzFlatGridCell extends Component {
     constructor(props) {
         super(props);
@@ -7,6 +8,7 @@ export default class RegOpzFlatGridCell extends Component {
             value: props.data[props.identifier],
         }
         this.inputElem = null;
+        this.editingValue = null;
     }
     componentWillReceiveProps(newProps){
         /*this.setState ({
@@ -17,16 +19,17 @@ export default class RegOpzFlatGridCell extends Component {
         }
     }
     render() {
-
         return (
             <div className="flat_grid_row_cell">
                 <span onClick={this.handleCellClick.bind(this)}>
                     {this.state.value}
                 </span>
+                  <ModalAlert ref="modalAlert" showDiscard={true} onClickOkay={this.handleAlertOkayClick.bind(this)} onClickDiscard={this.handleAlertDiscardClick.bind(this)} />
             </div>
         )
     }
-    handleCellClick(event) {        
+    handleCellClick(event) {
+        this.editingValue = this.state.value;
         console.log("The editing data (data,identifier,id)", this.props.data[this.props.identifier], this.props.identifier,this.props.data['id']);
         this.inputElem = document.createElement("input");
         this.inputElem.value = this.state.value;
@@ -34,9 +37,6 @@ export default class RegOpzFlatGridCell extends Component {
         this.inputElem.addEventListener('blur', this.handleBlur.bind(this), false);
         event.target.appendChild(this.inputElem);
         this.inputElem.focus();
-        /*$(".flat_grid_row_container").css("background-color","transparent")
-        $(".flat_grid_row_container:hover").css("background-color","#c1d9ff")
-        $(event.target).parent().parent().css('background-color','#c1d9ff');*/
         $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');
         $(event.target).parent().parent(".flat_grid_row_container").addClass('flat_grid_row_container_active');
     }
@@ -47,10 +47,20 @@ export default class RegOpzFlatGridCell extends Component {
         this.props.data[this.props.identifier] = event.target.value;
 
     }
-    handleBlur(event){  
-        $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');        
-        $(event.target).remove();                
-        this.props.onUpdateRow(this.props.data)
-    }   
+    handleBlur(event){
+        $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');
+        if(this.editingValue != event.target.value){
+          this.refs.modalAlert.open("Do you want to change \"" +  this.editingValue + "\" to \"" + event.target.value + "\" ?");
+        }
+        $(event.target).remove();
+    }
+    handleAlertOkayClick(){
+      this.props.onUpdateRow(this.props.data)
+    }
+    handleAlertDiscardClick(){
+      this.setState({
+          value:this.editingValue
+      });
+    }
 
 }

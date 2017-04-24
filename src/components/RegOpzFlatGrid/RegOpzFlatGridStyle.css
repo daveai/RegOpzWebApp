@@ -89,6 +89,15 @@
     width: 200px;
     height: 30px;
 }
-i {
-    outline: none;
+.flat_grid_selected_row {
+  background-color: #c5d8f7;
+}
+.flat_grid_selected_row:hover{
+  background-color: #c5d8f7;
+}
+.flat_grid_header_container{
+
+}
+.flat_grid_rows_container{
+
 }

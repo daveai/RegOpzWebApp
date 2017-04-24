@@ -38,7 +38,7 @@
 }
 .reg_flat_grid_page_input > input {
   height: 25px;
-  width: 40px;
+  width: 100px;
   text-align: center;
   margin-right: 10px;
 }

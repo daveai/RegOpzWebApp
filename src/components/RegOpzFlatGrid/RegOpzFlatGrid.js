@@ -33,10 +33,11 @@ export default class RegOpzFlatGrid extends Component {
             <div className="flat_grid_container">
                 <RegOpzFlatGridHeader columns={this.cols} onSort={this.props.onSort} onFilter={this.props.onFilter} />
                 <div className="clearfix"></div>
-                <RegOpzFlatGridRow 
-                    onSelect={this.props.onSelectRow} 
-                    onUpdateRow = {this.props.onUpdateRow}                    
-                    columns={this.cols} 
+                <RegOpzFlatGridRow
+                    onSelect={this.props.onSelectRow}
+                    onFullSelect = {this.props.onFullSelect}
+                    onUpdateRow = {this.props.onUpdateRow}
+                    columns={this.cols}
                     data={this.data} />
             </div>
         )
