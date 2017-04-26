@@ -36,7 +36,7 @@ class LeftMenu extends Component {
                                             <a href="#/dashboard/capture-report-template"> Capture Report Template</a>
                                         </li>
                                         <li>
-                                            <a href="#">Maintain Business Rules</a>
+                                            <a href="#/dashboard/maintain-business-rules">Maintain Business Rules</a>
                                         </li>
                                         <li>
                                             <a href="#">Maintain Report Rules</a>
