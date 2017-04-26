@@ -1,0 +1,59 @@
+.view_data_dummy_area {
+  height: 600px;
+  position: relative;
+}
+.view_data_drawer_handle_default {
+    width: 40px;
+    height: 60px;
+    background-color: red;
+    position: relative;
+    top: 252px;
+    left: -20px;
+    bottom: 0;
+    right: 0;
+    float: left;
+}
+.view_data_menu_panel {
+    position: relative;
+    width: 360px;
+    background: blue;
+    height: 500px;
+    left: -20px;
+    top: 40px;
+    float: left;
+    overflow: hidden;
+}
+.node {
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 3px;
+}
+
+.node:hover {
+  background-color: rgb(220, 245, 243);
+  cursor: pointer;
+}
+
+.info, .node {
+  padding: 2px 10px 2px 5px;
+  font: 14px Helvetica, Arial, sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tree-view_arrow {
+  -moz-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  transition: all 0.1s;
+}
+
+.tree-view_arrow-empty {
+  color: yellow;
+}

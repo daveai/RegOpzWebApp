@@ -19,6 +19,7 @@ import DashboardIndex from './components/Dashboard/DashBoardIndex';
 import MaintainBusinessRules from './components/MaintainBusinessRules/MaintainBusinessRules';
 import custom from '../js/custom';
 import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
+import ViewDataComponent from './components/ViewData/ViewDataComponent';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -32,7 +33,6 @@ class Index extends Component {
     componentDidMount() {
     }
 }
-const Dme2 = () => <h1>Hello World 2!</h1>
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <Router history={hashHistory}>
@@ -43,6 +43,7 @@ ReactDOM.render(
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
                     <Route path="data-grid" component={RegOpzDataGrid} />
                     <Route path="maintain-business-rules" component={MaintainBusinessRules} />
+                    <Route path="view-data" component={ViewDataComponent} />
                 </Route>
             </Route>
         </Router>
