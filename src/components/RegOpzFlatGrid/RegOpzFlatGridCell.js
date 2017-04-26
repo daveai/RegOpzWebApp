@@ -19,10 +19,11 @@ export default class RegOpzFlatGridCell extends Component {
         }
     }
     render() {
+
         return (
             <div className="flat_grid_row_cell">
                 <span onClick={this.handleCellClick.bind(this)}>
-                    {this.state.value}
+                    {(this.state.value != null) ? this.state.value.toString().substring(0,30) : ""}
                 </span>
                   <ModalAlert ref="modalAlert" showDiscard={true} onClickOkay={this.handleAlertOkayClick.bind(this)} onClickDiscard={this.handleAlertDiscardClick.bind(this)} />
             </div>

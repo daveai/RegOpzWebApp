@@ -100,8 +100,29 @@ class MaintainBusinessRules extends Component {
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button data-toggle="tooltip" data-placement="top" title="New" onClick={this.handleInsertClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Insert"
+                      onClick={
+                        this.handleInsertClick.bind(this)
+                      }
+                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                    >
                       <i className="fa fa-newspaper-o"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Duplicate"
+                      onClick={
+                        this.handleDuplicateClick.bind(this)
+                      }
+                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                    >
+                      <i className="fa fa-copy"></i>
                     </button>
                 </div>
                 <div className="btn-group">
@@ -207,8 +228,28 @@ class MaintainBusinessRules extends Component {
                       data-placement="top"
                       title="Export CSV"
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      onClick={
+                        (event) => {
+                          window.location.href = "http://localhost:3000/static/business_rules.csv"
+                        }
+                      }
                     >
                       <i className="fa fa-table"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Deselect All"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      onClick={
+                        (event) => {
+                          this.selectedRows = this.flatGrid.deSelectAll();
+                        }
+                      }
+                    >
+                      <i className="fa fa-window-maximize"></i>
                     </button>
                 </div>
             </div>
@@ -305,6 +346,15 @@ class MaintainBusinessRules extends Component {
     handleInsertClick(event){
       this.props.insertBusinessRule(this.newItem, this.selectedRow);
     }
+    handleDuplicateClick(event){
+      if(this.selectedRows.length == 0){
+        this.modalInstance.open("Please select at least one row");
+      } else if (this.selectedRows.length > 1) {
+        this.modalInstance.open("Please select only one row");
+      } else {
+        this.props.insertBusinessRule(this.selectedRows[0], this.selectedRow);
+      }
+    }
     handleDeleteClick(event){
       if(!this.selectedRowItem){
         this.modalInstance.isDiscardToBeShown = false;
@@ -323,6 +373,8 @@ class MaintainBusinessRules extends Component {
     handleSort(colName, direction){
       this.orderBy = {colName:colName, direction:direction};
       this.props.fetchBusinesRules(this.currentPage, {colName:colName, direction:direction});
+      $(".flat_grid_header_sort_button > i").removeClass("fa-caret-up");
+      $(".flat_grid_header_sort_button > i").addClass("fa-caret-down");
     }
     showLinkage(event){
       /*if(!this.selectedRowItem){

@@ -10,6 +10,7 @@ export default class RegOpzFlatGrid extends Component {
         this.cols = props.columns;
         this.data = props.dataSource;
         this.filterConditions = null;
+        this.flatGridRows = null;
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
@@ -38,8 +39,17 @@ export default class RegOpzFlatGrid extends Component {
                     onFullSelect = {this.props.onFullSelect}
                     onUpdateRow = {this.props.onUpdateRow}
                     columns={this.cols}
-                    data={this.data} />
+                    data={this.data}
+                    ref={(flatGridRows) => {
+                      this.flatGridRows = flatGridRows;
+                    }}
+               />
             </div>
         )
+    }
+    deSelectAll(){
+      this.flatGridRows.selectedRows = [];
+      $(".flat_grid_row_container").removeClass("flat_grid_selected_row");
+      return [];
     }
 }
