@@ -1,58 +1,79 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
+import {connect} from 'react-redux'
+import {bindActionCreators, dispatch} from 'redux'
 import TreeView from 'react-treeview'
-require('./ViewDataComponentStyle.css');
-require('../../../node_modules/react-treeview/react-treeview.css');
+import _ from 'lodash';
+import {actionFetchDates} from '../../actions/ViewDataAction'
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+require('../../../node_modules/react-treeview/react-treeview.css')
+require('./ViewDataComponentStyle.css')
 class ViewDataComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
       drawerHandleStyle:{
         display:"block"
-      }
-    }
-    this.state = {
+      },
       menuPanelStyle:{
-        width:"0px"
-      }
+        width:"0px",
+        padding:"0"
+      },
+      startDate:null,
+
     }
     this.isMenuPanelOpen = false;
-    this.dataSource = [
-      {
-        type: 'Employees',
-        collapsed: false,
-        people: [
-          {name: 'Paul Gordon', age: 25, sex: 'male', role: 'coder', collapsed: false},
-          {name: 'Sarah Lee', age: 23, sex: 'female', role: 'jqueryer', collapsed: false},
-        ],
-      },
-      {
-        type: 'CEO',
-        collapsed: false,
-        people: [
-          {name: 'Drew Anderson', age: 35, sex: 'male', role: 'boss', collapsed: false},
-        ],
-      },
-    ];
+    this.dataSource = null;
+  }
+  componentWillMount(){
+    this.props.fetchDates();
+  }
+  renderTreeView(){
+    if(this.dataSource != null){
+      return(
+        <div className="view_data_tree_view_holder">
+         {this.dataSource.map((node, i) => {
+           const year = node.year;
+           const label = <span className="node">{year}</span>;
+           return (
+             <TreeView key={year + '|' + i} nodeLabel={label} defaultCollapsed={true}>
+               {
+                   Object.keys(node.month).map(function(item,index){
+                     const label2 = <span className="node">{item}</span>;
+
+                      return(
+                        <TreeView nodeLabel={label2} key={item + '|' + index} defaultCollapsed={true}>
+                            {
+                              node.month[item].map(function(date_item,date_index){
+                                return (
+                                  <div key={date_item + '|' + date_index} className="info">{date_item}</div>
+                                )
+                              })
+                            }
+                        </TreeView>
+                      )
+                   })
+
+              }
+             </TreeView>
+           );
+         })}
+       </div>
+      )
+    } else {
+      return (
+        <h2>Loading...</h2>
+      )
+    }
   }
   render(){
+    this.dataSource = this.props.data_date_heads;
     return (
       <div
         onMouseMove={
           (event) => {
-            /*if(event.clientX < 350){
-              this.setState({
-                drawerHandleStyle:{
-                  display:'block'
-                }
-              });
-            } else {
-              this.setState({
-                drawerHandleStyle:{
-                  display:'none'
-                }
-              });
-            }*/
           }
         }
         className="view_data_dummy_area"
@@ -62,28 +83,27 @@ class ViewDataComponent extends Component {
             className="view_data_menu_panel"
             style={this.state.menuPanelStyle}
           >
-
-          <div>
-           {this.dataSource.map((node, i) => {
-             const type = node.type;
-             const label = <span className="node">{type}</span>;
-             return (
-               <TreeView key={type + '|' + i} nodeLabel={label} defaultCollapsed={false}>
-                 {node.people.map(person => {
-                   const label2 = <span className="node">{person.name}</span>;
-                   return (
-                     <TreeView nodeLabel={label2} key={person.name} defaultCollapsed={false}>
-                       <div className="info">age: {person.age}</div>
-                       <div className="info">sex: {person.sex}</div>
-                       <div className="info">role: {person.role}</div>
-                     </TreeView>
-                   );
-                 })}
-               </TreeView>
-             );
-           })}
-         </div>
-
+            <select className="view_data_data_source_select">
+              <option>Data Source</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+            <div className="clear"></div>
+            <DatePicker
+                selected={this.state.startDate}
+                onChange={this.handleDateChange}
+                placeholderText="Select start date"
+                className="view_data_date_picker_input"
+            />
+            <DatePicker
+                selected={this.state.startDate}
+                onChange={this.handleDateChange}
+                placeholderText="Select end date"
+                className="view_data_date_picker_input"
+            />
+            <div className="clear"></div>
+            {this.renderTreeView()}
           </div>
           <div className="view_data_drawer_handle_default"
             style={this.state.drawerHandleStyle}
@@ -94,7 +114,8 @@ class ViewDataComponent extends Component {
                   this.setState(
                     {
                       menuPanelStyle:{
-                        width:"360px"
+                        width:"280px",
+                        padding:"5px"
                       }
                     }
                   );
@@ -102,7 +123,8 @@ class ViewDataComponent extends Component {
                   this.setState(
                     {
                       menuPanelStyle:{
-                        width:"0px"
+                        width:"0px",
+                        padding:"0"
                       }
                     }
                   );
@@ -116,5 +138,24 @@ class ViewDataComponent extends Component {
       </div>
     )
   }
+  handleDateChange(){
+
+  }
 }
-export default ViewDataComponent;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDates:()=>{
+      dispatch(actionFetchDates())
+    }
+  }
+}
+function mapStateToProps(state){
+  return {
+    data_date_heads:state.data_date_heads
+  }
+}
+const VisibleViewDataComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewDataComponent);
+export default VisibleViewDataComponent;
