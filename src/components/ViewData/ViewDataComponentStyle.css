@@ -1,5 +1,5 @@
 .view_data_dummy_area {
-  height: 600px;
+  height: 85vh;
   position: relative;
 }
 .view_data_drawer_handle_default {
@@ -15,7 +15,7 @@
 }
 .view_data_menu_panel {
     position: relative;
-    background: blue;
+    background: #ededed;
     height: 500px;
     left: -20px;
     top: 40px;
@@ -59,6 +59,7 @@
 
 .view_data_menu_panel_holder {
   position: absolute;
+  z-index: 99999;
 }
 .view_data_tree_view_holder {
     float: left;

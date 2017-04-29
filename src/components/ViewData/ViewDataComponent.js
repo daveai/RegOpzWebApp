@@ -4,12 +4,18 @@ import {connect} from 'react-redux'
 import {bindActionCreators, dispatch} from 'redux'
 import TreeView from 'react-treeview'
 import _ from 'lodash';
-import {actionFetchDates} from '../../actions/ViewDataAction'
+import {
+  actionFetchDates,
+  actionFetchReportFromDate,
+  actionFetchSource
+} from '../../actions/ViewDataAction'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import 'react-datepicker/dist/react-datepicker.css';
 require('../../../node_modules/react-treeview/react-treeview.css')
 require('./ViewDataComponentStyle.css')
+import SourceTreeInfoComponent from './SourceTreeInfoComponent';
 class ViewDataComponent extends Component {
   constructor(props){
     super(props);
@@ -19,10 +25,10 @@ class ViewDataComponent extends Component {
       },
       menuPanelStyle:{
         width:"0px",
-        padding:"0"
+        padding:"0px"
       },
       startDate:null,
-
+      endDate:null
     }
     this.isMenuPanelOpen = false;
     this.dataSource = null;
@@ -31,6 +37,7 @@ class ViewDataComponent extends Component {
     this.props.fetchDates();
   }
   renderTreeView(){
+    var _this = this;
     if(this.dataSource != null){
       return(
         <div className="view_data_tree_view_holder">
@@ -44,11 +51,20 @@ class ViewDataComponent extends Component {
                      const label2 = <span className="node">{item}</span>;
 
                       return(
-                        <TreeView nodeLabel={label2} key={item + '|' + index} defaultCollapsed={true}>
+                        <TreeView
+                          nodeLabel={label2}
+                          key={item + '|' + index}
+                          defaultCollapsed={true}
+                        >
                             {
                               node.month[item].map(function(date_item,date_index){
+                                const label3 = <span className="node">{date_item}</span>;
                                 return (
-                                  <div key={date_item + '|' + date_index} className="info">{date_item}</div>
+                                  <SourceTreeInfoComponent
+                                    label={label3}
+                                    target={node.year + "-" + item + "-" + date_item}
+                                    key={date_item + '|' + date_index}
+                                  />
                                 )
                               })
                             }
@@ -68,6 +84,29 @@ class ViewDataComponent extends Component {
       )
     }
   }
+  renderGridAtRightPane(){
+
+    if(this.props.report.length != 0 ){
+      console.log("On render grid",this.props.report[0].rows);
+      if(this.props.report[0].cols.length != 0){
+        return(
+          <RegOpzFlatGrid
+             columns={this.props.report[0].cols}
+             dataSource={this.props.report[0].rows}
+             onSelectRow={() => {}}
+             onUpdateRow = {() => {}}
+             onSort = {() => {}}
+             onFilter = {() => {}}
+             onFullSelect = {() => {}}
+          />
+        )
+      }
+    } else {
+      return (
+        <h1>Loading...</h1>
+      )
+    }
+  }
   render(){
     this.dataSource = this.props.data_date_heads;
     return (
@@ -83,22 +122,16 @@ class ViewDataComponent extends Component {
             className="view_data_menu_panel"
             style={this.state.menuPanelStyle}
           >
-            <select className="view_data_data_source_select">
-              <option>Data Source</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
             <div className="clear"></div>
             <DatePicker
                 selected={this.state.startDate}
-                onChange={this.handleDateChange}
+                onChange={this.handleStartDateChange.bind(this)}
                 placeholderText="Select start date"
                 className="view_data_date_picker_input"
             />
             <DatePicker
-                selected={this.state.startDate}
-                onChange={this.handleDateChange}
+                selected={this.state.endDate}
+                onChange={this.handleEndDateChange.bind(this)}
                 placeholderText="Select end date"
                 className="view_data_date_picker_input"
             />
@@ -135,23 +168,35 @@ class ViewDataComponent extends Component {
           >
           </div>
         </div>
+        {this.renderGridAtRightPane()}
       </div>
     )
   }
-  handleDateChange(){
-
+  handleStartDateChange(date){
+    this.setState({startDate:date});
+  }
+  handleEndDateChange(date){
+    this.setState({endDate:date});
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDates:()=>{
       dispatch(actionFetchDates())
+    },
+    fetchReportFromDate:(source_id,business_date,page)=>{
+      dispatch(actionFetchReportFromDate(source_id,business_date,page))
+    },
+    fetchSource:(business_date) => {
+      dispatch(actionFetchSource(business_date))
     }
   }
 }
 function mapStateToProps(state){
+  console.log("On mapState ", state.report_store);
   return {
-    data_date_heads:state.data_date_heads
+    data_date_heads:state.view_data_store,
+    report:state.report_store,
   }
 }
 const VisibleViewDataComponent = connect(
