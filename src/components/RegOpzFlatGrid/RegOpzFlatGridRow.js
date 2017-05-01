@@ -9,6 +9,7 @@ export default class RegOpzFlatGridRow extends Component {
         this.data = props.data;
         this.cols = props.columns;
         this.selectedRows = [];
+        this.rowContainerClassName = "flat_grid_row_container";
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
@@ -26,6 +27,11 @@ export default class RegOpzFlatGridRow extends Component {
         return(
             <div className="flat_grid_rows_container">{
                 this.data.map(function(item,index){
+                    if(this.isBusinessRulePresent(item)){
+                      this.rowContainerClassName = "flat_grid_row_container flat_grid_row_container_active";
+                    } else {
+                      this.rowContainerClassName = "flat_grid_row_container";
+                    }
                     return(
                         <div
                             onClick={
@@ -34,7 +40,7 @@ export default class RegOpzFlatGridRow extends Component {
                                 }
                             }
                             key={index}
-                            className="flat_grid_row_container">
+                            className={this.rowContainerClassName}>
                                 <div
                                     onClick={
                                         (event) => {
@@ -45,7 +51,7 @@ export default class RegOpzFlatGridRow extends Component {
                                               this.selectedRows.push(item);
                                             }
                                             this.props.onFullSelect(this.selectedRows);
-                                            $(event.target).parent(".flat_grid_row_container").toggleClass("flat_grid_selected_row");
+                                            this.forceUpdate();
                                         }
                                     }
                                     key={index}

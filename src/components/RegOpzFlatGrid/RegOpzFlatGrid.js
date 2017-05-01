@@ -11,6 +11,7 @@ export default class RegOpzFlatGrid extends Component {
         this.data = props.dataSource;
         this.filterConditions = null;
         this.flatGridRows = null;
+        this.paginationMark = 0;
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
