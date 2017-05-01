@@ -246,6 +246,8 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         (event) => {
                           this.selectedRows = this.flatGrid.deSelectAll();
+                          this.selectedRowItem = null;
+                          this.selectedRow = null;
                         }
                       }
                     >
@@ -358,11 +360,12 @@ class MaintainBusinessRules extends Component {
     handleDeleteClick(event){
       if(!this.selectedRowItem){
         this.modalInstance.isDiscardToBeShown = false;
-        this.modalInstance.open("Please select a row")
+        this.modalInstance.open("Please select a row");
+        this.operationName = "";
       } else {
         this.modalInstance.isDiscardToBeShown = true;
         this.operationName = "DELETE";
-        this.modalInstance.open("Are you sure to delete this row ?")
+        this.modalInstance.open(`Are you sure to delete this row (business rule: ${this.selectedRowItem['business_rule']}) ?`)
         //this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
       }
     }
@@ -377,12 +380,6 @@ class MaintainBusinessRules extends Component {
       $(".flat_grid_header_sort_button > i").addClass("fa-caret-down");
     }
     showLinkage(event){
-      /*if(!this.selectedRowItem){
-        this.modalInstance.open("Please select a row")
-      } else {
-        this.props.fetchReportLinkage(this.selectedRowItem.business_rule);
-        this.setState({isModalOpen:true})
-      }*/
       if(this.selectedRows.length == 0){
         this.modalInstance.open("Please select at least one row")
       } else {

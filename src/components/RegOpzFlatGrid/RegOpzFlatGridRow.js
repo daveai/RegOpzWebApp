@@ -23,6 +23,10 @@ export default class RegOpzFlatGridRow extends Component {
         return false
       }
     }
+    deSelectAll(){
+      this.selectedRows = [];
+      this.forceUpdate();
+    }
     render(){
         return(
             <div className="flat_grid_rows_container">{
