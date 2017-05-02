@@ -16,9 +16,9 @@
 .view_data_menu_panel {
     position: relative;
     background: #ededed;
-    height: 500px;
+    height: 88vh;
     left: -20px;
-    top: 40px;
+    top: -9px;
     float: left;
     overflow: hidden;
     padding: 5px;

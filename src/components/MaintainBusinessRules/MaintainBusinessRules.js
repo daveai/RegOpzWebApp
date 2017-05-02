@@ -126,7 +126,15 @@ class MaintainBusinessRules extends Component {
                     </button>
                 </div>
                 <div className="btn-group">
-                    <button data-toggle="tooltip" data-placement="top" title="Delete" onClick={this.handleDeleteClick.bind(this)} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Delete"
+                      onClick={
+                        this.handleDeleteClick.bind(this)
+                      } 
+                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                    >
                       <i className="fa fa-remove"></i>
                     </button>
                 </div>
