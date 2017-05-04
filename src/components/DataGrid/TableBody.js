@@ -24,7 +24,7 @@ class TableBody extends Component {
         }
     }
     componentWillMount(){
-        this.props.fetchReportData("MAS00103");
+        this.props.fetchReportData("MAS640");
     }
     updateRows(data){
         let lookup = {

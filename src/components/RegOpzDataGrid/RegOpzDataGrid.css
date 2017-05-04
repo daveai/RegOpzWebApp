@@ -96,4 +96,5 @@
 .reg_cell > span {
   display: table-cell;
   vertical-align: middle;
+  overflow: hidden;
 }

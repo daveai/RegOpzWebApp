@@ -4,6 +4,7 @@ export default class RegOpzDataGridHeader extends Component {
     constructor(props) {
         super(props);
         this.numberofCols = this.props.numberofCols;
+        this.colAttr = this.props.colAttr;
         this.columns = [];
         for(let i = 0; i < this.numberofCols; i++){
             this.columns[i] = this.alphaSequence(i);
@@ -19,12 +20,17 @@ export default class RegOpzDataGridHeader extends Component {
                 </div>
                 {
                     this.columns.map(function(item, index) {
+                        let colStyleForHeader = {};
+                        if(typeof(this.colAttr[item]) != 'undefined'){
+                          colStyleForHeader = {...this.colAttr[item]};
+                          colStyleForHeader.width += 1;
+                        }
                         return (
                             <div key={index} className="reg_col">
-                                <span>{item}</span>
+                                <span style={colStyleForHeader}>{item}</span>
                             </div>
                         )
-                    })
+                    }.bind(this))
                 }
             </div>
         )

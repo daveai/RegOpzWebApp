@@ -10,8 +10,16 @@ export default class RegOpzDataGridBody extends Component {
         this.delWidth = 100;
         this._delHeight = 30;
         this._delWidth = 101;
+        this.colAttr = this.props.colAttr;
+
     }
     render(){
+        console.log('colAttr ', this.colAttr);
+        var totalWidthDisplacement = 0;
+        for (const key of Object.keys(this.colAttr)) {
+            //console.log(key, this.colAttr[key]['width']);
+            totalWidthDisplacement += this.colAttr[key]['width'] - 99;
+        }
         return(
             <div>
                 {
@@ -20,19 +28,26 @@ export default class RegOpzDataGridBody extends Component {
                         let value = item.value;
                         let coord = this.getRealCoords(cell);
                         let merged = item.merged;
-                        console.log("Real coord: ",coord);
-                        var stylex = {
-                          top:coord.y*this.delTop,
-                          left:coord.x*this.delLeft,
-                          width:this.delWidth,
-                          height:this.delHeight
-                        }
+
                         if(merged){
+                            var stylex = {
+                              top:coord.y*this.delTop,
+                              left:coord.x*this.delLeft,
+                              width:this.delWidth,
+                              height:this.delHeight
+                            }
                             let merged_coord = this.getRealCoords(merged);
                             let width_adjust = Math.abs(merged_coord.x - coord.x);
                             let height_adjust = Math.abs(merged_coord.y - coord.y);
-                            stylex.width = ((width_adjust + 1) * this._delWidth) - 1;
+                            stylex.width = ((width_adjust + 1) * this._delWidth) - 1 + totalWidthDisplacement;
                             stylex.height = ((height_adjust + 1) * this._delHeight) -1;
+                        } else {
+                          var stylex = {
+                            top:coord.y*this.delTop,
+                            left:coord.x*this.delLeft + totalWidthDisplacement,
+                            width:this.delWidth,
+                            height:this.delHeight
+                          }
                         }
                         return(
                             <div key={index} className="reg_cell" style={stylex}>
@@ -66,9 +81,9 @@ export default class RegOpzDataGridBody extends Component {
     }
     getRealCoords(cell){
         let cell_split = this.sliptNumbersAndChars(cell);
-        console.log(cell_split);
+        //console.log(cell_split);
         let x = this.numberFromWord(cell_split[0]);
         let y = cell_split[1] - 1;
-        return {x,y};
+        return {x,y,col:cell_split[0],row:cell_split[1] - 1};
     }
 }
