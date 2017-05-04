@@ -76,3 +76,11 @@
 .view_data_date_picker_input:first-child {
   margin-right: 10px;
 }
+.view_data_qualifying_rules {
+  word-break: break-all;
+  font-size: 11px;
+  margin-left: 8px;
+}
+.view_data_qualifying_rules_h6 {
+  margin-left: 8px;
+}

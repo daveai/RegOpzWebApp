@@ -8,7 +8,10 @@ import {
   actionFetchDates,
   actionFetchReportFromDate,
   actionFetchSource,
-  actionFetchReportLinkage
+  actionFetchReportLinkage,
+  actionInsertSourceData,
+  actionUpdateSourceData,
+  actionDeleteFromSourceData
 } from '../../actions/ViewDataAction'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -17,6 +20,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 require('../../../node_modules/react-treeview/react-treeview.css')
 require('./ViewDataComponentStyle.css')
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
+import InfoModal from '../InfoModal/InfoModal';
+import ModalAlert from '../ModalAlert/ModalAlert';
+import {BASE_URL} from '../../Constant/constant';
+import axios from 'axios';
 class ViewDataComponent extends Component {
   constructor(props){
     super(props);
@@ -40,6 +47,11 @@ class ViewDataComponent extends Component {
     this.currentSourceId = null;
     this.currentBusinessDate = null;
     this.pages = 0;
+    this.infoModal = null;
+    this.selectedItems = [];
+    this.flatGrid = null;
+    this.selectedIndexOfGrid = 0;
+    this.sourceTableName = "";
   }
   componentWillMount(){
     this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
@@ -104,6 +116,8 @@ class ViewDataComponent extends Component {
     if(this.props.report.length != 0 ){
       if(this.props.report[0].cols.length != 0){
         this.pages = Math.ceil(this.props.report[0].count / 100);
+        this.sourceTableName = this.props.report[0].table_name;
+        this.sourceTableCols = this.props.report[0].cols;
         return(
           <div>
             <div className="ops_icons">
@@ -115,6 +129,7 @@ class ViewDataComponent extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
+                          this.currentPage = 0;
                           this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage)
                         }
                       }
@@ -130,7 +145,19 @@ class ViewDataComponent extends Component {
                       title="Insert"
                       onClick={
                         (event) => {
-
+                          var blank = {};
+                          console.log("cols from source table",this.sourceTableCols);
+                          this.sourceTableCols.map((item,index) => {
+                            blank[item] = null;
+                          })
+                          let data = {
+                            table_name:this.sourceTableName,
+                            update_info:blank,
+                            business_date:this.currentBusinessDate
+                          }
+                          console.log("Black object ", blank);
+                          this.props.insertSourceData(data,this.selectedIndexOfGrid);
+                          this.forceUpdate();
                         }
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
@@ -145,7 +172,19 @@ class ViewDataComponent extends Component {
                       title="Duplicate"
                       onClick={
                         (event) => {
+                          if(this.selectedItems.length != 1){
+                            this.modalAlert.open("Please select only one row")
+                          } else {
 
+                            let data = {
+                              table_name:this.sourceTableName,
+                              update_info:{...this.selectedItems[0]},
+                              business_date:this.currentBusinessDate
+                            }
+                            data.update_info.id = null;
+                            this.props.insertSourceData(data,this.selectedIndexOfGrid + 1);
+
+                          }
                         }
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
@@ -160,7 +199,13 @@ class ViewDataComponent extends Component {
                       title="Delete"
                       onClick={
                         (event) => {
-
+                          if(this.selectedItems.length != 1){
+                            this.modalAlert.open("Please select only one row")
+                          } else {
+                            this.modalAlert.isDiscardToBeShown = true;
+                            this.operationName = "DELETE";
+                            this.modalAlert.open(`Are you sure to delete this row (ID: ${this.selectedItems[0]['id']}) ?`)
+                          }
                         }
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
@@ -214,12 +259,12 @@ class ViewDataComponent extends Component {
                           if(event.key == "Enter"){
                             if(this.isInt(event.target.value)){
                               if(event.target.value > this.pages){
-                                //this.modalInstance.open("Page does not exists");
+                                this.modalAlert.open("Page does not exists");
                               } else {
                                 this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage);
                               }
                             } else {
-                              //this.modalInstance.open("Please Enter a valid integer value");
+                              this.modalAlert.open("Please Enter a valid integer value");
                             }
                           }
                         }
@@ -265,8 +310,14 @@ class ViewDataComponent extends Component {
                     <button
                       onClick={
                         (event) => {
-                          this.props.fetchReportLinkage(1,31133304,20160930);
-                          this.forceUpdate();
+                          if(this.selectedItems.length > 0){
+                            let lastItem = this.selectedItems[this.selectedItems.length - 1];
+                            this.props.fetchReportLinkage(this.currentSourceId,lastItem['id'],lastItem['business_date']);
+                            this.infoModal.open();
+                          } else {
+                            this.modalAlert.open("Please select a row");
+                          }
+
                         }
                       }
                       data-toggle="tooltip"
@@ -300,7 +351,14 @@ class ViewDataComponent extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
-
+                            axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_date=${this.currentBusinessDate}`)
+                            .then(function(response){
+                              console.log("export csv",response);
+                              window.location.href = "http://localhost:3000/static/" + response.data.file_name;
+                            })
+                            .catch(function (error) {
+                              console.log(error);
+                            });
                         }
                       }
                     >
@@ -315,7 +373,8 @@ class ViewDataComponent extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
-
+                          this.selectedItems = this.flatGrid.deSelectAll();
+                          this.forceUpdate();
                         }
                       }
                     >
@@ -328,15 +387,32 @@ class ViewDataComponent extends Component {
                dataSource={this.props.report[0].rows}
                onSelectRow={
                  (indexOfGrid) => {
+                   this.selectedIndexOfGrid = indexOfGrid;
                    console.log("Single select ", indexOfGrid);
                  }
                }
-               onUpdateRow = {() => {}}
+               onUpdateRow = {
+                 (row) => {
+                   console.log("On update row ",row);
+                   let data = {
+                     table_name:this.sourceTableName,
+                     update_info:row,
+                     business_date:this.currentBusinessDate
+                   }
+                   this.props.updateSourceData(data);
+                 }
+               }
                onSort = {() => {}}
                onFilter = {() => {}}
                onFullSelect = {
                  (items) => {
                    console.log("Selected Items ", items);
+                   this.selectedItems = items;
+                 }
+               }
+               ref={
+                 (flatGrid) => {
+                   this.flatGrid = flatGrid;
                  }
                }
             />
@@ -355,11 +431,8 @@ class ViewDataComponent extends Component {
            !isNaN(parseInt(value, 10));
   }
   render(){
+    console.log("report linkage",this.props.report_linkage);
     this.dataSource = this.props.data_date_heads;
-    console.log("Report linkage ", this.props.report_linkage)
-    if(typeof this.props.report_linkage != 'undefined' && this.props.report_linkage.length > 0) {
-      console.log("Report linkage ", this.props.report_linkage)
-    }
     return (
       <div
         onMouseMove={
@@ -426,8 +499,53 @@ class ViewDataComponent extends Component {
           </div>
         </div>
         {this.renderGridAtRightPane()}
+        <InfoModal
+            showDiscard={false}
+            title={"Report Linkage"}
+            ref={(infoModal) => {this.infoModal = infoModal}}
+        >
+          {this.renderReportLinkageModal()}
+        </InfoModal>
+        <ModalAlert
+          ref={(modalAlert) => {this.modalAlert = modalAlert}}
+          onClickOkay={
+            () => {
+              this.props.deleteFromSourceData(this.selectedItems[0]['id'],this.currentBusinessDate, this.sourceTableName, this.selectedIndexOfGrid);
+
+            }
+          }
+        />
       </div>
     )
+  }
+  renderReportLinkageModal(){
+    console.log("report linkage on modal",this.props.report_linkage);
+    if(typeof(this.props.report_linkage) != 'undefined'){
+      if(this.props.report_linkage.length > 0){
+        return(
+          <ul className="list-unstyled msg_list">
+            <h6 className="view_data_qualifying_rules_h6">Qualified Business Rules</h6>
+            <p className="view_data_qualifying_rules">{this.props.report_linkage[0]['data_qualifying_rules']}</p>
+            {this.props.report_linkage.map(function(item,index){
+              return(
+                <li key={index}>
+                  <a href="#">
+                    <span>{item['report_id']}</span>
+                    <span className="message">{`${item['sheet_id']} : ${item['cell_id']} (${item['cell_business_rules']})`}</span>
+                  </a>
+                </li>
+              )
+            })}
+
+          </ul>
+        )
+      }
+    } else {
+      return(
+        <h2>Loading...</h2>
+      )
+    }
+
   }
   handleStartDateChange(date){
     this.setState({startDate:date});
@@ -451,15 +569,24 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchReportLinkage:(source_id,qualifying_key,business_date) => {
       dispatch(actionFetchReportLinkage(source_id,qualifying_key,business_date));
+    },
+    insertSourceData:(data,at) => {
+      dispatch(actionInsertSourceData(data,at));
+    },
+    updateSourceData:(data) => {
+      dispatch(actionUpdateSourceData(data));
+    },
+    deleteFromSourceData:(id,business_date,table_name, at) => {
+      dispatch(actionDeleteFromSourceData(id,business_date,table_name, at));
     }
   }
 }
 function mapStateToProps(state){
   console.log("On mapState ", state.view_data_store);
   return {
-    data_date_heads:state.view_data_store.length > 0 ? state.view_data_store[0].dates : [],
+    data_date_heads:state.view_data_store.dates,
     report:state.report_store,
-    report_linkage:state.view_data_store.length > 0 ? state.view_data_store[0].report_linkage : []
+    report_linkage:state.view_data_store.report_linkage
   }
 }
 const VisibleViewDataComponent = connect(
