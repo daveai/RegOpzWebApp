@@ -19,6 +19,9 @@ class RegOpzDataGrid extends Component {
       C:{width:400},
       D:{width:400},
     }
+    this.heightAttr = {
+      3:{height:60}
+    }
   }
   componentWillMount(){
     this.props.fetchCapturedReport("MAS640");
