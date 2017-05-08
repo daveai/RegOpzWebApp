@@ -46,13 +46,11 @@
 }
 .reg_gridHolder {
   float: left;
-  overflow: auto;
   height: 80vh;
   min-width: 100px;
 }
 .reg_header {
   min-width: 100px;
-  overflow: auto;
   float: left;
 }
 .reg_grid_drawing_container {

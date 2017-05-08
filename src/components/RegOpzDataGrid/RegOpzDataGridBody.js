@@ -4,22 +4,10 @@ export default class RegOpzDataGridBody extends Component {
     constructor(props) {
         super(props);
         this.data = this.props.data;
-        this.delTop = 30;
-        this.delLeft = 101;
-        this.delHeight = 29;
-        this.delWidth = 100;
-        this._delHeight = 30;
-        this._delWidth = 101;
+        this.delTop = 29;
         this.colAttr = this.props.colAttr;
-
     }
     render(){
-        console.log('colAttr ', this.colAttr);
-        var totalWidthDisplacement = 0;
-        for (const key of Object.keys(this.colAttr)) {
-            //console.log(key, this.colAttr[key]['width']);
-            totalWidthDisplacement += this.colAttr[key]['width'] - 99;
-        }
         return(
             <div>
                 {
@@ -28,25 +16,50 @@ export default class RegOpzDataGridBody extends Component {
                         let value = item.value;
                         let coord = this.getRealCoords(cell);
                         let merged = item.merged;
-
+                        var stylex = {};
+                        var left = 0;
+                        var width = 0;
+                        var height = 0;
+                        var top = 0;
                         if(merged){
-                            var stylex = {
-                              top:coord.y*this.delTop,
-                              left:coord.x*this.delLeft,
-                              width:this.delWidth,
-                              height:this.delHeight
+                          let marged_coord = this.getRealCoords(merged);
+                          for(var i = parseInt(this.numberFromWord(coord.col)) - 1; i >= parseInt(this.numberFromWord('A')); i--){
+                            left += (parseInt(this.colAttr[this.alphaSequence(i)].width) * 9 + 1);
+                          }
+                          for(var i = parseInt(this.numberFromWord(marged_coord.col)); i >= parseInt(this.numberFromWord(coord.col)); i--){
+                            width += (parseInt(this.colAttr[this.alphaSequence(i)].width) * 9 + 1);
+                          }
+                          let currentRow = parseInt(coord.row) + 1;
+                          let margedRow = parseInt(marged_coord.row) + 1;
+                          for(let j = currentRow -1; j > 0; --j){
+                            top += parseInt(this.props.rowAttr[j + ""].height) * 2;
+                          }
+                          if(currentRow == margedRow){
+                            height = parseInt(this.props.rowAttr[currentRow+""].height) * 2;
+                          } else {
+                            for(let j = margedRow; j > currentRow; j--){
+                              height += parseInt(this.props.rowAttr[j + ""].height) * 2;
                             }
-                            let merged_coord = this.getRealCoords(merged);
-                            let width_adjust = Math.abs(merged_coord.x - coord.x);
-                            let height_adjust = Math.abs(merged_coord.y - coord.y);
-                            stylex.width = ((width_adjust + 1) * this._delWidth) - 1 + totalWidthDisplacement;
-                            stylex.height = ((height_adjust + 1) * this._delHeight) -1;
+                          }
+                          stylex = {
+                            top:top,
+                            left:left,
+                            width:width -1,
+                            height:height -1
+                          }
                         } else {
-                          var stylex = {
-                            top:coord.y*this.delTop,
-                            left:coord.x*this.delLeft + totalWidthDisplacement,
-                            width:this.delWidth,
-                            height:this.delHeight
+                          for(var i = parseInt(this.numberFromWord(coord.col)) - 1; i >= parseInt(this.numberFromWord('A')); i--){
+                            left += (parseInt(this.colAttr[this.alphaSequence(i)].width) * 9 + 1);
+                          }
+                          let currentRow = parseInt(coord.row) + 1
+                          for(let j = currentRow -1; j > 0; --j){
+                            top += parseInt(this.props.rowAttr[j + ""].height) * 2;
+                          }
+                          stylex = {
+                            top:top,
+                            left:left,
+                            width:parseInt(this.colAttr[coord.col].width) * 9,
+                            height:parseInt(this.props.rowAttr[currentRow+""].height) * 2 -1
                           }
                         }
                         return(

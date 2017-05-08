@@ -22,8 +22,7 @@ export default class RegOpzDataGridHeader extends Component {
                     this.columns.map(function(item, index) {
                         let colStyleForHeader = {};
                         if(typeof(this.colAttr[item]) != 'undefined'){
-                          colStyleForHeader = {...this.colAttr[item]};
-                          colStyleForHeader.width += 1;
+                          colStyleForHeader.width = parseInt(this.colAttr[item]['width'])*9;
                         }
                         return (
                             <div key={index} className="reg_col">

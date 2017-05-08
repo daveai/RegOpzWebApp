@@ -10,13 +10,18 @@ export default class RegOpzDataGridSideMarker extends Component {
             <div className="reg_grid_row_marker_holder">
                 {
                     [...Array(parseInt(this.numberofRows))].map(function(item,index){
+                        //console.log(`Height of ${index+1} is`,this.props.rowAttr[(index+1)+""]);
+                        var stylex = {};
+                        if(typeof(this.props.rowAttr[(index+1)+""]) != 'undefined') {
+                          stylex.height = parseInt(this.props.rowAttr[(index+1)+""].height) * 2;
+                        }
                         return (
-                          <div className="rowMarker" key={index}>
+                          <div className="rowMarker" style={stylex} key={index}>
                             <span>{index+1}</span>
                             <div className="clearfix"></div>
                           </div>
                         )
-                    })
+                    }.bind(this))
                 }
             </div>
         );

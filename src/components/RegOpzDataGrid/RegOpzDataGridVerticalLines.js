@@ -21,8 +21,7 @@ export default class RegOpzDataGridVerticallLines extends Component {
                     //console.log("number from word",this.alphaSequence(index));
                     let colStyleForCell = {};
                     if(typeof(this.colAttr[this.alphaSequence(index)]) != 'undefined'){
-                      colStyleForCell = {...this.colAttr[this.alphaSequence(index)]};
-                      colStyleForCell.width += 2;
+                      colStyleForCell.width = parseInt(this.colAttr[this.alphaSequence(index)]['width']) * 9 + 1;
                     }
                     return (
                         <div key={index} style={colStyleForCell} className="reg_vertical_line">
