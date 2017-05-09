@@ -37,8 +37,11 @@ export default class RegOpzDataGridBody extends Component {
                           if(currentRow == margedRow){
                             height = parseInt(this.props.rowAttr[currentRow+""].height) * 2;
                           } else {
-                            for(let j = margedRow; j > currentRow; j--){
+                            for(let j = margedRow; j >= currentRow; j--){
                               height += parseInt(this.props.rowAttr[j + ""].height) * 2;
+                              if(currentRow == 6 && margedRow == 7){
+                                alert(height);
+                              }
                             }
                           }
                           stylex = {
