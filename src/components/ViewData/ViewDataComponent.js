@@ -32,8 +32,8 @@ class ViewDataComponent extends Component {
         display:"block"
       },
       menuPanelStyle:{
-        width:"0px",
-        padding:"0px"
+        width:"280px",
+        padding:"5px"
       },
       menuPanelHolderStyle:{
         width:"320px"
@@ -41,7 +41,8 @@ class ViewDataComponent extends Component {
       startDate:null,
       endDate:null
     }
-    this.isMenuPanelOpen = false;
+
+    this.isMenuPanelOpen = 0;
     this.dataSource = null;
     this.currentPage = 0;
     this.currentSourceId = null;
@@ -90,6 +91,7 @@ class ViewDataComponent extends Component {
                                         _this.currentSourceId = item.source_id;
                                         _this.currentBusinessDate = item.business_date;
                                         _this.props.fetchReportFromDate(_this.currentSourceId, _this.currentBusinessDate , _this.currentPage)
+                                        _this.toggleMenuPanel();
                                       }
                                     }
                                   />
@@ -430,8 +432,37 @@ class ViewDataComponent extends Component {
            parseInt(Number(value)) == value &&
            !isNaN(parseInt(value, 10));
   }
+  toggleMenuPanel(){
+    if(this.isMenuPanelOpen){
+      this.setState(
+        {
+          menuPanelStyle:{
+            width:"280px",
+            padding:"5px"
+          },
+          menuPanelHolderStyle:{
+            width:"320px"
+          }
+        }
+      );
+    } else {
+      this.setState(
+        {
+          menuPanelStyle:{
+            width:"0px",
+            padding:"0"
+          },
+          menuPanelHolderStyle:{
+            width:"0px"
+          }
+        }
+      );
+    }
+    this.isMenuPanelOpen = ~this.isMenuPanelOpen
+  }
   render(){
     console.log("report linkage",this.props.report_linkage);
+
     this.dataSource = this.props.data_date_heads;
     return (
       <div
@@ -466,33 +497,7 @@ class ViewDataComponent extends Component {
             style={this.state.drawerHandleStyle}
             onClick={
               (event) => {
-                this.isMenuPanelOpen = ~this.isMenuPanelOpen
-                if(this.isMenuPanelOpen){
-                  this.setState(
-                    {
-                      menuPanelStyle:{
-                        width:"280px",
-                        padding:"5px"
-                      },
-                      menuPanelHolderStyle:{
-                        width:"320px"
-                      }
-                    }
-                  );
-                } else {
-                  this.setState(
-                    {
-                      menuPanelStyle:{
-                        width:"0px",
-                        padding:"0"
-                      },
-                      menuPanelHolderStyle:{
-                        width:"0px"
-                      }
-                    }
-                  );
-                }
-
+                this.toggleMenuPanel();
               }
             }
           >
