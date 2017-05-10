@@ -55,7 +55,7 @@ class LeftMenu extends Component {
                                             <a href="#">Maintain Sources</a>
                                         </li>
                                         <li>
-                                            <a href="#">View Data</a>
+                                            <a href="#/dashboard/view-data">View Data</a>
                                         </li>
                                     </ul>
                                 </li>

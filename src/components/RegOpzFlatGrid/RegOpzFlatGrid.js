@@ -14,6 +14,7 @@ export default class RegOpzFlatGrid extends Component {
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
+        this.data = nextProps.dataSource;
         if(this.filterConditions){
             this.data = _.where( nextProps.dataSource,this.filterConditions);
         } else {
@@ -48,8 +49,7 @@ export default class RegOpzFlatGrid extends Component {
         )
     }
     deSelectAll(){
-      this.flatGridRows.selectedRows = [];
-      $(".flat_grid_row_container").removeClass("flat_grid_selected_row");
+      this.flatGridRows.deSelectAll();
       return [];
     }
 }
