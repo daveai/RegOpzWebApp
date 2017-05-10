@@ -61,6 +61,7 @@
 .view_data_menu_panel_holder {
   position: absolute;
   z-index: 99999;
+  top: 0;
 }
 .view_data_tree_view_holder {
     float: left;
