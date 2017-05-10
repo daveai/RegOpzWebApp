@@ -11,6 +11,9 @@ export default class RegOpzDataGridHeader extends Component {
         }
 
     }
+    componentWillReceiveProps(nextProps){
+      this.colAttr = nextProps.colAttr;
+    }
     render() {
         var _self = this;
         return (

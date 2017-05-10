@@ -9,6 +9,9 @@ export default class RightPane extends Component {
     super(props);
     this.fileInput = null;
     this.uploadForm = null;
+    this.state = {
+      report_id:""
+    };
   }
   render(){
     return(
@@ -22,7 +25,20 @@ export default class RightPane extends Component {
             <div className="x_content">
               <p>Supported files are .xlsx .xlx, .csv, .odt</p>
             <form encType="multipart/form-data" id="uploadForm" ref={(uploadForm) => {this.uploadForm = uploadForm}} onSubmit={this.handleFormSubmit.bind(this)} className="dropzone">
-              <input type="text" name="report_id" className="form-control" placeholder="Report Id" />
+              <input
+                type="text"
+                name="report_id"
+                onChange={
+                  (event) => {
+                    this.setState( {
+                      report_id:event.target.value
+                    });
+                  }
+                }
+                className="form-control"
+                placeholder="Report Id"
+                value={this.state.report_id}
+                 />
               <input id="file"
                 onChange={this.handleFileSelect.bind(this)}
                 ref={(fileInput) => {this.fileInput = fileInput}}
@@ -55,7 +71,7 @@ export default class RightPane extends Component {
     event.preventDefault();
   }
   handleFileSelect(event){
-
+    var report_id = this.state.report_id;
     npro.start();
     var data = new FormData($("#uploadForm")[0]);
     $.each($('#file')[0].files, function(i, file) {
@@ -72,7 +88,7 @@ export default class RightPane extends Component {
       url: 'http://localhost:3000/api/v1.0.0/document',
       success: function(response) {
         npro.done();
-        hashHistory.push("/dashboard/data-grid");
+        hashHistory.push("/dashboard/data-grid?report_id="+report_id);
         console.log(response);
 
       },

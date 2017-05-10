@@ -9,6 +9,9 @@ export default class RegOpzDataGridVerticallLines extends Component {
         }
         this.colAttr = this.props.colAttr;
     }
+    componentWillReceiveProps(nextProps){
+      this.colAttr = nextProps.colAttr;
+    }
     render(){
         return(
           <div style={this.style} ref={(regVerticalLineHolder) => {

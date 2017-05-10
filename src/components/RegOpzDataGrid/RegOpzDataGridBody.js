@@ -6,6 +6,13 @@ export default class RegOpzDataGridBody extends Component {
         this.data = this.props.data;
         this.delTop = 29;
         this.colAttr = this.props.colAttr;
+        this.rowAttr = this.props.rowAttr;
+    }
+    componentWillReceiveProps(nextProps){
+      this.data = nextProps.data;
+      this.delTop = 29;
+      this.colAttr = nextProps.colAttr;
+      this.rowAttr = nextProps.rowAttr;
     }
     render(){
         return(
@@ -32,16 +39,13 @@ export default class RegOpzDataGridBody extends Component {
                           let currentRow = parseInt(coord.row) + 1;
                           let margedRow = parseInt(marged_coord.row) + 1;
                           for(let j = currentRow -1; j > 0; --j){
-                            top += parseInt(this.props.rowAttr[j + ""].height) * 2;
+                            top += parseInt(this.rowAttr[j + ""].height) * 2;
                           }
                           if(currentRow == margedRow){
-                            height = parseInt(this.props.rowAttr[currentRow+""].height) * 2;
+                            height = parseInt(this.rowAttr[currentRow+""].height) * 2;
                           } else {
                             for(let j = margedRow; j >= currentRow; j--){
-                              height += parseInt(this.props.rowAttr[j + ""].height) * 2;
-                              if(currentRow == 6 && margedRow == 7){
-                                alert(height);
-                              }
+                              height += parseInt(this.rowAttr[j + ""].height) * 2;
                             }
                           }
                           stylex = {
@@ -56,13 +60,13 @@ export default class RegOpzDataGridBody extends Component {
                           }
                           let currentRow = parseInt(coord.row) + 1
                           for(let j = currentRow -1; j > 0; --j){
-                            top += parseInt(this.props.rowAttr[j + ""].height) * 2;
+                            top += parseInt(this.rowAttr[j + ""].height) * 2;
                           }
                           stylex = {
                             top:top,
                             left:left,
                             width:parseInt(this.colAttr[coord.col].width) * 9,
-                            height:parseInt(this.props.rowAttr[currentRow+""].height) * 2 -1
+                            height:parseInt(this.rowAttr[currentRow+""].height) * 2 -1
                           }
                         }
                         return(
