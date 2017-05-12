@@ -5,74 +5,88 @@ import {bindActionCreators, dispatch} from 'redux'
 import TreeView from 'react-treeview'
 import moment from 'moment'
 import axios from 'axios'
+import Collapsible from '../CollapsibleModified/Collapsible'
 import { actionFetchSource, actionFetchReportFromDate } from '../../actions/ViewDataAction'
 import {BASE_URL} from '../../Constant/constant'
 class SourceTreeInfoComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
-      sources:[]
+      sources:null
     }
     this.selectedSourceId = null;
     this.selectedBusinessDate = null;
+
   }
   render(){
     return(
-      <TreeView
-        nodeLabel={this.props.label}
-        key={this.props.key}
-        target={this.props.target}
-        defaultCollapsed={true}
-        onClick={
-          (event) => {
-            let dateString = moment(event.target.getAttribute('target'), 'YYYY-MMMM-D').format('YYYYMMDD')
-            //alert(dateString);
-            //this.props.fetchSource(dateString);
-            axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
-            .then(function (response) {
-              this.setState({
-                sources:response.data
-              })
-            }.bind(this))
-            .catch(function (error) {
-              console.log(error);
-            });
-          }
-        }
-      >
-        {this.renderSources(this.state.sources)}
-      </TreeView>
+      <Collapsible
+        dateString={this.props.year + "-" + this.props.month + "-" + this.props.date}
+        onOpen={this.dateOnOpen.bind(this)}
+        trigger={this.props.date}>
+        {this.renderSources()}
+      </Collapsible>
     )
   }
-  renderSources(sources){
-    if(sources.length != 0){
+  renderSources(){
+    if(this.state.sources == null){
       return(
-        sources.map(function(item,index){
-          return(
-            <div key={index} className="info">
-              <a
-                href="#"
-                onClick={
-                  (event) => {
-                    event.preventDefault();
-                    var bdate = moment(this.props.target, 'YYYY-MMMM-D').format('YYYYMMDD');
-                    this.selectedSourceId = item.source_id;
-                    this.selectedBusinessDate = bdate;
-                    this.props.onSelect({source_id:this.selectedSourceId, business_date:this.selectedBusinessDate})
-                    
-                  }
-                }
-              >
-                {item.data_file_name}({item.source_id})
-              </a>
-            </div>
-          )
-        }.bind(this))
+        <h2>Loading...</h2>
+      )
+    }
+    if(this.state.sources.length == 0){
+      return(
+        <h2>No Data Found</h2>
       )
     } else {
-      return("Loading...")
+      return(
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Source ID</th>
+              <th>Data File Name</th>
+              <th>File load status</th>
+              <th>Data loaded by</th>
+              <th>Operations</th>
+            </tr>
+          </thead>
+          <tbody>
+          {this.state.sources.map((item,index) => {
+            return (
+              <tr>
+                <td>{item.source_id}</td>
+                <td><a href={`#/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</a></td>
+                <td>{item.file_load_status}</td>
+                <td>{item.data_loaded_by}</td>
+                <td>
+                  <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+                  <button className="btn btn-default"><span className="glyphicon glyphicon-plane" aria-hidden="true"></span></button>
+
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+        </table>
+      )
     }
   }
+
+  dateOnOpen(business_date){
+    let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
+    axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
+    .then(function (response) {
+      console.log(response);
+      this.setState({
+        sources:response.data
+      })
+    }.bind(this))
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
 }
 const mapDispatchToProps = (dispatch) => {
   return {

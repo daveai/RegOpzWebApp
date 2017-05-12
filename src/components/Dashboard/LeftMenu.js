@@ -64,6 +64,9 @@ class LeftMenu extends Component {
                                         <i className="fa fa-file-excel-o"></i> Reports Management<span className="fa fa-chevron-down"></span>
                                     </a>
                                     <ul className="nav child_menu">
+                                      <li>
+                                          <a href="#/dashboard/view-report">View Report</a>
+                                      </li>
                                     </ul>
                                 </li>
                                 <li>
