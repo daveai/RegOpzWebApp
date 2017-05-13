@@ -17,15 +17,21 @@ class RegOpzDataGrid extends Component {
     this.data = [];
     this.selectedSheet = 0;
     this.report_id = this.props.location.query['report_id'];
+    this.reporting_date = this.props.location.query['reporting_date'];
   }
   componentWillMount(){
-    this.props.fetchCapturedReport(this.report_id);
+
+    this.props.fetchCapturedReport(this.report_id,this.reporting_date);
   }
   render(){
     if(this.props.captured_report.length > 0){
       this.data = this.props.captured_report[this.selectedSheet].matrix;
       return(
         <div className="reg_gridHolder">
+          <ol className="breadcrumb">
+            <li><a href="#/dashboard/view-report">View Report</a></li>
+            <li><a href={window.location.href}>{`${this.report_id} (${this.reporting_date})`}</a></li>
+          </ol>
           <div className="col col-lg-12">
             <div className="row reg_sheet_buttons_holder">
               <div className="btn-group">
@@ -74,8 +80,8 @@ function mapStateToProps(state){
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCapturedReport:(report_id) => {
-      dispatch(actionFetchReportData(report_id));
+    fetchCapturedReport:(report_id, reporting_date) => {
+      dispatch(actionFetchReportData(report_id, reporting_date));
     }
   }
 }

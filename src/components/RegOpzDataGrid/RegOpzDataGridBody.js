@@ -59,14 +59,22 @@ export default class RegOpzDataGridBody extends Component {
                             left += (parseInt(this.colAttr[this.alphaSequence(i)].width) * 9 + 1);
                           }
                           let currentRow = parseInt(coord.row) + 1
-                          for(let j = currentRow -1; j > 0; --j){
-                            top += parseInt(this.rowAttr[j + ""].height) * 2;
+                          for(let j = currentRow -1; j > 0; j--){
+                            if(typeof(this.rowAttr[j + ""]) != 'undefined')
+                              top += parseInt(this.rowAttr[j + ""].height) * 2;
+                            else
+                              top += 12.3;
                           }
+                          width = parseInt(this.colAttr[coord.col].width) * 9;
+                          if(typeof(this.rowAttr[currentRow+""]) != 'undefined')
+                            height = parseInt(this.rowAttr[currentRow+""].height) * 2 -1;
+                          else
+                            height = 12.3;
                           stylex = {
                             top:top,
                             left:left,
-                            width:parseInt(this.colAttr[coord.col].width) * 9,
-                            height:parseInt(this.rowAttr[currentRow+""].height) * 2 -1
+                            width:width,
+                            height:height
                           }
                         }
                         return(

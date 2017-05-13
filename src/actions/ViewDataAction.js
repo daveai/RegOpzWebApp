@@ -8,11 +8,11 @@ export let VIEW_DATA_FETCH_REPORT_LINKAGE = "VIEW_DATA_FETCH_REPORT_LINKAGE";
 export let INSERT_SOURCE_DATA = "INSERT_SOURCE_DATA";
 export let UPDATE_SOURCE_DATA = "UPDATE_SOURCE_DATA";
 export let DELETE_SOURCE_ROW = "DELETE_SOURCE_ROW";
-export function actionFetchDates(startDate='19000101',endDate='39991231'){
-  console.log("Base url",BASE_URL + `view-data/get-date-heads?start_date=${startDate}&end_date=${endDate}`);
+export function actionFetchDates(startDate='19000101',endDate='39991231', table_name){
+  console.log("Base url",BASE_URL + `view-data/get-date-heads?start_date=${startDate}&end_date=${endDate}&table_name=${table_name}`);
   return{
     type: FETCH_DATES,
-    payload:axios.get(BASE_URL + `view-data/get-date-heads?start_date=${startDate}&end_date=${endDate}`)
+    payload:axios.get(BASE_URL + `view-data/get-date-heads?start_date=${startDate}&end_date=${endDate}&table_name=${table_name}`)
   }
 }
 export function actionFetchReportFromDate(source_id,business_date,page){

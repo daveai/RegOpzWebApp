@@ -2,7 +2,8 @@ import {
   FETCH_REPORT_BY_DATE,
   INSERT_SOURCE_DATA,
   UPDATE_SOURCE_DATA,
-  DELETE_SOURCE_ROW
+  DELETE_SOURCE_ROW,
+  FETCH_DATE_FOR_REPORT
 } from '../actions/ViewDataAction';
 export default function(state=[],action){
   console.log("Action received in report reducer: ",action);

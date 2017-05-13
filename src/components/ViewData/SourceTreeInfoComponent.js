@@ -39,51 +39,88 @@ class SourceTreeInfoComponent extends Component {
         <h2>No Data Found</h2>
       )
     } else {
-      return(
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Source ID</th>
-              <th>Data File Name</th>
-              <th>File load status</th>
-              <th>Data loaded by</th>
-              <th>Operations</th>
-            </tr>
-          </thead>
-          <tbody>
-          {this.state.sources.map((item,index) => {
-            return (
+      if(this.props.apiFor == 'report'){
+        return(
+          <table className="table">
+            <thead>
               <tr>
-                <td>{item.source_id}</td>
-                <td><a href={`#/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</a></td>
-                <td>{item.file_load_status}</td>
-                <td>{item.data_loaded_by}</td>
-                <td>
-                  <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
-                  <button className="btn btn-default"><span className="glyphicon glyphicon-plane" aria-hidden="true"></span></button>
-
-                </td>
+                <th>Report ID</th>
+                <th>Report Creation Date</th>
               </tr>
-            )
-          })}
-        </tbody>
-        </table>
-      )
+            </thead>
+            <tbody>
+            {this.state.sources.map((item,index) => {
+              return (
+                <tr>
+                  <td><a href={`#/dashboard/data-grid?report_id=${item.report_id}&reporting_date=${item.reporting_date}`}>{item.report_id}</a></td>
+                  <td>{item.report_create_date}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+          </table>
+        )
+      } else {
+        return(
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Source ID</th>
+                <th>Data File Name</th>
+                <th>File load status</th>
+                <th>Data loaded by</th>
+                <th>Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+            {this.state.sources.map((item,index) => {
+              return (
+                <tr>
+                  <td>{item.source_id}</td>
+                  <td><a href={`#/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</a></td>
+                  <td>{item.file_load_status}</td>
+                  <td>{item.data_loaded_by}</td>
+                  <td>
+                    <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+                    <button className="btn btn-default"><span className="glyphicon glyphicon-plane" aria-hidden="true"></span></button>
+
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+          </table>
+        )
+      }
     }
   }
 
   dateOnOpen(business_date){
-    let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
-    axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
-    .then(function (response) {
-      console.log(response);
-      this.setState({
-        sources:response.data
-      })
-    }.bind(this))
-    .catch(function (error) {
-      console.log(error);
-    });
+    if(this.props.apiFor == 'report'){
+      let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
+      axios.get(BASE_URL + "document/get-report-list?reporting_date=" + dateString)
+      .then(function (response) {
+        console.log(response);
+        this.setState({
+          sources:response.data
+        })
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
+    } else {
+      let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
+      axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
+      .then(function (response) {
+        console.log(response);
+        this.setState({
+          sources:response.data
+        })
+      }.bind(this))
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   }
 
 
