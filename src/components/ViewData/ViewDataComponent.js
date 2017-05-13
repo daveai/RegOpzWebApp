@@ -55,64 +55,10 @@ class ViewDataComponent extends Component {
     this.sourceTableName = "";
   }
   componentWillMount(){
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
-  }
-  renderTreeView(){
-    var _this = this;
-    if(this.dataSource != null){
-      return(
-        <div className="view_data_tree_view_holder">
-         {this.dataSource.map((node, i) => {
-           const year = node.year;
-           const label = <span className="node">{year}</span>;
-           return (
-             <TreeView key={year + '|' + i} nodeLabel={label} defaultCollapsed={true}>
-               {
-                   Object.keys(node.month).map(function(item,index){
-                     const label2 = <span className="node">{item}</span>;
-
-                      return(
-                        <TreeView
-                          nodeLabel={label2}
-                          key={item + '|' + index}
-                          defaultCollapsed={true}
-                        >
-                            {
-                              node.month[item].map(function(date_item,date_index){
-                                const label3 = <span className="node">{date_item}</span>;
-                                return (
-                                  <SourceTreeInfoComponent
-                                    label={label3}
-                                    target={node.year + "-" + item + "-" + date_item}
-                                    key={date_item + '|' + date_index}
-                                    onSelect={
-                                      (item) => {
-                                        console.log("Selected Items ", item);
-                                        _this.currentSourceId = item.source_id;
-                                        _this.currentBusinessDate = item.business_date;
-                                        _this.props.fetchReportFromDate(_this.currentSourceId, _this.currentBusinessDate , _this.currentPage)
-                                        _this.toggleMenuPanel();
-                                      }
-                                    }
-                                  />
-                                )
-                              })
-                            }
-                        </TreeView>
-                      )
-                   })
-
-              }
-             </TreeView>
-           );
-         })}
-       </div>
-      )
-    } else {
-      return (
-        <h2>Loading...</h2>
-      )
-    }
+    //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
+    this.currentSourceId = this.props.location.query['source_id'];
+    this.currentBusinessDate = this.props.location.query['business_date'];
+    this.props.fetchReportFromDate(this.currentSourceId,this.currentBusinessDate,this.currentPage);
   }
   renderGridAtRightPane(){
     if(this.props.report.length != 0 ){
@@ -122,6 +68,10 @@ class ViewDataComponent extends Component {
         this.sourceTableCols = this.props.report[0].cols;
         return(
           <div>
+            <ol className="breadcrumb">
+              <li><a href="#/dashboard/view-data">View Data</a></li>
+              <li><a href={window.location.href}>{`${this.sourceTableName} (${this.currentBusinessDate})`}</a></li>
+            </ol>
             <div className="ops_icons">
                 <div className="btn-group">
                     <button
@@ -432,77 +382,11 @@ class ViewDataComponent extends Component {
            parseInt(Number(value)) == value &&
            !isNaN(parseInt(value, 10));
   }
-  toggleMenuPanel(){
-    if(this.isMenuPanelOpen){
-      this.setState(
-        {
-          menuPanelStyle:{
-            width:"280px",
-            padding:"5px"
-          },
-          menuPanelHolderStyle:{
-            width:"320px"
-          }
-        }
-      );
-    } else {
-      this.setState(
-        {
-          menuPanelStyle:{
-            width:"0px",
-            padding:"0"
-          },
-          menuPanelHolderStyle:{
-            width:"0px"
-          }
-        }
-      );
-    }
-    this.isMenuPanelOpen = ~this.isMenuPanelOpen
-  }
   render(){
     console.log("report linkage",this.props.report_linkage);
-
     this.dataSource = this.props.data_date_heads;
     return (
-      <div
-        onMouseMove={
-          (event) => {
-          }
-        }
-        className="view_data_dummy_area"
-      >
-        <div className="view_data_menu_panel_holder" style={this.state.menuPanelHolderStyle}>
-          <div
-            className="view_data_menu_panel"
-            style={this.state.menuPanelStyle}
-          >
-            <div className="clear"></div>
-            <DatePicker
-                selected={this.state.startDate}
-                onChange={this.handleStartDateChange.bind(this)}
-                placeholderText="Select start date"
-                className="view_data_date_picker_input"
-            />
-            <DatePicker
-                selected={this.state.endDate}
-                onChange={this.handleEndDateChange.bind(this)}
-                placeholderText="Select end date"
-                className="view_data_date_picker_input"
-            />
-            <div className="clear"></div>
-            {this.renderTreeView()}
-          </div>
-          <div className="view_data_drawer_handle_default"
-            style={this.state.drawerHandleStyle}
-            onClick={
-              (event) => {
-                this.toggleMenuPanel();
-              }
-            }
-          >
-          </div>
-        </div>
+      <div className="view_data_dummy_area">
         {this.renderGridAtRightPane()}
         <InfoModal
             showDiscard={false}
@@ -551,14 +435,6 @@ class ViewDataComponent extends Component {
       )
     }
 
-  }
-  handleStartDateChange(date){
-    this.setState({startDate:date});
-    this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
-  }
-  handleEndDateChange(date){
-    this.setState({endDate:date});
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101");
   }
 }
 const mapDispatchToProps = (dispatch) => {
