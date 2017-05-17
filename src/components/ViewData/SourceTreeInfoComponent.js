@@ -6,7 +6,11 @@ import TreeView from 'react-treeview'
 import moment from 'moment'
 import axios from 'axios'
 import Collapsible from '../CollapsibleModified/Collapsible'
-import { actionFetchSource, actionFetchReportFromDate } from '../../actions/ViewDataAction'
+import {
+  actionFetchSource,
+  actionFetchReportFromDate ,
+  actionApplyRules
+} from '../../actions/ViewDataAction'
 import {BASE_URL} from '../../Constant/constant'
 class SourceTreeInfoComponent extends Component {
   constructor(props){
@@ -75,15 +79,23 @@ class SourceTreeInfoComponent extends Component {
             <tbody>
             {this.state.sources.map((item,index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{item.source_id}</td>
                   <td><a href={`#/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</a></td>
                   <td>{item.file_load_status}</td>
                   <td>{item.data_loaded_by}</td>
                   <td>
                     <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
-                    <button className="btn btn-default"><span className="glyphicon glyphicon-plane" aria-hidden="true"></span></button>
-
+                    <button
+                      className="btn btn-default"
+                      onClick={
+                        (event) => {
+                          this.props.applyRules(item.source_id,item.business_date,"ALL");
+                        }
+                      }
+                    >
+                      <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                    </button>
                   </td>
                 </tr>
               )
@@ -128,10 +140,13 @@ class SourceTreeInfoComponent extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchSource:(business_date) => {
-      dispatch(actionFetchSource(business_date))
+      dispatch(actionFetchSource(business_date));
     },
     fetchReportFromDate:(source_id,business_date,page) => {
-      dispatch(actionFetchReportFromDate(source_id,business_date,page))
+      dispatch(actionFetchReportFromDate(source_id,business_date,page));
+    },
+    applyRules:(source_id, business_date, option) => {
+      dispatch(actionApplyRules(source_id,business_date,option));
     }
   }
 }

@@ -91,6 +91,10 @@
     text-align: center;
     display: table;
 }
+.reg_cell_selected {
+  border: 1px solid red;
+
+}
 .reg_cell > span {
   display: table-cell;
   vertical-align: middle;
@@ -98,4 +102,11 @@
 }
 .reg_sheet_buttons_holder {
   margin-bottom: 10px;
+}
+.rightClickContextMenu {
+  width: 220px;
+  height: 250px;
+  background-color: blue;
+  position: absolute;
+  display: none;
 }

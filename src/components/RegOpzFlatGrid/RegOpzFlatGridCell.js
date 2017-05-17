@@ -19,27 +19,38 @@ export default class RegOpzFlatGridCell extends Component {
         }
     }
     render() {
-
         return (
             <div className="flat_grid_row_cell">
-                <span onClick={this.handleCellClick.bind(this)}>
+                <span
+                  onDoubleClick={this.handleCellDoubleClick.bind(this)}
+                  onClick={this.handleCellSingleClick.bind(this)}
+                  onKeyPress={this.handleCellKeyPress.bind(this)}
+                >
                     {(this.state.value != null) ? this.state.value.toString().substring(0,30) : ""}
                 </span>
                   <ModalAlert ref="modalAlert" showDiscard={true} onClickOkay={this.handleAlertOkayClick.bind(this)} onClickDiscard={this.handleAlertDiscardClick.bind(this)} />
             </div>
         )
     }
-    handleCellClick(event) {
+    handleCellDoubleClick(event) {
         this.editingValue = this.state.value;
         console.log("The editing data (data,identifier,id)", this.props.data[this.props.identifier], this.props.identifier,this.props.data['id']);
         this.inputElem = document.createElement("input");
         this.inputElem.value = this.state.value;
         this.inputElem.addEventListener('change', this.handleChange.bind(this), false);
         this.inputElem.addEventListener('blur', this.handleBlur.bind(this), false);
+        this.inputElem.addEventListener('onkeydown', this.handleKeyPress.bind(this),false);
         event.target.appendChild(this.inputElem);
         this.inputElem.focus();
         $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');
         $(event.target).parent().parent(".flat_grid_row_container").addClass('flat_grid_row_container_active');
+    }
+    handleCellSingleClick(event){
+      $(".flat_grid_row_cell > span").removeClass('selectedCell');
+      $(event.target).addClass('selectedCell');
+    }
+    handleCellKeyPress(event){
+      
     }
     handleChange(event){
         this.setState({
@@ -62,6 +73,9 @@ export default class RegOpzFlatGridCell extends Component {
       this.setState({
           value:this.editingValue
       });
+    }
+    handleKeyPress(event){
+      alert(1);
     }
 
 }

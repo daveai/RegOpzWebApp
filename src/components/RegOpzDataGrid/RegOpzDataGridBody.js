@@ -7,6 +7,12 @@ export default class RegOpzDataGridBody extends Component {
         this.delTop = 29;
         this.colAttr = this.props.colAttr;
         this.rowAttr = this.props.rowAttr;
+        this.state = {
+          contextMenuStyle:{
+            display:"none"
+          }
+        }
+        this.selectedCell = null;
     }
     componentWillReceiveProps(nextProps){
       this.data = nextProps.data;
@@ -78,14 +84,31 @@ export default class RegOpzDataGridBody extends Component {
                           }
                         }
                         return(
-                            <div key={index} className="reg_cell" style={stylex}>
-                                <span>{value}</span>
+                            <div
+                              key={index}
+                              className="reg_cell"
+                              style={stylex}
+                            >
+                                <span
+                                  onClick={
+                                    (event) => {
+                                      this.handleCellClick(event);
+                                    }
+                                  }
+                                  target={item.cell}
+                                >{value}</span>
                             </div>
                         )
                     }.bind(this))
                 }
             </div>
         )
+    }
+    handleCellClick(event){
+      $(".reg_cell > span").removeClass("reg_cell_selected");
+      $(event.target).addClass("reg_cell_selected");
+      this.selectedCell = event.target.getAttribute("target");
+      this.props.onSelect(this.selectedCell);
     }
     alphaSequence(i) {
         return i < 0

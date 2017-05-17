@@ -45,6 +45,9 @@
     position: relative;
     overflow: hidden;
 }
+.flat_grid_row_cell > span.selectedCell {
+    border: 1px solid #ae456a;
+}
 .flat_grid_row_cell > span > input {
     border: none;
     width: 100%;
