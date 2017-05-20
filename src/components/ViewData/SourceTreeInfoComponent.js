@@ -9,6 +9,7 @@ import Collapsible from '../CollapsibleModified/Collapsible'
 import {
   actionFetchSource,
   actionFetchReportFromDate ,
+  actionGenerateReport,
   actionApplyRules
 } from '../../actions/ViewDataAction'
 import {BASE_URL} from '../../Constant/constant'
@@ -50,6 +51,9 @@ class SourceTreeInfoComponent extends Component {
               <tr>
                 <th>Report ID</th>
                 <th>Report Creation Date</th>
+                <th>Report Generation status</th>
+                <th>Report by</th>
+                <th>Operations</th>
               </tr>
             </thead>
             <tbody>
@@ -58,6 +62,30 @@ class SourceTreeInfoComponent extends Component {
                 <tr>
                   <td><a href={`#/dashboard/data-grid?report_id=${item.report_id}&reporting_date=${item.reporting_date}`}>{item.report_id}</a></td>
                   <td>{item.report_create_date}</td>
+                  <td>{item.report_create_status}</td>
+                  <td>{item.report_created_by}</td>
+                  <td>
+                    <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+                    <button
+                      className="btn btn-default"
+                      onClick={
+                        (event) => {
+                          let report_info = {
+                            report_id:item.report_id,
+                            report_parameters:item.report_parameters,
+                            reporting_date:item.reporting_date
+                          }
+                          console.log(report_info)
+                          this.props.generateReport(report_info);
+                        }
+                      }
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Generate Report"
+                    >
+                      <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                    </button>
+                  </td>
                 </tr>
               )
             })}
@@ -90,9 +118,17 @@ class SourceTreeInfoComponent extends Component {
                       className="btn btn-default"
                       onClick={
                         (event) => {
-                          this.props.applyRules(item.source_id,item.business_date,"ALL");
+                          let source_info = {
+                            source_id:item.source_id,
+                            business_date:item.business_date,
+                            business_or_validation:"ALL"
+                          }
+                          this.props.applyRules(source_info);
                         }
                       }
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Apply Rules"
                     >
                       <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
                     </button>
@@ -145,8 +181,11 @@ const mapDispatchToProps = (dispatch) => {
     fetchReportFromDate:(source_id,business_date,page) => {
       dispatch(actionFetchReportFromDate(source_id,business_date,page));
     },
-    applyRules:(source_id, business_date, option) => {
-      dispatch(actionApplyRules(source_id,business_date,option));
+    generateReport:(report_info) => {
+      dispatch(actionGenerateReport(report_info));
+    },
+    applyRules:(source_info) => {
+      dispatch(actionApplyRules(source_info));
     }
   }
 }

@@ -30,16 +30,54 @@ class DrillDownComponent extends Component {
     } else {
       return(
         <div className="container">
-          <h1>Aggregate Rules</h1>
+        <div className="container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Cell Formula</th>
+              </tr>
+            </thead>
+            <tbody>
             {
-              this.drillDownResult.agg_rules.map((item,index) => {
+              this.drillDownResult.comp_agg_rules.map((item,index) => {
                 return(
-                  <div className="row">
-                    <h1>{item.cell_calc_ref}</h1>
-                  </div>
+                    <tr>
+                      <td>{item.comp_agg_ref}</td>
+                    </tr>
                 )
               })
             }
+            </tbody>
+          </table>
+        </div>
+        <div className="container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Cell Calculation Ref</th>
+                <th>Data Source</th>
+                <th>Aggregation Ref</th>
+                <th>Aggregation function</th>
+                <th>Cell Business Rules</th>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              this.drillDownResult.cell_rules.map((item,index) => {
+                return(
+                    <tr>
+                      <td>{item.cell_calc_ref}</td>
+                      <td>{item.source_id}</td>
+                      <td>{item.aggregation_ref}</td>
+                      <td>{item.aggregation_func}</td>
+                      <td>{item.cell_business_rules}</td>
+                    </tr>
+                )
+              })
+            }
+            </tbody>
+            </table>
+        </div>
         </div>
       );
     }
