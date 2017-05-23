@@ -11,6 +11,7 @@ class DrillDownComponent extends Component {
     this.report_id = this.props.location.query['report_id'];
     this.sheet = this.props.location.query['sheet'];
     this.cell = this.props.location.query['cell'];
+    this.reporting_date = this.props.location.query['reporting_date'];
     this.drillDownResult = null;
   }
   componentWillMount(){
@@ -25,10 +26,31 @@ class DrillDownComponent extends Component {
     }
     if(this.drillDownResult.agg_rules.length == 0 && this.drillDownResult.cell_rules.length == 0 && this.drillDownResult.comp_agg_rules.length == 0){
       return(
-        <h1>No Data Found</h1>
+        <div className="reg_gridHolder">
+          <ol className="breadcrumb">
+            <li><a href="#/dashboard/view-report">View Report</a></li>
+            <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
+            <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
+          </ol>
+          <div className="container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <td>No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}</td>
+                </tr>
+              </thead>              
+            </table>
+          </div>
+        </div>
       )
     } else {
       return(
+        <div className="reg_gridHolder">
+          <ol className="breadcrumb">
+            <li><a href="#/dashboard/view-report">View Report</a></li>
+            <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
+            <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
+          </ol>
         <div className="container">
         <div className="container">
           <table className="table">
@@ -77,6 +99,7 @@ class DrillDownComponent extends Component {
             }
             </tbody>
             </table>
+        </div>
         </div>
         </div>
       );
