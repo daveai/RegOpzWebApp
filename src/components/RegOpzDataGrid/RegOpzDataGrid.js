@@ -71,6 +71,7 @@ class RegOpzDataGrid extends Component {
                         className="btn btn-primary"
                         onClick={(event) => {
                           this.selectedSheet = event.target.getAttribute("target");
+                          
                           this.forceUpdate();
                         }}
                       >

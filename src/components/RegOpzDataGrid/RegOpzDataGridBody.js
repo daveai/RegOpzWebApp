@@ -22,9 +22,10 @@ export default class RegOpzDataGridBody extends Component {
     }
     render(){
         return(
-            <div>
+            <div id="gridBody">
                 {
                     this.data.map(function(item,index){
+                        console.log("Cell,value,index",item.cell,item.value,index);
                         let cell = item.cell;
                         let value = item.value;
                         let coord = this.getRealCoords(cell);
@@ -76,16 +77,16 @@ export default class RegOpzDataGridBody extends Component {
                             height = parseInt(this.rowAttr[currentRow+""].height) * 2 -1;
                           else
                             height = 12.3;
-                          stylex = {
-                            top:top,
-                            left:left,
-                            width:width,
-                            height:height
-                          }
+                            stylex = {
+                              top:top,
+                              left:left,
+                              width:width,
+                              height:height
+                            }
                         }
                         return(
                             <div
-                              key={index}
+                              key={cell+index}
                               className="reg_cell"
                               style={stylex}
                             >
@@ -95,7 +96,7 @@ export default class RegOpzDataGridBody extends Component {
                                       this.handleCellClick(event);
                                     }
                                   }
-                                  target={item.cell}
+                                  target={cell}
                                 >{value}</span>
                             </div>
                         )
