@@ -47,8 +47,7 @@ class RegOpzDataGrid extends Component {
                     title="Drill Down"
                     onClick={
                       (event) => {
-                        let prev = {...window.location.href};
-                        hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&prev=${toString(prev)}`);
+                        hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
                       }
 
                     }

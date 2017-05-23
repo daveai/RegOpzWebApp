@@ -8,6 +8,7 @@ export let VIEW_DATA_FETCH_REPORT_LINKAGE = "VIEW_DATA_FETCH_REPORT_LINKAGE";
 export let INSERT_SOURCE_DATA = "INSERT_SOURCE_DATA";
 export let UPDATE_SOURCE_DATA = "UPDATE_SOURCE_DATA";
 export let DELETE_SOURCE_ROW = "DELETE_SOURCE_ROW";
+export let GENERATE_REPORT = "GENERATE_REPORT";
 export let APPLY_RULES = "APPLY_RULES";
 export function actionFetchDates(startDate='19000101',endDate='39991231', table_name){
   console.log("Base url",BASE_URL + `view-data/get-date-heads?start_date=${startDate}&end_date=${endDate}&table_name=${table_name}`);
@@ -58,9 +59,15 @@ export function actionFetchReportLinkage(source_id,qualifying_key,business_date)
     payload: axios.get(`${BASE_URL}view-data/get-report-linkage?source_id=${source_id}&qualifying_key=${qualifying_key}&business_date=${business_date}`)
   }
 }
-export function actionApplyRules(source_id,business_date,option){
+export function actionGenerateReport(report_info){
+  return {
+    type: GENERATE_REPORT,
+    payload:axios.post(BASE_URL+`view-data/generate-report`,report_info),
+  }
+}
+export function actionApplyRules(source_info){
   return {
     type: APPLY_RULES,
-    payload:axios.get(`${BASE_URL}view-data/apply-rules?source_id=${source_id}&business_date=${business_date}&business_or_validation=${option}`)
+    payload:axios.post(BASE_URL+`view-data/apply-rules`,source_info),
   }
 }
