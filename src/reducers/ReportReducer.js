@@ -1,5 +1,7 @@
 import {
   FETCH_REPORT_BY_DATE,
+  FETCH_DRILLDOWN_REPORT,
+  FETCH_DRILLDOWN_RULES_REPORT,
   INSERT_SOURCE_DATA,
   UPDATE_SOURCE_DATA,
   DELETE_SOURCE_ROW,
@@ -11,6 +13,12 @@ export default function(state=[],action){
     case FETCH_REPORT_BY_DATE:
     	state=[];
       return state.concat(action.payload.data);
+    case FETCH_DRILLDOWN_REPORT:
+    	state=[];
+      return state.concat(action.payload.data);
+      case FETCH_DRILLDOWN_RULES_REPORT:
+      	state=[];
+        return state.concat(action.payload.data);
     case INSERT_SOURCE_DATA:
       state[0].rows.splice(action.meta.at,0,action.payload.data);
       return state.splice(0,1,state)

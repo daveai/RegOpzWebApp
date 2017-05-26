@@ -7,6 +7,8 @@ import _ from 'lodash';
 import {
   actionFetchDates,
   actionFetchReportFromDate,
+  actionFetchDrillDownReport,
+  actionFetchDrillDownRulesReport,
   actionFetchSource,
   actionFetchReportLinkage,
   actionInsertSourceData,
@@ -47,31 +49,107 @@ class ViewDataComponent extends Component {
     this.currentPage = 0;
     this.currentSourceId = null;
     this.currentBusinessDate = null;
-    this.pages = 0;
+    this.pages = -1;
     this.infoModal = null;
     this.selectedItems = [];
     this.flatGrid = null;
     this.selectedIndexOfGrid = 0;
     this.sourceTableName = "";
+    this.currentSourceId = this.props.location.query['source_id'];
+    this.currentBusinessDate = this.props.location.query['business_date'];
+    this.origin = this.props.location.query['origin'];
+    this.source_id = this.props.location.query['source_id'];
+    this.report_id = this.props.location.query['report_id'];
+    this.sheet_id = this.props.location.query['sheet_id'];
+    this.cell_id = this.props.location.query['cell_id'];
+    this.reporting_date = this.props.location.query['reporting_date'];
+    this.cell_calc_ref = this.props.location.query['cell_calc_ref'];
+    this.rules = this.props.location.query['rules'];
   }
   componentWillMount(){
     //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
-    this.currentSourceId = this.props.location.query['source_id'];
-    this.currentBusinessDate = this.props.location.query['business_date'];
-    this.props.fetchReportFromDate(this.currentSourceId,this.currentBusinessDate,this.currentPage);
+    this.fetchDataToGrid();
+  }
+  componentDidMount(){
+    if(this.props.report.length != 0){
+      if(this.props.report[0].cols.length != 0){
+        this.pages = Math.ceil(this.props.report[0].count / 100);
+      }
+    }
+    else{
+      this.pages = 0;
+    }
+  }
+  fetchDataToGrid(){
+    //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
+    if(this.origin == 'drilldown'){
+      let drill_info = {
+              params:{
+                drill_kwargs: {
+                  report_id:this.report_id,
+                  sheet_id:this.sheet_id,
+                  cell_id:this.cell_id,
+                  reporting_date:this.reporting_date,
+                  source_id:this.source_id,
+                  cell_calc_ref:this.cell_calc_ref,
+                  page:this.currentPage
+                }
+              }
+            }
+      console.log('drill info',drill_info['params']);
+      console.log('this.props.report.length',this.props.report.length);
+      console.log('this.pages',this.pages);
+      this.export_csv_business_ref = `${this.reporting_date}.${this.report_id}.${this.sheet_id}.${this.cell_id}.${this.cell_calc_ref}`
+      if(this.rules){
+        this.props.fetchDrillDownRulesReport(this.rules,this.source_id,this.currentPage);
+        this.export_csv_business_ref = `${this.export_csv_business_ref}.rules`
+      }
+      else{
+        this.props.fetchDrillDownReport(drill_info);
+      }
+    }
+    else {
+      this.props.fetchReportFromDate(this.currentSourceId,this.currentBusinessDate,this.currentPage);
+      this.export_csv_business_ref = `${this.business_date}`
+    }
+  }
+  renderBreadCrump(){
+    if(this.origin == 'drilldown'){
+      if(this.cell_calc_ref){
+        this.lastRef = this.cell_calc_ref
+      }
+      if(this.rules){
+        this.lastRef = `${this.cell_calc_ref} Rules`
+      }
+      return(
+        <ol className="breadcrumb">
+          <li><a href="#/dashboard/view-report">View Report</a></li>
+          <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
+          <li><a href={'#/dashboard/drill-down?report_id=' + this.report_id + '&sheet=' + this.sheet_id + '&cell=' + this.cell_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.sheet_id})(${this.cell_id})`}</a></li>
+          <li><a href={window.location.href}>{`${this.lastRef}`}</a></li>
+        </ol>
+    )
+    }
+    else{
+      return(
+        <ol className="breadcrumb">
+          <li><a href="#/dashboard/view-data">View Data</a></li>
+          <li><a href={window.location.href}>{`${this.sourceTableName} (${this.currentBusinessDate})`}</a></li>
+        </ol>
+      )
+    }
+
   }
   renderGridAtRightPane(){
-    if(this.props.report.length != 0 ){
+    if(this.props.report.length != 0 && this.pages != -1){
       if(this.props.report[0].cols.length != 0){
         this.pages = Math.ceil(this.props.report[0].count / 100);
         this.sourceTableName = this.props.report[0].table_name;
         this.sourceTableCols = this.props.report[0].cols;
+        this.sql = this.props.report[0].sql;
         return(
           <div>
-            <ol className="breadcrumb">
-              <li><a href="#/dashboard/view-data">View Data</a></li>
-              <li><a href={window.location.href}>{`${this.sourceTableName} (${this.currentBusinessDate})`}</a></li>
-            </ol>
+            {this.renderBreadCrump()}
             <div className="ops_icons">
                 <div className="btn-group">
                     <button
@@ -82,7 +160,7 @@ class ViewDataComponent extends Component {
                       onClick={
                         (event) => {
                           this.currentPage = 0;
-                          this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage)
+                          this.fetchDataToGrid();
                         }
                       }
 
@@ -173,7 +251,7 @@ class ViewDataComponent extends Component {
                       onClick={
                         (event) => {
                             this.currentPage = 0;
-                            this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage)
+                            this.fetchDataToGrid();
                         }
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons">
@@ -189,7 +267,7 @@ class ViewDataComponent extends Component {
                         (event) => {
                           if(this.currentPage > 0){
                             this.currentPage--;
-                            this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage);
+                            this.fetchDataToGrid();
                           }
                         }
                       }
@@ -213,7 +291,7 @@ class ViewDataComponent extends Component {
                               if(event.target.value > this.pages){
                                 this.modalAlert.open("Page does not exists");
                               } else {
-                                this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage);
+                                this.fetchDataToGrid();
                               }
                             } else {
                               this.modalAlert.open("Please Enter a valid integer value");
@@ -234,7 +312,7 @@ class ViewDataComponent extends Component {
                         (event) => {
                           if(this.currentPage < this.pages - 1){
                             this.currentPage++;
-                            this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage)
+                            this.fetchDataToGrid();
                           }
                         }
                       }
@@ -251,7 +329,7 @@ class ViewDataComponent extends Component {
                       onClick={
                         (event) => {
                           this.currentPage = this.pages - 1;
-                          this.props.fetchReportFromDate(this.currentSourceId, this.currentBusinessDate , this.currentPage)
+                          this.fetchDataToGrid();
                         }
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons">
@@ -303,7 +381,7 @@ class ViewDataComponent extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
-                            axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_date=${this.currentBusinessDate}`)
+                            axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_ref=${this.export_csv_business_ref}&sql=${this.sql}`)
                             .then(function(response){
                               console.log("export csv",response);
                               window.location.href = "http://localhost:3000/static/" + response.data.file_name;
@@ -385,6 +463,7 @@ class ViewDataComponent extends Component {
   render(){
     console.log("report linkage",this.props.report_linkage);
     this.dataSource = this.props.data_date_heads;
+    console.log('in render ',this.pages);
     return (
       <div className="view_data_dummy_area">
         {this.renderGridAtRightPane()}
@@ -444,6 +523,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchReportFromDate:(source_id,business_date,page)=>{
       dispatch(actionFetchReportFromDate(source_id,business_date,page))
+    },
+    fetchDrillDownReport:(drill_info)=>{
+      console.log('Inside dispatch to props',drill_info)
+      dispatch(actionFetchDrillDownReport(drill_info))
+    },
+    fetchDrillDownRulesReport:(rules,source_id,page)=>{
+      console.log('Inside dispatch to props',rules,source_id,page)
+      dispatch(actionFetchDrillDownRulesReport(rules,source_id,page))
     },
     fetchSource:(business_date) => {
       dispatch(actionFetchSource(business_date))

@@ -38,7 +38,7 @@ class DrillDownComponent extends Component {
                 <tr>
                   <td>No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}</td>
                 </tr>
-              </thead>              
+              </thead>
             </table>
           </div>
         </div>
@@ -88,11 +88,11 @@ class DrillDownComponent extends Component {
               this.drillDownResult.cell_rules.map((item,index) => {
                 return(
                     <tr>
-                      <td>{item.cell_calc_ref}</td>
+                      <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_calc_ref}</a></td>
                       <td>{item.source_id}</td>
                       <td>{item.aggregation_ref}</td>
                       <td>{item.aggregation_func}</td>
-                      <td>{item.cell_business_rules}</td>
+                      <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
                     </tr>
                 )
               })

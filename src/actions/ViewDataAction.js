@@ -3,6 +3,8 @@ import {BASE_URL} from '../Constant/constant';
 import promiseMiddleware from 'redux-promise';
 export let FETCH_DATES = "FETCH_DATES";
 export let FETCH_REPORT_BY_DATE = "FETCH_REPORT_BY_DATE";
+export let FETCH_DRILLDOWN_REPORT = "FETCH_DRILLDOWN_REPORT";
+export let FETCH_DRILLDOWN_RULES_REPORT = "FETCH_DRILLDOWN_RULES_REPORT";
 export let FETCH_SOURCE = "FETCH_SOURCE";
 export let VIEW_DATA_FETCH_REPORT_LINKAGE = "VIEW_DATA_FETCH_REPORT_LINKAGE";
 export let INSERT_SOURCE_DATA = "INSERT_SOURCE_DATA";
@@ -21,6 +23,20 @@ export function actionFetchReportFromDate(source_id,business_date,page){
   return{
     type: FETCH_REPORT_BY_DATE,
     payload:axios.get(BASE_URL + `view-data/report?source_id=${source_id}&business_date=${business_date}&page=${page}`)
+  }
+}
+export function actionFetchDrillDownReport(drill_info){
+  console.log('In the action drilldown',drill_info)
+  return{
+    type: FETCH_DRILLDOWN_REPORT,
+    payload:axios.get(BASE_URL + `document/drill-down-data`,drill_info),
+  }
+}
+export function actionFetchDrillDownRulesReport(rules,source_id,page){
+  console.log('In the action drilldown fetch rules',rules,source_id,page)
+  return{
+    type: FETCH_DRILLDOWN_RULES_REPORT,
+    payload:axios.get(BASE_URL + `business-rules/drill-down-rules?source_id=${source_id}&rules=${rules}&page=${page}`),
   }
 }
 export function actionDeleteFromSourceData(id,business_date,table_name,at){
