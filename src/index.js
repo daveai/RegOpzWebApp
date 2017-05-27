@@ -24,6 +24,7 @@ import ViewDataComponent from './components/ViewData/ViewDataComponent';
 import ViewReport from './components/ViewReport/ViewReport';
 import DrillDown from './components/DrillDown/DrillDown';
 import MaintainReportRules from './components/MaintainReportRules/MaintainReportRules';
+import AddReportRules from './components/MaintainReportRules/AddReportRules/AddReportRules';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -52,6 +53,7 @@ ReactDOM.render(
                     <Route path="view-report" component={ViewReport} />
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
+                    <Route path="maintain-report-rules/add" component={AddReportRules} />
                 </Route>
             </Route>
         </Router>

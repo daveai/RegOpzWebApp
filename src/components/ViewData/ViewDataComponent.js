@@ -9,6 +9,7 @@ import {
   actionFetchReportFromDate,
   actionFetchDrillDownReport,
   actionFetchDrillDownRulesReport,
+  actionFetchTableData,
   actionFetchSource,
   actionFetchReportLinkage,
   actionInsertSourceData,
@@ -65,12 +66,15 @@ class ViewDataComponent extends Component {
     this.reporting_date = this.props.location.query['reporting_date'];
     this.cell_calc_ref = this.props.location.query['cell_calc_ref'];
     this.rules = this.props.location.query['rules'];
+    this.table = this.props.location.query['table'];
+    this.filter = this.props.location.query['filter'];
   }
   componentWillMount(){
     //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
     this.fetchDataToGrid();
   }
   componentDidMount(){
+    console.log('inside component did mount',this.props.report)
     if(this.props.report.length != 0){
       if(this.props.report[0].cols.length != 0){
         this.pages = Math.ceil(this.props.report[0].count / 100);
@@ -100,7 +104,13 @@ class ViewDataComponent extends Component {
       console.log('this.props.report.length',this.props.report.length);
       console.log('this.pages',this.pages);
       this.export_csv_business_ref = `${this.reporting_date}.${this.report_id}.${this.sheet_id}.${this.cell_id}.${this.cell_calc_ref}`
-      if(this.rules){
+      if(this.table){
+        console.log('Inside table of fetch data to grid')
+        this.props.fetchTableData(this.table,this.filter,this.currentPage);
+        this.export_csv_business_ref = `${this.export_csv_business_ref}.rules`
+        console.log('Inside table of fetch data to grid props',this.props.report)
+      }
+      else if (this.rules){
         this.props.fetchDrillDownRulesReport(this.rules,this.source_id,this.currentPage);
         this.export_csv_business_ref = `${this.export_csv_business_ref}.rules`
       }
@@ -151,6 +161,7 @@ class ViewDataComponent extends Component {
 
   }
   renderGridAtRightPane(){
+    console.log(this.props.report.length, this.pages)
     if(this.props.report.length != 0 && this.pages != -1){
       if(this.props.report[0].cols.length != 0){
         this.pages = Math.ceil(this.props.report[0].count / 100);
@@ -538,6 +549,10 @@ const mapDispatchToProps = (dispatch) => {
       console.log('Inside dispatch to props',drill_info)
       dispatch(actionFetchDrillDownReport(drill_info))
     },
+    fetchTableData:(table,filter,page)=>{
+      console.log('Inside dispatch to props',table,filter,page)
+      dispatch(actionFetchTableData(table,filter,page));
+    },
     fetchDrillDownRulesReport:(rules,source_id,page)=>{
       console.log('Inside dispatch to props',rules,source_id,page)
       dispatch(actionFetchDrillDownRulesReport(rules,source_id,page))
@@ -561,6 +576,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 function mapStateToProps(state){
   console.log("On mapState ", state.view_data_store);
+  console.log("On mapState report ", state.report_store);
   return {
     data_date_heads:state.view_data_store.dates,
     report:state.report_store,

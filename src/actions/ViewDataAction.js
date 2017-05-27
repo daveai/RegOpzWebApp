@@ -5,6 +5,7 @@ export let FETCH_DATES = "FETCH_DATES";
 export let FETCH_REPORT_BY_DATE = "FETCH_REPORT_BY_DATE";
 export let FETCH_DRILLDOWN_REPORT = "FETCH_DRILLDOWN_REPORT";
 export let FETCH_DRILLDOWN_RULES_REPORT = "FETCH_DRILLDOWN_RULES_REPORT";
+export let FETCH_TABLE_DATA_REPORT = "FETCH_TABLE_DATA_REPORT";
 export let FETCH_SOURCE = "FETCH_SOURCE";
 export let VIEW_DATA_FETCH_REPORT_LINKAGE = "VIEW_DATA_FETCH_REPORT_LINKAGE";
 export let INSERT_SOURCE_DATA = "INSERT_SOURCE_DATA";
@@ -37,6 +38,13 @@ export function actionFetchDrillDownRulesReport(rules,source_id,page){
   return{
     type: FETCH_DRILLDOWN_RULES_REPORT,
     payload:axios.get(BASE_URL + `business-rules/drill-down-rules?source_id=${source_id}&rules=${rules}&page=${page}`),
+  }
+}
+export function actionFetchTableData(table,filter,page){
+  console.log('In the action fetch table data',table,filter,page)
+  return{
+    type: FETCH_TABLE_DATA_REPORT,
+    payload:axios.get(BASE_URL + `view-data/table-data?table=${table}&filter=${filter}&page=${page}`),
   }
 }
 export function actionDeleteFromSourceData(id,business_date,table_name,at){

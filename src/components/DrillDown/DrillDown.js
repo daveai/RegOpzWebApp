@@ -5,6 +5,7 @@ import {bindActionCreators, dispatch} from 'redux'
 import {
   actionDrillDown
 } from '../../actions/CaptureReportAction'
+import './DrillDownStyle.css'
 class DrillDownComponent extends Component {
   constructor(props){
     super(props);
@@ -26,73 +27,87 @@ class DrillDownComponent extends Component {
     }
     if(this.drillDownResult.agg_rules.length == 0 && this.drillDownResult.cell_rules.length == 0 && this.drillDownResult.comp_agg_rules.length == 0){
       return(
-        <div className="reg_gridHolder">
-          {this.renderBreadCrump()}
-          <div className="container">
-            <table className="table">
-              <thead>
-                <tr>
-                  <td>No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}</td>
-                </tr>
-              </thead>
-            </table>
+        <div className="container">
+          <div className="row">
+            <div className="col col-lg-12">
+              {this.renderBreadCrump()}
+            </div>
+            <div className="col col-lg-12">
+              <h2>Cell Formula</h2>
+              <div className="alert alert-success reg_cell_formula">
+                <button type="button" className="btn btn-primary btn-sm">Add Fromula</button> No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
+
+              </div>
+                <table className="table table-responsive reg_table_drill_down">
+                  <thead>
+                    <tr>
+                      <th>Cell Calculation Ref</th>
+                      <th>Data Source</th>
+                      <th>Aggregation Ref</th>
+                      <th>Aggregation Function</th>
+                      <th>Cell Business Rules</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+            </div>
           </div>
         </div>
       )
     } else {
       return(
-        <div className="reg_gridHolder">
-          {this.renderBreadCrump()}
         <div className="container">
-        <div className="container">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Cell Formula</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.drillDownResult.comp_agg_rules.map((item,index) => {
-                return(
-                    <tr>
-                      <td>{item.comp_agg_ref}</td>
-                    </tr>
-                )
-              })
-            }
-            </tbody>
-          </table>
-        </div>
-        <div className="container">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Cell Calculation Ref</th>
-                <th>Data Source</th>
-                <th>Aggregation Ref</th>
-                <th>Aggregation function</th>
-                <th>Cell Business Rules</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.drillDownResult.cell_rules.map((item,index) => {
-                return(
-                    <tr>
-                      <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_calc_ref}</a></td>
-                      <td>{item.source_id}</td>
-                      <td>{item.aggregation_ref}</td>
-                      <td>{item.aggregation_func}</td>
-                      <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
-                    </tr>
-                )
-              })
-            }
-            </tbody>
-            </table>
-        </div>
-        </div>
+          <div className="row">
+            <div className="col col-lg-12">
+              {this.renderBreadCrump()}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-lg-12">
+              <h2>Cell Formula</h2>
+              {
+                this.drillDownResult.comp_agg_rules.map((item,index) => {
+                  return(
+                      this.renderCellAggcRef(item)
+                  )
+                })
+              }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-lg-12">
+
+                  <table className="table-striped jambo_table bulk_action reg_table_drill_down">
+                    <thead>
+                      <tr>
+                        <th>Cell Calculation Ref</th>
+                        <th>Data Source</th>
+                        <th>Aggregation Ref</th>
+                        <th>Aggregation Function</th>
+                        <th>Cell Business Rules</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {
+                      this.drillDownResult.cell_rules.map((item,index) => {
+                        return(
+                              this.renderCellCalcRef(item)
+                        )
+                      })
+                    }
+                    </tbody>
+                  </table>
+
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-lg-12">
+              <button type="button" className="btn btn-primary">Add</button>
+            </div>
+          </div>
         </div>
       );
     }
@@ -117,6 +132,47 @@ class DrillDownComponent extends Component {
       )
     }
 
+  }
+  renderCellCalcRef(item){
+    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+      this.filter = `cell_calc_ref='${item.cell_calc_ref}'`
+      return(
+        <tr>
+          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_calc_def&filter=${this.filter}`}>{item.cell_calc_ref}</a></td>
+          <td>{item.source_id}</td>
+          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
+          <td>{item.aggregation_func}</td>
+          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
+          <td><button type="button" className="btn btn-round btn-warning">Delete</button></td>
+        </tr>
+      )
+    }
+    else {
+      return(
+        <tr>
+          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_calc_ref}</a></td>
+          <td>{item.source_id}</td>
+          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
+          <td>{item.aggregation_func}</td>
+          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
+        </tr>
+      )
+    }
+  }
+  renderCellAggcRef(item){
+    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+      this.filter = `id=${item.id}`
+      return(
+        <div className="alert alert-success reg_cell_formula"><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_comp_agg_def&filter=${this.filter}`}>{item.comp_agg_ref}</a></div>
+      )
+    }
+    else {
+      return(
+        <tr>
+          <td>{item.comp_agg_ref}</td>
+        </tr>
+      )
+    }
   }
 }
 

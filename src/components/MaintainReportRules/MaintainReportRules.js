@@ -165,10 +165,10 @@ class MaintainReportRules extends Component {
                                     this.props.maintain_report_rules_store[0].country[countrylistindex].report[reportlistindex].reportversions.map(function(reportversion,reportversionindex){
                                       return(
                                         <tr>
-                                        <td><a href={`#/dashboard/data-grid?report_id=${reportversion.report_id}`}>{reportversion.report_id}</a></td>
-                                        <td>{reportversion.valid_from}</td>
-                                        <td>{reportversion.valid_to}</td>
-                                        <td>{reportversion.last_updated_by}</td>
+                                          <td><a href={`#/dashboard/data-grid?report_id=${reportversion.report_id}`}>{reportversion.report_id}</a></td>
+                                          <td>{reportversion.valid_from}</td>
+                                          <td>{reportversion.valid_to}</td>
+                                          <td>{reportversion.last_updated_by}</td>
                                         </tr>
                                         )
                                       }.bind(this))
