@@ -34,10 +34,7 @@ class RegOpzDataGrid extends Component {
       this.data = this.props.captured_report[this.selectedSheet].matrix;
       return(
         <div className="reg_gridHolder">
-          <ol className="breadcrumb">
-            <li><a href="#/dashboard/view-report">View Report</a></li>
-            <li><a href={window.location.href}>{`${this.report_id} (${this.reporting_date})`}</a></li>
-          </ol>
+          {this.renderBreadCrump()}
           <div className="col col-lg-12">
             <div className="row mb-10">
               <div className="btn-group">
@@ -71,7 +68,7 @@ class RegOpzDataGrid extends Component {
                         className="btn btn-primary"
                         onClick={(event) => {
                           this.selectedSheet = event.target.getAttribute("target");
-                          
+
                           this.forceUpdate();
                         }}
                       >
@@ -106,6 +103,25 @@ class RegOpzDataGrid extends Component {
     } else {
       return(
         <h1>Loading...</h1>
+      )
+    }
+  }
+  renderBreadCrump(){
+    console.log('reporting_date',this.reporting_date)
+    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+      return(
+        <ol className="breadcrumb">
+          <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
+          <li><a href={window.location.href}>{`${this.report_id} (Manage Report Rules)`}</a></li>
+        </ol>
+      )
+    }
+    else{
+      return(
+        <ol className="breadcrumb">
+          <li><a href="#/dashboard/view-report">View Report</a></li>
+          <li><a href={window.location.href}>{`${this.report_id} (${this.reporting_date})`}</a></li>
+        </ol>
       )
     }
   }

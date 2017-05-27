@@ -121,6 +121,16 @@ class ViewDataComponent extends Component {
       if(this.rules){
         this.lastRef = `${this.cell_calc_ref} Rules`
       }
+      if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
+        return(
+          <ol className="breadcrumb">
+            <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
+            <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date}>{`${this.report_id} (Manage Report Rules)`}</a></li>
+            <li><a href={'#/dashboard/drill-down?report_id=' + this.report_id + '&sheet=' + this.sheet_id + '&cell=' + this.cell_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.sheet_id})(${this.cell_id})`}</a></li>
+            <li><a href={window.location.href}>{`${this.lastRef}`}</a></li>
+          </ol>
+        )
+      }
       return(
         <ol className="breadcrumb">
           <li><a href="#/dashboard/view-report">View Report</a></li>
@@ -128,7 +138,7 @@ class ViewDataComponent extends Component {
           <li><a href={'#/dashboard/drill-down?report_id=' + this.report_id + '&sheet=' + this.sheet_id + '&cell=' + this.cell_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.sheet_id})(${this.cell_id})`}</a></li>
           <li><a href={window.location.href}>{`${this.lastRef}`}</a></li>
         </ol>
-    )
+      )
     }
     else{
       return(

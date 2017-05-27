@@ -76,16 +76,17 @@ class ViewDataComponentV2 extends Component {
   }
   handleStartDateChange(date){
     this.setState({startDate:date});
-    if(this.props.apiFor == 'report'){
-      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'report_catalog');
-    } else {
+    if(this.props.apiFor == 'report')
+      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101",'report_catalog');
+    else
       this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
-    }
-
   }
   handleEndDateChange(date){
     this.setState({endDate:date});
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101");
+    if(this.props.apiFor == 'report')
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101",'report_catalog');
+    else
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
   renderAccordions(){
     this.dataSource = this.props.data_date_heads;

@@ -42,7 +42,7 @@ class Login extends Component {
 
                                     <div>
                                         <h1><i className="fa fa-paw"></i> RegOpz</h1>
-                                    <p>©2017 All Rights Reserved. RegOpz Pvt. Ltd. India</p>
+                                    <p>©2017 All Rights Reserved. RegOpz Pvt. Ltd.</p>
                                     </div>
                                 </div>
                             </form>

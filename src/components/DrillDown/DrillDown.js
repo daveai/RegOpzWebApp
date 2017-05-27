@@ -46,11 +46,7 @@ class DrillDownComponent extends Component {
     } else {
       return(
         <div className="reg_gridHolder">
-          <ol className="breadcrumb">
-            <li><a href="#/dashboard/view-report">View Report</a></li>
-            <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
-            <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
-          </ol>
+          {this.renderBreadCrump()}
         <div className="container">
         <div className="container">
           <table className="table">
@@ -104,6 +100,27 @@ class DrillDownComponent extends Component {
         </div>
       );
     }
+  }
+  renderBreadCrump(){
+    if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
+      return(
+        <ol className="breadcrumb">
+          <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
+          <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date}>{`${this.report_id} (Manage Report Rules)`}</a></li>
+          <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
+        </ol>
+      )
+    }
+    else{
+      return(
+        <ol className="breadcrumb">
+          <li><a href="#/dashboard/view-report">View Report</a></li>
+          <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
+          <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
+        </ol>
+      )
+    }
+
   }
 }
 
