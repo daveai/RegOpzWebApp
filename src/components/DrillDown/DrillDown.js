@@ -27,11 +27,7 @@ class DrillDownComponent extends Component {
     if(this.drillDownResult.agg_rules.length == 0 && this.drillDownResult.cell_rules.length == 0 && this.drillDownResult.comp_agg_rules.length == 0){
       return(
         <div className="reg_gridHolder">
-          <ol className="breadcrumb">
-            <li><a href="#/dashboard/view-report">View Report</a></li>
-            <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date} >{`${this.report_id} (${this.reporting_date})`}</a></li>
-            <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
-          </ol>
+          {this.renderBreadCrump()}
           <div className="container">
             <table className="table">
               <thead>
