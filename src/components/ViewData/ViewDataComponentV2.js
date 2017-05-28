@@ -13,7 +13,8 @@ import {
   actionFetchReportLinkage,
   actionInsertSourceData,
   actionUpdateSourceData,
-  actionDeleteFromSourceData
+  actionDeleteFromSourceData,
+  actionFetchDatesForReport
 } from '../../actions/ViewDataAction'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -36,11 +37,14 @@ class ViewDataComponentV2 extends Component {
     this.dataSource = null;
   }
   componentWillMount(){
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
+    if(this.props.apiFor == 'report')
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101",'report_catalog');
+    else
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
   render(){
     return(
-      <div className="container view_data_container">        
+      <div className="container view_data_container">
         <div className="col col-lg-6">
           <div className="row">
             <div className="input-group">
@@ -72,11 +76,17 @@ class ViewDataComponentV2 extends Component {
   }
   handleStartDateChange(date){
     this.setState({startDate:date});
-    this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
+    if(this.props.apiFor == 'report')
+      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101",'report_catalog');
+    else
+      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
   handleEndDateChange(date){
     this.setState({endDate:date});
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101");
+    if(this.props.apiFor == 'report')
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101",'report_catalog');
+    else
+      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
   renderAccordions(){
     this.dataSource = this.props.data_date_heads;
@@ -109,6 +119,7 @@ class ViewDataComponentV2 extends Component {
                                     month={item}
                                     date={date_item}
                                     key={date_index}
+                                    apiFor={this.props.apiFor}
                                   />
                                 )
                               })
@@ -129,8 +140,8 @@ class ViewDataComponentV2 extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchDates:(startDate,endDate)=>{
-      dispatch(actionFetchDates(startDate,endDate))
+    fetchDates:(startDate,endDate, table_name)=>{
+      dispatch(actionFetchDates(startDate,endDate,table_name))
     },
     fetchReportFromDate:(source_id,business_date,page)=>{
       dispatch(actionFetchReportFromDate(source_id,business_date,page))
@@ -149,7 +160,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteFromSourceData:(id,business_date,table_name, at) => {
       dispatch(actionDeleteFromSourceData(id,business_date,table_name, at));
-    }
+    },
+    fetchDatesForReport:(startDate,endDate)=>{
+      dispatch(actionFetchDatesForReport(startDate,endDate))
+    },
   }
 }
 function mapStateToProps(state){

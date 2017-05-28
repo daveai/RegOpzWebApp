@@ -39,7 +39,7 @@ class LeftMenu extends Component {
                                             <a href="#/dashboard/maintain-business-rules">Maintain Business Rules</a>
                                         </li>
                                         <li>
-                                            <a href="#">Maintain Report Rules</a>
+                                            <a href="#/dashboard/maintain-report-rules">Maintain Report Rules</a>
                                         </li>
                                         <li>
                                             <a href="#">Data Reteintion</a>

@@ -21,6 +21,10 @@ import custom from '../js/custom';
 import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
 import ViewDataComponentV2 from './components/ViewData/ViewDataComponentV2';
 import ViewDataComponent from './components/ViewData/ViewDataComponent';
+import ViewReport from './components/ViewReport/ViewReport';
+import DrillDown from './components/DrillDown/DrillDown';
+import MaintainReportRules from './components/MaintainReportRules/MaintainReportRules';
+import AddReportRules from './components/MaintainReportRules/AddReportRules/AddReportRules';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -46,7 +50,10 @@ ReactDOM.render(
                     <Route path="maintain-business-rules" component={MaintainBusinessRules} />
                     <Route path="view-data" component={ViewDataComponentV2} />
                     <Route path="view-data-on-grid" component={ViewDataComponent} />
-                    <Route path="view-report" component={ViewDataComponentV2} />
+                    <Route path="view-report" component={ViewReport} />
+                    <Route path="drill-down" component={DrillDown} />
+                    <Route path="maintain-report-rules" component={MaintainReportRules} />
+                    <Route path="maintain-report-rules/add" component={AddReportRules} />
                 </Route>
             </Route>
         </Router>

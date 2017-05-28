@@ -15,6 +15,8 @@ import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import { Button, Modal } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import _ from 'lodash';
+import {BASE_URL} from '../../Constant/constant';
+import axios from 'axios';
 require('react-datagrid/dist/index.css');
 require('./MaintainBusinessRules.css');
 class MaintainBusinessRules extends Component {
@@ -132,7 +134,7 @@ class MaintainBusinessRules extends Component {
                       title="Delete"
                       onClick={
                         this.handleDeleteClick.bind(this)
-                      } 
+                      }
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                     >
                       <i className="fa fa-remove"></i>
@@ -238,7 +240,14 @@ class MaintainBusinessRules extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
-                          window.location.href = "http://localhost:3000/static/business_rules.csv"
+                            axios.get(`${BASE_URL}business-rule/export_to_csv`)
+                            .then(function(response){
+                              console.log("export csv",response);
+                              window.location.href = "http://localhost:3000/static/" + response.data.file_name;
+                            })
+                            .catch(function (error) {
+                              console.log(error);
+                            });
                         }
                       }
                     >

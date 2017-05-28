@@ -3,71 +3,36 @@ import ReactDOM from 'react-dom';
 export default class RegOpzDataGridHeader extends Component {
     constructor(props) {
         super(props);
+        this.numberofCols = this.props.numberofCols;
+        this.colAttr = this.props.colAttr;
         this.columns = [];
-        for (let i = 0; i < 1000; i++) {
-            this.columns.push(this.alphaSequence(i));
+        for(let i = 0; i < this.numberofCols; i++){
+            this.columns[i] = this.alphaSequence(i);
         }
-        this.regHeaderStyle = {
-            width: this.columns.length * 102
-        }
-        this.colStyle = [];
-        this.rows = [
-            {cell:'A1', value:"Sample"},
-            {cell:'B1', value:"Sample"},
-            {cell:'G4', value:"Sample"}
-        ]
-        this.matrix = [[]];
-        for(let k = 0; k < this.rows.length; k++){            
-            this.matrix.push([]);
-            for(let j = 0; j < this.columns.length; j++){
-                this.matrix[k][j] = k + "," + j;
-            }
-        }
-        /*this.rows.map(function(item,index){
-            let cell = item.cell;
-            let coord = this.getRealCoords(cell);
-            this.matrix[coord.y][coord.x] = item.value;
-        }.bind(this));*/
+
+    }
+    componentWillReceiveProps(nextProps){
+      this.colAttr = nextProps.colAttr;
     }
     render() {
         var _self = this;
         return (
-            <div style={this.regHeaderStyle} className="reg_header">
-                <div className="reg_col_first"></div>
-                {this.columns.map(function(item, index) {
-                    return (
-                        <div onClick={(event)=>{
-                                _self.colStyle["reg_resize" + index] = {
-                                    width:"300px"
-                                }
-                                _self.setState({});
-                            }} key={index} className="reg_col" style={_self.colStyle["reg_resize" + index]}>
-                            <span>{item}</span>
-                        </div>
-                    )
-                })
-                }
-
+            <div className="reg_header">
+                <div className="reg_col_first">
+                  <span></span>
+                </div>
                 {
-                    this.matrix.map(function(row,rindex){
-
+                    this.columns.map(function(item, index) {
+                        let colStyleForHeader = {};
+                        if(typeof(this.colAttr[item]) != 'undefined'){
+                          colStyleForHeader.width = parseInt(this.colAttr[item]['width'])*9;
+                        }
                         return (
-                            <div key={rindex}>
-                                <div className="clearfix"></div>
-                                <div className="reg_col_first">{rindex}</div>
-                                {
-                                    row.map(function(col,cindex){
-                                        return(
-                                            <div key={cindex} className="reg_col" style={_self.colStyle["reg_resize" + cindex]}>
-                                                <span>{col}</span>
-                                            </div>
-                                        )
-                                    }.bind(_self))
-                                }
+                            <div key={index} className="reg_col">
+                                <span style={colStyleForHeader}>{item}</span>
                             </div>
-
                         )
-                    }.bind(_self))
+                    }.bind(this))
                 }
             </div>
         )

@@ -1,26 +1,112 @@
 .reg_col {
-  float: left;
-  width: 100px;
+  display: table-cell;
   text-align: center;
   background-color: #ababab;
-  border: 1px solid;
+  border-right: 1px solid;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  height: 30px;
 }
 .reg_col_first {
-  float: left;
-  width: 20px;
+  display: table-cell;
   text-align: center;
   background-color: #ababab;
-  border: 1px solid;
-  min-height: 21px;
+  border-right: 1px solid;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.reg_grid_row_marker_holder {
+  width: 30px;
+}
+.rowMarker {
+  text-align: center;
+  background-color: #ababab;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+  border-left: 1px solid;
+  float: left;
+  height: 30px;
+}
+.rowMarker:first-child {
+  border-top: 1px solid;
+}
+.rowMarker > span {
+  display: block;
+  width: 30px;
+
+}
+.reg_col > span {
+  display: block;
+  width: 100px;
+}
+.reg_col_first > span {
+  display: block;
+  width: 30px;
+
 }
 .reg_gridHolder {
   float: left;
-  overflow: auto;
   height: 80vh;
   min-width: 100px;
 }
 .reg_header {
-  min-width: 5000px;
-  overflow: auto;
+  min-width: 100px;
   float: left;
+}
+.reg_grid_drawing_container {
+  width: 98.8%;
+  background-color: #ffffff;
+  position: relative;
+  left: 32px;
+}
+.reg_horizontal_line {
+    height: 30px;
+    border-bottom: 1px solid;
+}
+.reg_horizontal_line_holder {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+}
+.reg_vertical_line_holder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.reg_vertical_line {
+  float: left;
+  width: 101px;
+  height: 100%;
+  border-right: 1px solid;
+}
+.reg_cell {
+    position: absolute;
+    width: 100px;
+    height: 29px;
+    top: 0;
+    left: 0;
+    background-color: white;
+    text-align: center;
+    display: table;
+}
+.reg_cell_selected {
+  border: 1px solid red;
+
+}
+.reg_cell > span {
+  display: table-cell;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.reg_sheet_buttons_holder {
+  margin-bottom: 10px;
+}
+.rightClickContextMenu {
+  width: 220px;
+  height: 250px;
+  background-color: blue;
+  position: absolute;
+  display: none;
 }
