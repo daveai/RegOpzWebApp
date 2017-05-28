@@ -25,20 +25,25 @@ class DrillDownComponent extends Component {
         <h1>Loading...</h1>
       )
     }
-    if(this.drillDownResult.agg_rules.length == 0 && this.drillDownResult.cell_rules.length == 0 && this.drillDownResult.comp_agg_rules.length == 0){
-      return(
-        <div className="container">
-          <div className="row">
-            <div className="col col-lg-12">
-              {this.renderBreadCrump()}
-            </div>
-            <div className="col col-lg-12">
-              <h2>Cell Formula</h2>
-              <div className="alert alert-success reg_cell_formula">
-                <button type="button" className="btn btn-primary btn-sm">Add Fromula</button> No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
+    return(
+      <div className="container">
+        <div className="row">
+          <div className="col col-lg-12">
+            {this.renderBreadCrump()}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col col-lg-12">
+            <h2>Cell Formula</h2>
+            {
+              this.renderCellAggcRef()
+            }
+          </div>
+        </div>
+        <div className="row">
+          <div className="col col-lg-12">
 
-              </div>
-                <table className="table table-responsive reg_table_drill_down">
+                <table className="table-striped jambo_table bulk_action reg_table_drill_down">
                   <thead>
                     <tr>
                       <th>Cell Calculation Ref</th>
@@ -46,71 +51,18 @@ class DrillDownComponent extends Component {
                       <th>Aggregation Ref</th>
                       <th>Aggregation Function</th>
                       <th>Cell Business Rules</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-
+                  {this.renderCellCalcRefSection()}
                   </tbody>
                 </table>
-            </div>
           </div>
         </div>
-      )
-    } else {
-      return(
-        <div className="container">
-          <div className="row">
-            <div className="col col-lg-12">
-              {this.renderBreadCrump()}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col col-lg-12">
-              <h2>Cell Formula</h2>
-              {
-                this.drillDownResult.comp_agg_rules.map((item,index) => {
-                  return(
-                      this.renderCellAggcRef(item)
-                  )
-                })
-              }
-            </div>
-          </div>
-          <div className="row">
-            <div className="col col-lg-12">
-
-                  <table className="table-striped jambo_table bulk_action reg_table_drill_down">
-                    <thead>
-                      <tr>
-                        <th>Cell Calculation Ref</th>
-                        <th>Data Source</th>
-                        <th>Aggregation Ref</th>
-                        <th>Aggregation Function</th>
-                        <th>Cell Business Rules</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {
-                      this.drillDownResult.cell_rules.map((item,index) => {
-                        return(
-                              this.renderCellCalcRef(item)
-                        )
-                      })
-                    }
-                    </tbody>
-                  </table>
-
-            </div>
-          </div>
-          <div className="row">
-            <div className="col col-lg-12">
-              <button type="button" className="btn btn-primary">Add</button>
-            </div>
-          </div>
-        </div>
-      );
-    }
+        {this.showAddRuleButton()}
+      </div>
+    );
   }
   renderBreadCrump(){
     if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
@@ -131,18 +83,47 @@ class DrillDownComponent extends Component {
         </ol>
       )
     }
-
   }
-  renderCellCalcRef(item){
+  renderCellCalcRefSection(){
+    if (this.drillDownResult.cell_rules.length == 0) {
+      console.log('No cell rule section')
+      return(
+        <tr>
+          <td>No rules defined for the cell {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      )
+    }
+    else {
+      console.log('cell rules exist')
+      return(
+        this.drillDownResult.cell_rules.map((item,index) => {
+          return(
+                this.renderCellCalcRefItem(item,index)
+          )
+        })
+      )
+    }
+  }
+  renderCellCalcRefItem(item,index){
     if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
       this.filter = `cell_calc_ref='${item.cell_calc_ref}'`
       return(
         <tr>
-          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_calc_def&filter=${this.filter}`}>{item.cell_calc_ref}</a></td>
+          <td>
+            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_calc_def&filter=${this.filter}`}>{item.cell_calc_ref}</a>
+          </td>
           <td>{item.source_id}</td>
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
-          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
+          <td>
+            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
+            <span style={{maxWidth: "300px", display: "block"}}></span>
+          </td>
           <td><button type="button" className="btn btn-round btn-warning">Delete</button></td>
         </tr>
       )
@@ -154,23 +135,63 @@ class DrillDownComponent extends Component {
           <td>{item.source_id}</td>
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
-          <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a></td>
+          <td>
+            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
+            <span style={{maxWidth: "300px", display: "block"}}></span>
+          </td>
+          <td></td>
         </tr>
       )
     }
   }
-  renderCellAggcRef(item){
-    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+  renderCellAggcRef(){
+    if (this.drillDownResult.comp_agg_rules.length == 0){
+      console.log('When no agg rules found')
+      if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
+        console.log('Maintain report rules')
+        return(
+          <div className="alert alert-success reg_cell_formula">
+            <button type="button" className="btn btn-primary btn-sm">Add Fromula</button>
+            No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
+          </div>
+        )
+      }
+      else {
+        console.log('Report drill down')
+        return(
+          <div className="alert alert-success reg_cell_formula">
+            No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
+          </div>
+        )
+      }
+    }
+    else{
+      console.log('With agg rules data available')
+      let item = this.drillDownResult.comp_agg_rules[0]
       this.filter = `id=${item.id}`
       return(
-        <div className="alert alert-success reg_cell_formula"><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_comp_agg_def&filter=${this.filter}`}>{item.comp_agg_ref}</a></div>
+        <div className="alert alert-success reg_cell_formula">
+          <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_comp_agg_def&filter=${this.filter}`}>{item.comp_agg_ref}</a>
+        </div>
+      )
+    }
+  }
+  showAddRuleButton(){
+    if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
+      return(
+        <div className="row">
+          <div className="col col-lg-12">
+            <button type="button" className="btn btn-primary">Add</button>
+          </div>
+        </div>
       )
     }
     else {
       return(
-        <tr>
-          <td>{item.comp_agg_ref}</td>
-        </tr>
+        <div className="row">
+          <div className="col col-lg-12">
+          </div>
+        </div>
       )
     }
   }

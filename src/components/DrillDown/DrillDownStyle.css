@@ -1,13 +1,19 @@
 .reg_table_drill_down > thead > tr > th {
   vertical-align: middle;
-  text-align: center;
+  text-align: left;
   padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
 }
 .reg_table_drill_down > tbody > tr > td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle !important;
   word-wrap: break-word;
   padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
 }
 .breadcrumb {
   padding-left: 0px;
