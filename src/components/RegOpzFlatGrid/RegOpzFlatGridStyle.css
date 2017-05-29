@@ -1,23 +1,29 @@
 .flat_grid_header_cell {
     display: table-cell;
     text-align: center;
-    height: 40px;
+    height: 36px;
     vertical-align: middle;
-    background-color: #eaf2ff;
-    border-left: 1px solid #a8a8a8;
-    border-top: 1px solid #a8a8a8;
+    background-color: #fff;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
     position: relative;
 }
 .flat_grid_row_cell {
     display: table-cell;
     text-align: center;
-    height: 40px;
+    height: 36px;
     vertical-align: middle;
-    border-left: 1px solid #a8a8a8;
-    border-top: 1px solid #a8a8a8;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 .flat_grid_row_container {
     float: left;
+}
+.flat_grid_row_container:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.flat_grid_row_container:nth-child(odd) {
+    background-color: #fff;
 }
 .flat_grid_row_container:hover {
     background-color: #c1d9ff;
@@ -40,13 +46,17 @@
 }
 .flat_grid_row_cell > span {
     width: 200px;
-    display: block;
+    display: table-caption;
     height: 100%;
     position: relative;
     overflow: hidden;
 }
 .flat_grid_row_cell > span.selectedCell {
     border: 1px solid #ae456a;
+    width: 200px;
+    display: block;
+    height: 100%;
+    padding-top: 7px;
 }
 .flat_grid_row_cell > span > input {
     border: none;
@@ -97,10 +107,4 @@
 }
 .flat_grid_selected_row:hover{
   background-color: #c5d8f7;
-}
-.flat_grid_header_container{
-
-}
-.flat_grid_rows_container{
-
 }

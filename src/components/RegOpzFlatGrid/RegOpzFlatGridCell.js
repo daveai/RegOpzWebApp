@@ -64,6 +64,7 @@ export default class RegOpzFlatGridCell extends Component {
         if(this.editingValue != event.target.value){
           this.refs.modalAlert.open("Do you want to change \"" +  this.editingValue + "\" to \"" + event.target.value + "\" ?");
         }
+        $(".flat_grid_row_cell > span").removeClass('selectedCell');
         $(event.target).remove();
     }
     handleAlertOkayClick(){
