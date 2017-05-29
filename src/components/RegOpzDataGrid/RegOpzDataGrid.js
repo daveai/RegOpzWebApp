@@ -35,48 +35,52 @@ class RegOpzDataGrid extends Component {
       return(
         <div className="reg_gridHolder">
           {this.renderBreadCrump()}
-          <div className="col col-lg-12">
-            <div className="row mb-10">
-              <div className="btn-group">
-                  <button
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Drill Down"
-                    onClick={
-                      (event) => {
-                        hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
-                      }
-
-                    }
-                    className="btn btn-circle btn-primary business_rules_ops_buttons"
-                  >
-                    <i className="fa fa-cog"></i>
-                  </button>
-              </div>
-            </div>
-          </div>
-          <div className="col col-lg-12">
-            <div className="row reg_sheet_buttons_holder">
-              <div className="btn-group">
-                {
-                  this.props.captured_report.map((item,index) => {
-                    return(
+          <div className="row reg_ops_button_holder">
+            <div className="col col-lg-12">
+              <div className="row">
+                <div className="col col-lg-12 mb-10">
+                  <div className="btn-group">
                       <button
-                        key={index}
-                        target={index}
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={(event) => {
-                          this.selectedSheet = event.target.getAttribute("target");
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Drill Down"
+                        onClick={
+                          (event) => {
+                            hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
+                          }
 
-                          this.forceUpdate();
-                        }}
+                        }
+                        className="btn btn-circle btn-primary business_rules_ops_buttons"
                       >
-                        {item['sheet']}
+                        <i className="fa fa-cog"></i>
                       </button>
-                    )
-                  })
-                }
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col col-lg-12 reg_sheet_buttons_holder">
+                  <div className="btn-group">
+                    {
+                      this.props.captured_report.map((item,index) => {
+                        return(
+                          <button
+                            key={index}
+                            target={index}
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={(event) => {
+                              this.selectedSheet = event.target.getAttribute("target");
+
+                              this.forceUpdate();
+                            }}
+                          >
+                            {item['sheet']}
+                          </button>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
