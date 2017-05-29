@@ -1,5 +1,7 @@
 import {
-  FETCH_REPORT_TEMPLATE_LIST
+  FETCH_REPORT_TEMPLATE_LIST,
+  FETCH_BUSINESS_RULES_BY_SOURCE_ID,
+  FETCH_SOURCES
 } from '../actions/MaintainReportRuleAction';
 export default function(state=[],action){
   console.log("Action received in maintain report rules reducer: ",action);
@@ -7,6 +9,14 @@ export default function(state=[],action){
     case FETCH_REPORT_TEMPLATE_LIST:
       state = [];
       return state.concat(action.payload.data)
+    case FETCH_BUSINESS_RULES_BY_SOURCE_ID:
+		return Object.assign({},state,{
+			business_rules:action.payload.data
+		})
+	case FETCH_SOURCES:
+		return Object.assign({},state,{
+			sources:action.payload.data
+		})
     default:
     	return state;
   }

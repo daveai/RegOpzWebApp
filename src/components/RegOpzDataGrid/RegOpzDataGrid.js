@@ -32,6 +32,7 @@ class RegOpzDataGrid extends Component {
   render(){
     if(this.props.captured_report.length > 0){
       this.data = this.props.captured_report[this.selectedSheet].matrix;
+      this.numberofRows = this.data.length;
       return(
         <div className="reg_gridHolder">
           {this.renderBreadCrump()}
