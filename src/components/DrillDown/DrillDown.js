@@ -121,8 +121,9 @@ class DrillDownComponent extends Component {
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
+            <span style={{maxWidth: "300px", display: "block"}}>
             <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
-            <span style={{maxWidth: "300px", display: "block"}}></span>
+            </span>
           </td>
           <td><button type="button" className="btn btn-round btn-warning">Delete</button></td>
         </tr>
@@ -136,8 +137,9 @@ class DrillDownComponent extends Component {
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
+            <span style={{maxWidth: "300px", display: "block"}}>
             <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
-            <span style={{maxWidth: "300px", display: "block"}}></span>
+            </span>
           </td>
           <td></td>
         </tr>
