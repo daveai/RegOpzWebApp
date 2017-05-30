@@ -190,11 +190,11 @@ class AddReportRules extends Component {
                       className="form-control"
                       onChange={
                         (event) => {
+                          let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
                           this.state.form.source_id = event.target.value;
                           this.props.fetchBusinessRulesBySourceId(event.target.value);
-
-                          console.log('table name in change event',$(event.target).attr('target'))
-                          this.props.fetchSourceColumnList(event.target.getAttribute('target'));
+                          console.log('table name in change event',table_name);
+                          this.props.fetchSourceColumnList(table_name);
                         }
                       }
                     >
