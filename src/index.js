@@ -53,7 +53,7 @@ ReactDOM.render(
                     <Route path="view-report" component={ViewReport} />
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
-                    <Route path="maintain-report-rules/add" component={AddReportRules} />
+                    <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
                 </Route>
             </Route>
         </Router>

@@ -183,7 +183,7 @@ class DrillDownComponent extends Component {
       return(
         <div className="row">
           <div className="col col-lg-12">
-            <button type="button" className="btn btn-primary">Add</button>
+            <a href={`#/dashboard/maintain-report-rules/add-report-rules?report_id=${this.report_id}&sheet=${encodeURI(this.sheet)}&cell=${this.cell}`}><button type="button" className="btn btn-primary">Add</button></a>
           </div>
         </div>
       )
