@@ -25,6 +25,9 @@ import ViewReport from './components/ViewReport/ViewReport';
 import DrillDown from './components/DrillDown/DrillDown';
 import MaintainReportRules from './components/MaintainReportRules/MaintainReportRules';
 import AddReportRules from './components/MaintainReportRules/AddReportRules/AddReportRules';
+import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis';
+import VarianceAnalysisGrid from './components/VarianceAnalysis/VarianceAnalysisGrid';
+import VarianceAnalysisChart from './components/VarianceAnalysis/VarianceAnalysisChart';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -54,6 +57,9 @@ ReactDOM.render(
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
                     <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
+                    <Route path="variance-analysis" component={VarianceAnalysisForm} />
+                    <Route path="variance-analysis/variance-data-grid" component={VarianceAnalysisGrid} />
+                    <Route path="variance-analysis/variance-chart" component={VarianceAnalysisChart}/>
                 </Route>
             </Route>
         </Router>

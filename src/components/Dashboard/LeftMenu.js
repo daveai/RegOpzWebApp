@@ -95,6 +95,9 @@ class LeftMenu extends Component {
                                         <i className="fa fa-bar-chart"></i> Data Analytics<span className="fa fa-chevron-down"></span>
                                     </a>
                                     <ul className="nav child_menu">
+                                      <li>
+                                          <a href="#/dashboard/variance-analysis">Variance Analysis</a>
+                                      </li>
                                     </ul>
                                 </li>
                                 <li>
