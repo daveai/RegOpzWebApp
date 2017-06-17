@@ -67,6 +67,9 @@ class LeftMenu extends Component {
                                       <li>
                                           <a href="#/dashboard/view-report">View Report</a>
                                       </li>
+                                      <li>
+                                          <a href="#/dashboard/create-report">Create Report</a>
+                                      </li>
                                     </ul>
                                 </li>
                                 <li>

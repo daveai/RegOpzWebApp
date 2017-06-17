@@ -28,6 +28,7 @@ import AddReportRules from './components/MaintainReportRules/AddReportRules/AddR
 import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis';
 import VarianceAnalysisGrid from './components/VarianceAnalysis/VarianceAnalysisGrid';
 import VarianceAnalysisChart from './components/VarianceAnalysis/VarianceAnalysisChart';
+import CreateReport from './components/CreateReport/CreateReport';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -54,6 +55,7 @@ ReactDOM.render(
                     <Route path="view-data" component={ViewDataComponentV2} />
                     <Route path="view-data-on-grid" component={ViewDataComponent} />
                     <Route path="view-report" component={ViewReport} />
+                    <Route path="create-report" component={CreateReport} />
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
                     <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
