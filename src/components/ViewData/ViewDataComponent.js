@@ -180,6 +180,7 @@ class ViewDataComponent extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
+                          this.selectedItems = this.flatGrid.deSelectAll();
                           this.currentPage = 0;
                           this.fetchDataToGrid();
                         }
@@ -499,7 +500,9 @@ class ViewDataComponent extends Component {
           ref={(modalAlert) => {this.modalAlert = modalAlert}}
           onClickOkay={
             () => {
-              this.props.deleteFromSourceData(this.selectedItems[0]['id'],this.currentBusinessDate, this.sourceTableName, this.selectedIndexOfGrid);
+              if (this.selectedItems.length > 0){
+                this.props.deleteFromSourceData(this.selectedItems[0]['id'],this.currentBusinessDate, this.sourceTableName, this.selectedIndexOfGrid);
+              }
 
             }
           }
@@ -509,10 +512,12 @@ class ViewDataComponent extends Component {
   }
   renderReportLinkageModal(){
     console.log("report linkage on modal",this.props.report_linkage);
+    let recordId =  ((this.selectedItems.length >0) ? this.selectedItems[this.selectedItems.length -1]['id'] : "" )
     if(typeof(this.props.report_linkage) != 'undefined'){
-      if(this.props.report_linkage.length > 0){
+      if(this.props.report_linkage.length > 0 ){
         return(
           <ul className="list-unstyled msg_list">
+            <span>{"ID: "+recordId}</span>
             <h6 className="view_data_qualifying_rules_h6">Qualified Business Rules</h6>
             <p className="view_data_qualifying_rules">{this.props.report_linkage[0]['data_qualifying_rules']}</p>
             {this.props.report_linkage.map(function(item,index){
@@ -528,7 +533,15 @@ class ViewDataComponent extends Component {
 
           </ul>
         )
+      }else{
+        return(
+          <ul className="list-unstyled msg_list">
+            <span>{"ID: "+recordId}</span>
+            <h6 className="view_data_qualifying_rules_h6">No report linkage found</h6>
+          </ul>
+        )
       }
+
     } else {
       return(
         <h2>Loading...</h2>

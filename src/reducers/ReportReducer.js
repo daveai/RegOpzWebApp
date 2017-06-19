@@ -9,7 +9,7 @@ import {
   FETCH_DATE_FOR_REPORT
 } from '../actions/ViewDataAction';
 export default function(state=[],action){
-  console.log("Action received in report reducer: ",action);
+  console.log("Action received in report reducer: ",action,state);
   switch(action.type){
     case FETCH_REPORT_BY_DATE:
     	state=[];

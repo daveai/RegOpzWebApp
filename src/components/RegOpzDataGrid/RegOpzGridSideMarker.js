@@ -21,7 +21,7 @@ export default class RegOpzDataGridSideMarker extends Component {
                         }
                         return (
                           <div className="rowMarker" style={stylex} key={index}>
-                            <span></span>
+                            <span>{index+1}</span>
                             <div className="clearfix"></div>
                           </div>
                         )

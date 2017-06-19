@@ -92,6 +92,9 @@ class MaintainBusinessRules extends Component {
                       className="btn btn-circle btn-primary business_rules_ops_buttons"
                       onClick={
                         (event) => {
+                          this.selectedRows = this.flatGrid.deSelectAll();
+                          this.selectedRowItem = null;
+                          this.selectedRow = null;
                           this.currentPage = 0;
                           this.props.fetchBusinesRules(this.currentPage);
                         }

@@ -10,6 +10,7 @@ export default class RegOpzFlatGridRow extends Component {
         this.cols = props.columns;
         this.selectedRows = [];
         this.rowContainerClassName = "flat_grid_row_container";
+        this.checkBoxStaus=null;
     }
     componentWillReceiveProps(nextProps){
         this.cols = nextProps.columns;
@@ -24,6 +25,7 @@ export default class RegOpzFlatGridRow extends Component {
       }
     }
     deSelectAll(){
+      console.log('selected rows before deselect',this.selectedRows)
       this.selectedRows = [];
       this.forceUpdate();
     }
@@ -33,14 +35,17 @@ export default class RegOpzFlatGridRow extends Component {
                 this.data.map(function(item,index){
                     if(this.isBusinessRulePresent(item)){
                       this.rowContainerClassName = "flat_grid_row_container flat_grid_row_container_active";
+                      this.checkBoxStaus="checked";
                     } else {
                       this.rowContainerClassName = "flat_grid_row_container";
+                      this.checkBoxStaus=null;
                     }
                     return(
                         <div
                             onClick={
                                 (event) => {
                                     this.props.onSelect(index,item);
+                                    console.log('View data on click ...',this.props.onSelect.length)
                                 }
                             }
                             key={index}
@@ -48,10 +53,15 @@ export default class RegOpzFlatGridRow extends Component {
                                 <div
                                     onClick={
                                         (event) => {
+                                          if(this.props.onSelect.length >0){
+                                            console.log('To uncheck the previously selected checkbox in data view mode')
+                                            this.selectedRows = [];
+                                          }
                                             if(this.isBusinessRulePresent(item)){
                                               var index = this.selectedRows.indexOf(item);
                                               this.selectedRows.splice(index, 1);
                                             } else {
+                                              console.log('View data on select row...',item)
                                               this.selectedRows.push(item);
                                             }
                                             this.props.onFullSelect(this.selectedRows);
@@ -59,7 +69,14 @@ export default class RegOpzFlatGridRow extends Component {
                                         }
                                     }
                                     key={index}
-                                    className="flat_grid_header_cell">
+                                    className="flat_grid_header_cell"
+                                >
+                                  <input type="checkbox"
+                                    id={item.id}
+                                    className="flat"
+                                    checked={this.checkBoxStaus}
+                                  >
+                                  </input>
                                 </div>
                                 {
                                     this.cols.map(function(citem,cindex){

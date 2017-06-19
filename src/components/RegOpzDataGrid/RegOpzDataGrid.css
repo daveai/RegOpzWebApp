@@ -53,7 +53,7 @@
 .reg_header {
   min-width: 100px;
   float: left;
-  margin-top: 100px;
+  margin-top: 82px;
 }
 .reg_grid_drawing_container {
   width: 98.8%;
@@ -113,11 +113,15 @@
   display: none;
 }
 .mb-10 {
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 .reg_ops_button_holder {
     background-color: #f7f7f7;
     z-index: 99999;
     position: fixed;
-    width: 167vh;
+    min-width: 80.365%;
+    margin-top: 1px;
+}
+.breadcrumb {
+  margin-bottom: 2px;
 }

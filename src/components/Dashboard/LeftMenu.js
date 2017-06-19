@@ -52,7 +52,7 @@ class LeftMenu extends Component {
                                     </a>
                                     <ul className="nav child_menu">
                                         <li>
-                                            <a href="#">Maintain Sources</a>
+                                            <a href="#/dashboard/maintain-sources">Maintain Sources</a>
                                         </li>
                                         <li>
                                             <a href="#/dashboard/view-data">View Data</a>

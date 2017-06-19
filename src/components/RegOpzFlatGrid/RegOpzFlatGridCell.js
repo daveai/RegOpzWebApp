@@ -26,7 +26,7 @@ export default class RegOpzFlatGridCell extends Component {
                   onClick={this.handleCellSingleClick.bind(this)}
                   onKeyPress={this.handleCellKeyPress.bind(this)}
                 >
-                    {(this.state.value != null) ? this.state.value.toString().substring(0,30) : ""}
+                    {(this.state.value != null && this.state.value.toString().length !=0 ) ? this.state.value.toString().substring(0,30) : "---"}
                 </span>
                   <ModalAlert ref="modalAlert" showDiscard={true} onClickOkay={this.handleAlertOkayClick.bind(this)} onClickDiscard={this.handleAlertDiscardClick.bind(this)} />
             </div>
@@ -46,11 +46,12 @@ export default class RegOpzFlatGridCell extends Component {
         $(event.target).parent().parent(".flat_grid_row_container").addClass('flat_grid_row_container_active');
     }
     handleCellSingleClick(event){
+      console.log("In single click...")
       $(".flat_grid_row_cell > span").removeClass('selectedCell');
       $(event.target).addClass('selectedCell');
     }
     handleCellKeyPress(event){
-      
+
     }
     handleChange(event){
         this.setState({
