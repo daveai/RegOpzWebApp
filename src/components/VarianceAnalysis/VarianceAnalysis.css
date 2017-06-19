@@ -1,0 +1,11 @@
+.form-container {
+  min-height: 90vh;
+}
+
+.reg_cell_data:hover{
+  cursor:pointer;
+  background-color: green;
+  color:blue;
+  font-weight:bold;
+
+};

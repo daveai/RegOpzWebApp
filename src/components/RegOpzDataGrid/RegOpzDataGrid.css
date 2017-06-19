@@ -64,6 +64,7 @@
 .reg_horizontal_line {
     height: 30px;
     border-bottom: 1px solid #ddd;
+    background-color: white;
 }
 .reg_horizontal_line_holder {
     position: absolute;
@@ -90,6 +91,7 @@
     top: 0;
     left: 0;
     background-color: white;
+    color:#3F3F92;
     text-align: center;
     display: table;
 }
@@ -124,4 +126,5 @@
 }
 .breadcrumb {
   margin-bottom: 2px;
+  width: 167vh;
 }
