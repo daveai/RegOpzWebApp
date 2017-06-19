@@ -218,7 +218,7 @@ class DrillDownComponent extends Component {
     console.log('Inside delete',item)
     this.nextPropsCount = 0;
     this.props.deleteRuleData(item.id,'report_calc_def',index);
-    this.props.drillDown(this.report_id,this.sheet,this.cell);
+    //this.props.drillDown(this.report_id,this.sheet,this.cell);
   }
   handleAddRule(event){
     console.log('Inside add rule');
