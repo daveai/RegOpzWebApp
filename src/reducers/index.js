@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   sources:SourceReducer,
   captured_report:CapturedReportReducer,
   maintain_report_rules_store:MaintainReportRulesReducer,
-  source_feeds:MaintainSourcesReducer
+  source_feeds:MaintainSourcesReducer,
   variance_analysis_store:VarianceAnalysisReducer,
   create_report_store:CreateReportReducer
 });
