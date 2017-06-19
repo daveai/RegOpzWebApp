@@ -1,34 +1,35 @@
 .reg_col {
   display: table-cell;
   text-align: center;
-  background-color: #ababab;
-  border-right: 1px solid;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  height: 30px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  height: 36px;
+  vertical-align: middle;
 }
 .reg_col_first {
   display: table-cell;
   text-align: center;
-  background-color: #ababab;
-  border-right: 1px solid;
-  border-top: 1px solid;
-  border-left: 1px solid;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
 }
 .reg_grid_row_marker_holder {
   width: 30px;
 }
 .rowMarker {
   text-align: center;
-  background-color: #ababab;
-  border-bottom: 1px solid;
-  border-right: 1px solid;
-  border-left: 1px solid;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
   float: left;
   height: 30px;
 }
 .rowMarker:first-child {
-  border-top: 1px solid;
+  border-top: 1px solid #ddd;
 }
 .rowMarker > span {
   display: block;
@@ -46,12 +47,13 @@
 }
 .reg_gridHolder {
   float: left;
-  height: 80vh;
+  height: 84vh;
   min-width: 100px;
 }
 .reg_header {
   min-width: 100px;
   float: left;
+  margin-top: 82px;
 }
 .reg_grid_drawing_container {
   width: 98.8%;
@@ -61,7 +63,8 @@
 }
 .reg_horizontal_line {
     height: 30px;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
 }
 .reg_horizontal_line_holder {
     position: absolute;
@@ -79,7 +82,7 @@
   float: left;
   width: 101px;
   height: 100%;
-  border-right: 1px solid;
+  border-right: 1px solid #ddd;
 }
 .reg_cell {
     position: absolute;
@@ -88,6 +91,7 @@
     top: 0;
     left: 0;
     background-color: white;
+    color:#3F3F92;
     text-align: center;
     display: table;
 }
@@ -109,4 +113,18 @@
   background-color: blue;
   position: absolute;
   display: none;
+}
+.mb-10 {
+  margin-bottom: 1px;
+}
+.reg_ops_button_holder {
+    background-color: #f7f7f7;
+    z-index: 99999;
+    position: fixed;
+    min-width: 80.365%;
+    margin-top: 1px;
+}
+.breadcrumb {
+  margin-bottom: 2px;
+  width: 167vh;
 }

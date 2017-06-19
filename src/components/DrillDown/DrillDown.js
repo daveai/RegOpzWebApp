@@ -5,6 +5,13 @@ import {bindActionCreators, dispatch} from 'redux'
 import {
   actionDrillDown
 } from '../../actions/CaptureReportAction'
+import {
+  actionDeleteRuleData
+} from '../../actions/MaintainReportRuleAction'
+import {
+  Link,
+  hashHistory
+} from 'react-router';
 import './DrillDownStyle.css'
 class DrillDownComponent extends Component {
   constructor(props){
@@ -14,13 +21,23 @@ class DrillDownComponent extends Component {
     this.cell = this.props.location.query['cell'];
     this.reporting_date = this.props.location.query['reporting_date'];
     this.drillDownResult = null;
+    this.nextPropsCount = 0;
   }
   componentWillMount(){
     this.props.drillDown(this.report_id,this.sheet,this.cell);
   }
+  componentWillReceiveProps(nextProps){
+    console.log('Inside componentWillReceiveProps');
+    if (this.nextPropsCount == 0) {
+      console.log('Inside if of componentWillReceiveProps');
+      nextProps.drillDown(this.report_id,this.sheet,this.cell);;
+      this.nextPropsCount = this.nextPropsCount + 1;
+    }
+  };
   render(){
+    console.log('drill down result',this.props.drill_down_result)
     this.drillDownResult = this.props.drill_down_result;
-    if(this.drillDownResult == null){
+    if(typeof(this.drillDownResult)=='undefined' || this.drillDownResult == null){
       return(
         <h1>Loading...</h1>
       )
@@ -115,16 +132,17 @@ class DrillDownComponent extends Component {
       return(
         <tr>
           <td>
-            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_calc_def&filter=${this.filter}`}>{item.cell_calc_ref}</a>
+            <Link to={`dashboard/maintain-report-rules/add-report-rules?request=update&index=${index}`}>{item.cell_calc_ref}</Link>
           </td>
           <td>{item.source_id}</td>
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
+            <span style={{maxWidth: "300px", display: "block"}}>
             <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
-            <span style={{maxWidth: "300px", display: "block"}}></span>
+            </span>
           </td>
-          <td><button type="button" className="btn btn-round btn-warning">Delete</button></td>
+          <td><button type="button" className="btn btn-round btn-warning" onClick={()=>{this.handleDelete(item,index)}}>Delete</button></td>
         </tr>
       )
     }
@@ -136,8 +154,9 @@ class DrillDownComponent extends Component {
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
+            <span style={{maxWidth: "300px", display: "block"}}>
             <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
-            <span style={{maxWidth: "300px", display: "block"}}></span>
+            </span>
           </td>
           <td></td>
         </tr>
@@ -181,7 +200,7 @@ class DrillDownComponent extends Component {
       return(
         <div className="row">
           <div className="col col-lg-12">
-            <button type="button" className="btn btn-primary">Add</button>
+            <button type="button" className="btn btn-primary" onClick={()=>{this.handleAddRule()}}>Add</button>
           </div>
         </div>
       )
@@ -195,6 +214,16 @@ class DrillDownComponent extends Component {
       )
     }
   }
+  handleDelete(item,index){
+    console.log('Inside delete',item)
+    this.nextPropsCount = 0;
+    this.props.deleteRuleData(item.id,'report_calc_def',index);
+    //this.props.drillDown(this.report_id,this.sheet,this.cell);
+  }
+  handleAddRule(event){
+    console.log('Inside add rule');
+    hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add&report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
+  }
 }
 
 function mapStateToProps(state){
@@ -207,6 +236,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     drillDown:(report_id,sheet,cell) => {
       dispatch(actionDrillDown(report_id,sheet,cell));
+    },
+    deleteRuleData:(id,table_name,at) => {
+      dispatch(actionDeleteRuleData(id,table_name,at));
     }
   }
 }

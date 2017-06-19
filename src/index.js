@@ -25,6 +25,12 @@ import ViewReport from './components/ViewReport/ViewReport';
 import DrillDown from './components/DrillDown/DrillDown';
 import MaintainReportRules from './components/MaintainReportRules/MaintainReportRules';
 import AddReportRules from './components/MaintainReportRules/AddReportRules/AddReportRules';
+import MaintainSources from './components/MaintainSources/MaintainSources';
+import AddSources from './components/MaintainSources/AddSources/AddSources';
+import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis';
+import VarianceAnalysisGrid from './components/VarianceAnalysis/VarianceAnalysisGrid';
+import VarianceAnalysisChart from './components/VarianceAnalysis/VarianceAnalysisChart';
+import CreateReport from './components/CreateReport/CreateReport';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 class Index extends Component {
     render() {
@@ -51,9 +57,15 @@ ReactDOM.render(
                     <Route path="view-data" component={ViewDataComponentV2} />
                     <Route path="view-data-on-grid" component={ViewDataComponent} />
                     <Route path="view-report" component={ViewReport} />
+                    <Route path="create-report" component={CreateReport} />
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
-                    <Route path="maintain-report-rules/add" component={AddReportRules} />
+                    <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
+                    <Route path="maintain-sources" component={MaintainSources} />
+                    <Route path="maintain-sources/add-sources" component={AddSources} />
+                    <Route path="variance-analysis" component={VarianceAnalysisForm} />
+                    <Route path="variance-analysis/variance-data-grid" component={VarianceAnalysisGrid} />
+                    <Route path="variance-analysis/variance-chart" component={VarianceAnalysisChart}/>
                 </Route>
             </Route>
         </Router>

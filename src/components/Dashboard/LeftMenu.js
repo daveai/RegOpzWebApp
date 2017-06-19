@@ -52,7 +52,7 @@ class LeftMenu extends Component {
                                     </a>
                                     <ul className="nav child_menu">
                                         <li>
-                                            <a href="#">Maintain Sources</a>
+                                            <a href="#/dashboard/maintain-sources">Maintain Sources</a>
                                         </li>
                                         <li>
                                             <a href="#/dashboard/view-data">View Data</a>
@@ -66,6 +66,9 @@ class LeftMenu extends Component {
                                     <ul className="nav child_menu">
                                       <li>
                                           <a href="#/dashboard/view-report">View Report</a>
+                                      </li>
+                                      <li>
+                                          <a href="#/dashboard/create-report">Create Report</a>
                                       </li>
                                     </ul>
                                 </li>
@@ -95,6 +98,9 @@ class LeftMenu extends Component {
                                         <i className="fa fa-bar-chart"></i> Data Analytics<span className="fa fa-chevron-down"></span>
                                     </a>
                                     <ul className="nav child_menu">
+                                      <li>
+                                          <a href="#/dashboard/variance-analysis">Variance Analysis</a>
+                                      </li>
                                     </ul>
                                 </li>
                                 <li>

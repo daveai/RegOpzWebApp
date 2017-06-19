@@ -1,0 +1,12 @@
+.form-container {
+  min-height: 90vh;
+}
+.view_data_date_picker_input {
+    float: left;
+    width: 200px;
+    
+}
+.view_data_date_picker_input:first-child {
+  margin-right: 10px;
+
+}

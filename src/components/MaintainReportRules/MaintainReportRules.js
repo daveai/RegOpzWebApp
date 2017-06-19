@@ -26,16 +26,20 @@ class MaintainReportRules extends Component {
     this.handleAdditionCountry = this.handleAdditionCountry.bind(this);
     this.handleDragCountry = this.handleDragCountry.bind(this);
   }
+  convertTagsToString(tags){
+    let selectedTags = [];
+    for(let i = 0; i < tags.length; i++){
+      selectedTags.push(tags[i].text)
+    }
+    return selectedTags.toString();
+  }
   handleDeleteReport(i) {
       let tags = this.tags.reportTags;
       tags.splice(i, 1);
-      //this.setState({reportTags: tags});
-      let selectedTags = [];
-      for(let i = 0; i < tags.length; i++){
-        selectedTags.push(tags[i].text)
-      }
-      console.log(selectedTags.toString());
-      this.props.fetchReportTemplateList(selectedTags.toString());
+      this.setState({reportTags: tags});
+      let reports = this.convertTagsToString(this.tags.reportTags)
+      let country = this.convertTagsToString(this.tags.countryTags)
+      this.props.fetchReportTemplateList(reports ? reports:'ALL', country ? country:'ALL');
 
   }
 
@@ -45,13 +49,10 @@ class MaintainReportRules extends Component {
           id: tags.length + 1,
           text: tag
       });
-      //this.setState({reportTags: tags});
-      let selectedTags = [];
-      for(let i = 0; i < tags.length; i++){
-        selectedTags.push(tags[i].text)
-      }
-      console.log(selectedTags.toString());
-      this.props.fetchReportTemplateList(selectedTags.toString());
+      this.setState({reportTags: tags});
+      let reports = this.convertTagsToString(this.tags.reportTags)
+      let country = this.convertTagsToString(this.tags.countryTags)
+      this.props.fetchReportTemplateList(reports ? reports:'ALL', country ? country:'ALL');
   }
 
   handleDragReport(tag, currPos, newPos) {
@@ -66,6 +67,9 @@ class MaintainReportRules extends Component {
       let tags = this.tags.countryTags;
       tags.splice(i, 1);
       this.setState({countryTags: tags});
+      let reports = this.convertTagsToString(this.tags.reportTags)
+      let country = this.convertTagsToString(this.tags.countryTags)
+      this.props.fetchReportTemplateList(reports ? reports:'ALL', country ? country:'ALL');
   }
 
   handleAdditionCountry(tag) {
@@ -75,6 +79,9 @@ class MaintainReportRules extends Component {
           text: tag
       });
       this.setState({countryTags: tags});
+      let reports = this.convertTagsToString(this.tags.reportTags)
+      let country = this.convertTagsToString(this.tags.countryTags)
+      this.props.fetchReportTemplateList(reports ? reports:'ALL', country ? country:'ALL');
   }
 
   handleDragCountry(tag, currPos, newPos) {
