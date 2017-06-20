@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
-import TreeView from 'react-treeview'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
+import TreeView from 'react-treeview';
 import _ from 'lodash';
 import Collapsible from '../CollapsibleModified/Collapsible';
-import SourceTreeInfoComponent from './SourceTreeInfoComponent';
+import { SourceTreeInfoComponent } from './SourceTreeInfoComponent';
 import {
   actionFetchDates,
   actionFetchReportFromDate,
@@ -15,36 +15,30 @@ import {
   actionUpdateSourceData,
   actionDeleteFromSourceData,
   actionFetchDatesForReport
-} from '../../actions/ViewDataAction'
+} from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import 'react-datepicker/dist/react-datepicker.css';
-require('../../../node_modules/react-treeview/react-treeview.css')
-require('./ViewDataComponentStyle.css')
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import {BASE_URL} from '../../Constant/constant';
+import { BASE_URL } from '../../Constant/constant';
 import axios from 'axios';
-class ViewDataComponentV2 extends Component {
-  constructor(props){
-    super(props)
+require('react-datepicker/dist/react-datepicker.css');
+require('../../../node_modules/react-treeview/react-treeview.css');
+require('../ViewData/ViewDataComponentStyle.css');
+
+export class ViewSourceComponent extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      startDate:null,
-      endDate:null,
-      sources:null
+      startDate: null,
+      endDate: null,
+      sources: null
     }
     this.dataSource = null;
   }
-  componentWillMount(){
-    let catalog = '';
-    if(this.props.apiFor == 'report')
-      catalog += 'report_catalog';
-    else
-      catalog += 'data_catalog';
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", catalog);
-  }
-  render(){
+
+  render() {
     return(
       <div className="container view_data_container">
         <div className="col col-lg-6">
@@ -76,29 +70,16 @@ class ViewDataComponentV2 extends Component {
       </div>
     )
   }
-  handleStartDateChange(date){
-    this.setState({startDate:date});
-    if(this.props.apiFor == 'report')
-      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101",'report_catalog');
-    else
-      this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
-  }
-  handleEndDateChange(date){
-    this.setState({endDate:date});
-    if(this.props.apiFor == 'report')
-      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101",'report_catalog');
-    else
-      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101", 'data_catalog');
-  }
-  renderAccordions(){
+
+  renderAccordions() {
     this.dataSource = this.props.data_date_heads;
 
-    if(this.dataSource == null){
+    if (this.dataSource == null) {
       return(
         <h1>Loading...</h1>
       )
     } else {
-      if(this.dataSource.length == 0){
+      if (this.dataSource.length == 0) {
         return(
           <h1>No data found</h1>
         )
@@ -121,7 +102,7 @@ class ViewDataComponentV2 extends Component {
                                     month={item}
                                     date={date_item}
                                     key={date_index}
-                                    apiFor={this.props.apiFor}
+                                    /*apiFor={this.props.apiFor}*/
                                   />
                                 )
                               })
@@ -139,45 +120,45 @@ class ViewDataComponentV2 extends Component {
       )
     }
   }
+
+  handleStartDateChange(date) {}
+  handleEndDateChange(date) {}
 }
-const mapDispatchToProps = (dispatch) => {
+
+export const mapDispatchToProps = (dispatch) => {
   return {
-    fetchDates:(startDate,endDate, table_name)=>{
-      dispatch(actionFetchDates(startDate,endDate,table_name))
+    fetchDates: (startDate, endDate, table_name) => {
+      dispatch(actionFetchDates(startDate, endDate, table_name))
     },
-    fetchReportFromDate:(source_id,business_date,page)=>{
-      dispatch(actionFetchReportFromDate(source_id,business_date,page))
+    fetchReportFromDate: (source_id, business_date, page) => {
+      dispatch(actionFetchReportFromDate(source_id, business_date, page))
     },
-    fetchSource:(business_date) => {
+    fetchSource: (business_date) => {
       dispatch(actionFetchSource(business_date))
     },
-    fetchReportLinkage:(source_id,qualifying_key,business_date) => {
-      dispatch(actionFetchReportLinkage(source_id,qualifying_key,business_date));
+    fetchReportLinkage: (id, qualifying_key, business_date) => {
+      dispatch(actionFetchReportLinkage(id, qualifying_key, business_date));
     },
-    insertSourceData:(data,at) => {
+    insertSourceData: (data, at) => {
       dispatch(actionInsertSourceData(data,at));
     },
-    updateSourceData:(data) => {
+    updateSourceData: (data) => {
       dispatch(actionUpdateSourceData(data));
     },
-    deleteFromSourceData:(id,business_date,table_name, at) => {
-      dispatch(actionDeleteFromSourceData(id,business_date,table_name, at));
+    deleteFromSourceData: (id, business_date, table_name, at) => {
+      dispatch(actionDeleteFromSourceData(id, business_date, table_name, at));
     },
-    fetchDatesForReport:(startDate,endDate)=>{
+    fetchDatesForReport: (startDate, endDate) => {
       dispatch(actionFetchDatesForReport(startDate,endDate))
     },
   }
 }
-function mapStateToProps(state){
+
+export function mapStateToProps(state) {
   console.log("On mapState ", state.view_data_store);
   return {
-    data_date_heads:state.view_data_store.dates,
-    report:state.report_store,
-    report_linkage:state.view_data_store.report_linkage
+    data_date_heads: state.view_data_store.dates,
+    report: state.report_store,
+    report_linkage: state.view_data_store.report_linkage
   }
 }
-const VisibleViewDataComponentV2 = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ViewDataComponentV2);
-export default VisibleViewDataComponentV2;
