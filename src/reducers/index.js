@@ -9,6 +9,7 @@ import MaintainReportRulesReducer from './MaintainReportRulesReducer';
 import MaintainSourcesReducer from './MaintainSourcesReducer';
 import VarianceAnalysisReducer from './VarianceAnalysisReducer';
 import CreateReportReducer from './CreateReportReducer';
+
 const rootReducer = combineReducers({
   business_rules:businessRulesReducer,
   report_linkage:ReportLinkageReducer,

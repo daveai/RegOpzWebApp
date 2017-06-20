@@ -31,7 +31,9 @@ import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis
 import VarianceAnalysisGrid from './components/VarianceAnalysis/VarianceAnalysisGrid';
 import VarianceAnalysisChart from './components/VarianceAnalysis/VarianceAnalysisChart';
 import CreateReport from './components/CreateReport/CreateReport';
+
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
+
 class Index extends Component {
     render() {
         return (
@@ -44,6 +46,7 @@ class Index extends Component {
     componentDidMount() {
     }
 }
+
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <Router history={hashHistory}>

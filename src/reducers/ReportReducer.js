@@ -8,27 +8,29 @@ import {
   DELETE_SOURCE_ROW,
   FETCH_DATE_FOR_REPORT
 } from '../actions/ViewDataAction';
-export default function(state=[],action){
-  console.log("Action received in report reducer: ",action,state);
-  switch(action.type){
+
+// TODO:
+export default function(state=[], action) {
+  console.log("Action received in report reducer: ", action, state);
+  switch(action.type) {
     case FETCH_REPORT_BY_DATE:
-    	state=[];
+    	state = [];
       return state.concat(action.payload.data);
     case FETCH_DRILLDOWN_REPORT:
-    	state=[];
+    	state = [];
       return state.concat(action.payload.data);
     case FETCH_TABLE_DATA_REPORT:
-      state=[];
+      state = [];
       return state.concat(action.payload.data);
     case FETCH_DRILLDOWN_RULES_REPORT:
-    	state=[];
+    	state = [];
       return state.concat(action.payload.data);
     case INSERT_SOURCE_DATA:
-      state[0].rows.splice(action.meta.at,0,action.payload.data);
-      return state.splice(0,1,state)
+      state[0].rows.splice(action.meta.at, 0, action.payload.data);
+      return state.splice(0, 1, state);
     case DELETE_SOURCE_ROW:
-      state[0].rows.splice(action.meta.at,1);
-      return state.splice(0,1,state)
+      state[0].rows.splice(action.meta.at, 1);
+      return state.splice(0, 1, state);
     default:
     	return state;
   }
