@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import { connect } from 'react-redux'
+import { bindActionCreators, dispatch } from 'redux'
 import TreeView from 'react-treeview'
 import moment from 'moment'
 import axios from 'axios'
@@ -12,18 +12,19 @@ import {
   actionGenerateReport,
   actionApplyRules
 } from '../../actions/ViewDataAction'
-import {BASE_URL} from '../../Constant/constant'
+import { BASE_URL } from '../../Constant/constant'
+
 class SourceTreeInfoComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      sources:null
+      sources: null
     }
     this.selectedSourceId = null;
     this.selectedBusinessDate = null;
-
   }
-  render(){
+
+  render() {
     return(
       <Collapsible
         dateString={this.props.year + "-" + this.props.month + "-" + this.props.date}
@@ -33,7 +34,8 @@ class SourceTreeInfoComponent extends Component {
       </Collapsible>
     )
   }
-  renderSources(){
+
+  renderSources() {
     if(this.state.sources == null){
       return(
         <h2>Loading...</h2>
@@ -44,6 +46,7 @@ class SourceTreeInfoComponent extends Component {
         <h2>No Data Found</h2>
       )
     } else {
+/*
       if(this.props.apiFor == 'report'){
         return(
           <table className="table">
@@ -92,7 +95,9 @@ class SourceTreeInfoComponent extends Component {
           </tbody>
           </table>
         )
+
       } else {
+*/
         return(
           <table className="table">
             <thead>
@@ -140,11 +145,10 @@ class SourceTreeInfoComponent extends Component {
           </table>
         )
       }
-    }
   }
 
-  dateOnOpen(business_date){
-    if(this.props.apiFor == 'report'){
+  dateOnOpen(business_date) {
+    /*if(this.props.apiFor == 'report'){
       let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
       axios.get(BASE_URL + "document/get-report-list?reporting_date=" + dateString)
       .then(function (response) {
@@ -156,7 +160,7 @@ class SourceTreeInfoComponent extends Component {
       .catch(function (error) {
         console.log(error);
       });
-    } else {
+    } else {*/
       let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
       axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
       .then(function (response) {
@@ -169,10 +173,8 @@ class SourceTreeInfoComponent extends Component {
         console.log(error);
       });
     }
-  }
-
-
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchSource:(business_date) => {
@@ -189,13 +191,16 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
+
 function mapStateToProps(state){
   return {
-    sources:state.sources
+    sources: state.sources
   }
 }
+
 const VisibleSourceTreeInfoComponent = connect(
   mapStateToProps,
   mapDispatchToProps
 )(SourceTreeInfoComponent);
+
 export default VisibleSourceTreeInfoComponent;
