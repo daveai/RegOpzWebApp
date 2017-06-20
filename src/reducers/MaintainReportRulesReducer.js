@@ -25,7 +25,7 @@ export default function(state=[], action) {
 		});
   case FETCH_TABLE_COLUMNS_LIST:
   return Object.assign({}, state, {
-    source_table_columns:action.payload.data;
+    source_table_columns:action.payload.data
   })
   case DELETE_MAINTAIN_RULE_DATA:
     console.log('In capturereport reducer for delete cell calc rules', state,
