@@ -33,10 +33,10 @@ export function actionFetchReportList(country){
   }
 }
 
-export function actionFetchDateList(country,report_id,excluded_date=null){
+export function actionFetchDateList(report_id,excluded_date=null){
 
   let url=BASE_URL+"analytics/variance-analysis/get-date-suggestion-list";
-  url=url+"?country="+country+"&report_id="+report_id+"&excluded_date="+excluded_date;
+  url=url+"?report_id="+report_id+"&excluded_date="+excluded_date;
   const request=axios.get(url);
 
   if(!excluded_date){
