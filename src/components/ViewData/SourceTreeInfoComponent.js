@@ -166,7 +166,7 @@ class SourceTreeInfoComponent extends Component {
       .then(function (response) {
         console.log(response);
         this.setState({
-          sources:response.data
+          sources: response.data
         })
       }.bind(this))
       .catch(function (error) {

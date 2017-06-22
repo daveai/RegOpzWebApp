@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators, dispatch } from 'redux';
 import TreeView from 'react-treeview';
 import moment from 'moment';
 import axios from 'axios';
@@ -24,7 +23,19 @@ class ReportTreeInfo extends SourceTreeInfoComponent {
     super(props);
   }
 
+  render() {
+    return(
+      <Collapsible
+        dateString={this.props.year + "-" + this.props.month + "-" + this.props.date}
+        onOpen={this.dateOnOpen.bind(this)}
+        trigger={this.props.date}>
+        {this.renderSources()}
+      </Collapsible>
+    )
+  }
+
   renderSources() {
+    console.log('ReportTreeInfo: renderSources()');
     if (this.state.sources === null) {
       return(
         <h2>Loading...</h2>
@@ -86,23 +97,24 @@ class ReportTreeInfo extends SourceTreeInfoComponent {
   }
 
   dateOnOpen(business_date) {
+    console.log("Called");
     let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
     axios.get(BASE_URL + "document/get-report-list?reporting_date=" + dateString)
-    .then((response) => {
+    .then(function (response) {
       console.log(response);
       this.setState({
         sources: response.data
       })
-    }).bind(this)
+    }.bind(this))
     .catch((error) => {
       console.log(error);
     });
   }
 }
 
-const VisibleSourceTreeInfoComponent = connect(
+const VisibleReportTreeInfoComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-) (SourceTreeInfoComponent);
+) (ReportTreeInfo);
 
-export default VisibleSourceTreeInfoComponent;
+export default VisibleReportTreeInfoComponent;

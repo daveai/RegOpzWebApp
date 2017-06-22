@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import TreeView from 'react-treeview';
-import moment from 'moment';
 import axios from 'axios';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import {
@@ -25,6 +23,7 @@ export class SourceTreeInfoComponent extends Component {
   }
 
   render() {
+    console.log("This should not call");
     return(
       <Collapsible
         dateString={this.props.year + "-" + this.props.month + "-" + this.props.date}
@@ -35,8 +34,12 @@ export class SourceTreeInfoComponent extends Component {
     )
   }
 
-  dateOnOpen(date) {}
-  renderSources() {}
+  dateOnOpen(date) {
+    console.log("Should not");
+  }
+  renderSources() {
+    console.log("not again");
+  }
 }
 
 export const mapDispatchToProps = (dispatch) => {
@@ -56,7 +59,7 @@ export const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export function mapStateToProps(state){
+export function mapStateToProps(state) {
   return {
     sources: state.sources
   }
