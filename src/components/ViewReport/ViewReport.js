@@ -1,13 +1,14 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import ViewData from '../ViewData/ViewDataComponentV2'
+import ViewReportComponent from './ViewReportComponent'
+
 export default class ViewReport extends Component {
   constructor(props) {
     super(props);
   }
   render(){
     return(
-      <ViewData apiFor="report" />
+      <ViewReportComponent /*apiFor="report"*/ />
     );
   }
 }
