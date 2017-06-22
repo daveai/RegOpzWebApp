@@ -8,8 +8,8 @@ var BUILD_DIR = path.resolve(__dirname, 'js')
 var PUBLIC_DIR = path.resolve(__dirname)
 var APP_DIR = path.resolve(__dirname, 'src')
 
-let banner = PACKAGE.name.toString() + ' - ' + PACKAGE.version.toString() + ' | '
-            + '(C) ' + new Date().getFullYear().toString() + ', '
+let banner = PACKAGE.name.toString() + ' - ' + PACKAGE.version.toString()
+            + ' | ' + '(C) ' + new Date().getFullYear().toString() + ', '
             + PACKAGE.author.toString() + ' | ' + PACKAGE.license.toString()
 
 module.exports = {
