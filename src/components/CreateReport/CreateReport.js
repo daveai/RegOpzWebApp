@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {hashHistory} from 'react-router';
 import { actionFetchReportList,
-        actionFetchCountryList,
+      actionFetchCountryList,
       actionCreateReport } from '../../actions/CreateReportAction';
 import DatePicker from 'react-datepicker';
 import './CreateReport.css';
@@ -33,9 +33,8 @@ import './CreateReport.css';
   }
 
   componentWillMount(){
-
-    this.props.fetchReportList();
-    this.props.fetchCountryList()
+    this.props.fetchCountryList();
+    this.props.fetchReportList('XYZ');
   }
 
   handleStartDateChange(date){
@@ -64,7 +63,6 @@ import './CreateReport.css';
       as_of_reporting_date:this.state.asOfReportingDate.format("YYYYMMDD"),
       ref_date_rate:this.state.refDateRate,
       rate_type:this.state.rateType,
-      country:this.state.country,
       report_parameters:this.state.reportParameters,
       report_create_status:this.state.reportCreateStatus,
       report_create_date:this.todayDate
@@ -93,6 +91,27 @@ import './CreateReport.css';
           <div className="x_content">
             <br />
             <form className="form-horizontal form-label-left" onSubmit={this.handleSubmit.bind(this)}>
+
+              <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="country">Country <span className="required">*</span></label>
+                  <div className="col-md-2 col-sm-2 col-xs-12">
+                    <select
+                      className="form-control"
+                      onChange={(event)=>{
+
+                        this.setState({country:event.target.value});
+                        this.props.fetchReportList(event.target.value);
+                      }
+                    }
+                    >
+                      <option>Choose option</option>
+                        {this.props.country_list.map(function(item,index){
+                            return <option key={index} value={item.country}> {item.country}</option>
+                            }
+                        )}
+                    </select>
+                  </div>
+                </div>
 
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="report-id">Report ID <span className="required">*</span></label>
@@ -178,27 +197,6 @@ import './CreateReport.css';
                 </div>
 
                 <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="country">Country <span className="required">*</span></label>
-                  <div className="col-md-2 col-sm-2 col-xs-12">
-                    <select
-                      className="form-control"
-                      onChange={(event)=>{
-
-                        this.setState({country:event.target.value});
-                      }
-                    }
-                    >
-                      <option>Choose option</option>
-                        {this.props.country_list.map(function(item,index){
-                            return <option key={index} value={item.country}> {item.country}</option>
-                            }
-                        )}
-                    </select>
-                  </div>
-                </div>
-
-
-                <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="reporting-currency">Reporting Currency <span className="required">*</span></label>
                   <div className="col-md-3 col-sm-6 col-xs-12">
                     <input
@@ -218,7 +216,7 @@ import './CreateReport.css';
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="ref-date-rate">Reference Date Rate <span className="required">*</span></label>
                   <div className="col-md-1 col-sm-1 col-xs-12">
                     <input
-                      placeholder="Enter Reference Date Rate"
+                      placeholder="B or R"
                       type="text"
                       required="required"
                       className="form-control col-md-7 col-xs-12"
@@ -233,7 +231,7 @@ import './CreateReport.css';
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="rate-type">Rate Type <span className="required">*</span></label>
                   <div className="col-md-3 col-sm-6 col-xs-12">
                     <input
-                      placeholder="Enter Rate Type"
+                      placeholder="Rate Type e.g. MAS or INTERNAL"
                       type="text"
                       required="required"
                       className="form-control col-md-7 col-xs-12"
@@ -285,8 +283,8 @@ function mapStateToProps(state){
 
 const mapDispatchToProps=(dispatch)=>{
   return{
-    fetchReportList:()=>{
-      dispatch(actionFetchReportList());
+    fetchReportList:(country)=>{
+      dispatch(actionFetchReportList(country));
     },
     fetchCountryList:()=>{
       dispatch(actionFetchCountryList());

@@ -22,9 +22,9 @@ class VarianceAnalysisForm extends Component{
   componentDidMount(){
     this.props.fetchCountryList();
     // 'XYZ' is an arbitary string for getting empty array in return
-    this.props.fetchReportList('XYZ','XYZ');
-    this.props.fetchDateListFirst('XYZ','XYZ');
-    this.props.fetchDateListSubsequent('XYZ','XYZ','XYZ');
+    this.props.fetchReportList('XYZ');
+    this.props.fetchDateListFirst('XYZ');
+    this.props.fetchDateListSubsequent('XYZ','XYZ');
   }
 
   render(){
@@ -81,7 +81,7 @@ class VarianceAnalysisForm extends Component{
                     <select className="form-control"
                       onChange={(event)=>{
                           this.report_id=event.target.value;
-                          this.props.fetchDateListFirst(this.country,this.report_id);
+                          this.props.fetchDateListFirst(this.report_id);
                         }
                       }
                     >
@@ -106,7 +106,7 @@ class VarianceAnalysisForm extends Component{
                       <select className="form-control"
                         onChange={(event)=>{
                             this.first_date=event.target.value;
-                            this.props.fetchDateListSubsequent(this.country,this.report_id,this.first_date);
+                            this.props.fetchDateListSubsequent(this.report_id,this.first_date);
                           }
                         }
                       >
@@ -213,11 +213,11 @@ const mapDispatchToProps=(dispatch)=>{
     fetchReportList:(country)=>{
       dispatch(actionFetchReportList(country));
     },
-    fetchDateListFirst:(country,report_id)=>{
-      dispatch(actionFetchDateList(country,report_id));
+    fetchDateListFirst:(report_id)=>{
+      dispatch(actionFetchDateList(report_id));
     },
-    fetchDateListSubsequent:(country,report_id,excluded_date)=>{
-      dispatch(actionFetchDateList(country,report_id,excluded_date));
+    fetchDateListSubsequent:(report_id,excluded_date)=>{
+      dispatch(actionFetchDateList(report_id,excluded_date));
     },
     setDataExported:(data)=>{
       dispatch(actionSetDataExported(data));
