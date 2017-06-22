@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import TreeView from 'react-treeview';
 import _ from 'lodash';
 import Collapsible from '../CollapsibleModified/Collapsible';
-import { SourceTreeInfoComponent } from './SourceTreeInfoComponent';
 import {
   actionFetchDates,
   actionFetchReportFromDate,
@@ -17,7 +15,6 @@ import {
   actionFetchDatesForReport
 } from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
@@ -71,56 +68,7 @@ export class ViewSourceComponent extends Component {
     )
   }
 
-  renderAccordions() {
-    this.dataSource = this.props.data_date_heads;
-
-    if (this.dataSource == null) {
-      return(
-        <h1>Loading...</h1>
-      )
-    } else {
-      if (this.dataSource.length == 0) {
-        return(
-          <h1>No data found</h1>
-        )
-      }
-      return(
-        <div>
-          {
-            this.dataSource.map((node, i) => {
-              return(
-                <Collapsible trigger={node.year} key={i}>
-                  {
-                    Object.keys(node.month).map((item,index) => {
-                      return(
-                        <Collapsible trigger={item} key={index}>
-                          {
-                              node.month[item].map((date_item,date_index) => {
-                                return(
-                                  <SourceTreeInfoComponent
-                                    year={node.year}
-                                    month={item}
-                                    date={date_item}
-                                    key={date_index}
-                                    /*apiFor={this.props.apiFor}*/
-                                  />
-                                )
-                              })
-
-                          }
-                        </Collapsible>
-                      )
-                    })
-                  }
-                </Collapsible>
-              )
-            })
-          }
-        </div>
-      )
-    }
-  }
-
+  renderAccordions() {}
   handleStartDateChange(date) {}
   handleEndDateChange(date) {}
 }
