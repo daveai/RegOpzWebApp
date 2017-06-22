@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
+import DatePicker from 'react-datepicker';
 import {
   Link,
   hashHistory
@@ -56,13 +57,27 @@ class AddReportRules extends Component {
       this.initialiseFormFields();
     }
   }
-  handleDelete(i) {
-        let rulesTags = this.state.rulesTags;
-        rulesTags.splice(i, 1);
-        this.setState({rulesTags: rulesTags});
-    }
+  handleValidFromDateChange(date){
+    let form = this.state.form;
+    form.valid_from = date;
 
-    handleAddition(tag) {
+    this.setState({form:form});
+
+  }
+  handleValidTillDateChange(date){
+    let form = this.state.form;
+    form.valid_till = date;
+
+    this.setState({form:form});
+
+  }
+  handleDelete(i) {
+      let rulesTags = this.state.rulesTags;
+      rulesTags.splice(i, 1);
+      this.setState({rulesTags: rulesTags});
+  }
+
+  handleAddition(tag) {
         let rulesTags = this.state.rulesTags;
         rulesTags.push({
             id: rulesTags.length + 1,
@@ -181,7 +196,8 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input
                       defaultValue={this.state.form.id}
-                      readOnly={this.state.readOnly}
+                      placeholder="System Reference ID"
+                      readOnly="readonly"
                       type="text"
                       className="form-control col-md-7 col-xs-12"
                       onChange={
@@ -294,6 +310,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input
                       type="text"
+                      placeholder="Enter Aggregation function"
                       required="required"
                       className="form-control col-md-7 col-xs-12"
                       defaultValue={this.state.form.aggregation_func}
@@ -307,38 +324,30 @@ class AddReportRules extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid from <span className="required">*</span></label>
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid from <span className="required"> </span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <input
-                      type="text"
-                      required=""
-                      className="form-control col-md-7 col-xs-12"
-                      value={this.state.form.valid_from}
-                      onChange={
-                        (event) => {
-                          this.state.form.valid_from = event.target.value;
-                        }
-                      }
+                    <DatePicker
+                        dateFormat="YYYYMMDD"
+                        selected={this.state.form.valid_from}
+                        onChange={this.handleValidFromDateChange.bind(this)}
+                        placeholderText="Rule Valid From"
+                        className="view_data_date_picker_input form-control"
                     />
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid till <span className="required">*</span></label>
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid till <span className="required"> </span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <input
-                      type="text"
-                      required=""
-                      className="form-control col-md-7 col-xs-12"
-                      value={this.state.form.valid_to}
-                      onChange={
-                        (event) => {
-                          this.state.form.valid_to = event.target.value;
-                        }
-                      }
+                    <DatePicker
+                        dateFormat="YYYYMMDD"
+                        selected={this.state.form.valid_till}
+                        onChange={this.handleValidTillDateChange.bind(this)}
+                        placeholderText="Rule Valid Till"
+                        className="view_data_date_picker_input form-control"
                     />
                   </div>
-                </div>                
+                </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
