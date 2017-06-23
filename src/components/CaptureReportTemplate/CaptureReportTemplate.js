@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
 import { routerContext } from 'react-router';
+import {BASE_URL} from '../../Constant/constant';
 import npro from '../../../bower_components/nprogress/nprogress';
 require('../../../bower_components/nprogress/nprogress.css');
 export default class RightPane extends Component {
@@ -122,7 +123,7 @@ export default class RightPane extends Component {
       contentType: false,
       processData: false,
       data:data,
-      url: 'http://localhost:3000/api/v1.0.0/document',
+      url: BASE_URL + 'document',
       success: function(response) {
         npro.done();
         hashHistory.push("/dashboard/data-grid?report_id="+report_id+"&country="+country+"&report_description="+report_description);
