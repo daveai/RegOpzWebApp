@@ -18,7 +18,7 @@ import {
 } from '../SourceTreeInfo/SourceTreeInfoComponent';
 import { BASE_URL } from '../../Constant/constant';
 
-class ReportTreeInfo extends SourceTreeInfoComponent {
+class ReportTreeInfoComponent extends SourceTreeInfoComponent {
   constructor() {
     super(props);
   }
@@ -115,6 +115,6 @@ class ReportTreeInfo extends SourceTreeInfoComponent {
 const VisibleReportTreeInfoComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-) (ReportTreeInfo);
+) (ReportTreeInfoComponent);
 
 export default VisibleReportTreeInfoComponent;

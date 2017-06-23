@@ -68,7 +68,6 @@ export class ViewSourceComponent extends Component {
     )
   }
 
-  renderAccordions() {}
   handleStartDateChange(date) {}
   handleEndDateChange(date) {}
 }
