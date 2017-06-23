@@ -5,9 +5,9 @@ export const FETCH_REPORT_LIST='FETCH_REPORT_LIST';
 export const FETCH_COUNTRY_LIST='FETCH_COUNTRY_LIST';
 export const CREATE_REPORT='CREATE_REPORT';
 
-export function actionFetchReportList(){
+export function actionFetchReportList(country){
 
-  const url=BASE_URL+"create-report/get-report-list";
+  const url=BASE_URL+"create-report/get-report-list?country="+country;
   const request=axios.get(url);
 
   return{

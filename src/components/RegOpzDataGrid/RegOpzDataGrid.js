@@ -17,7 +17,7 @@ require('./RegOpzDataGrid.css');
 class RegOpzDataGrid extends Component {
   constructor(props){
     super(props);
-    this.numberofCols = 26;
+    this.numberofCols = 52;
     this.numberofRows = 1000;
     this.data = [];
     this.selectedSheet = 0;
@@ -32,7 +32,7 @@ class RegOpzDataGrid extends Component {
   render(){
     if(this.props.captured_report.length > 0){
       this.data = this.props.captured_report[this.selectedSheet].matrix;
-      this.numberofRows = this.data.length;
+      //this.numberofRows = this.data.length;
       return(
         <div className="reg_gridHolder">
           {this.renderBreadCrump()}

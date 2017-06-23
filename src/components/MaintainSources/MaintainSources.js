@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
-import {Link} from 'react-router';
+import {
+        Link,
+        hashHistory
+      } from 'react-router';
 import _ from 'lodash';
 import {
   actionFetchSources
@@ -149,7 +152,7 @@ class MaintainSources extends Component {
                     }}
                 />
               </div>
-              <div className="col col-lg-6">
+              <div className="col col-lg-4">
                 <ReactTags
                     tags={countryTags}
                     suggestions={countrySuggestions}
@@ -164,6 +167,9 @@ class MaintainSources extends Component {
                     }}
                 />
               </div>
+              <div className="col col-lg-2">
+                  <button className="btn btn-success" onClick={()=>{this.handleNewCountry()}}>New Country</button>
+              </div>
             </div>
             {
                   this.props.source_feeds.sources.country.map(function(countrylist,countrylistindex){
@@ -171,9 +177,7 @@ class MaintainSources extends Component {
                   <div className="maintain_rep_rules_accordion_holder" >
                     <Collapsible trigger={countrylist.country} key={countrylist.countrylistindex}>
                       <div className="form-group">
-                        <Link to={`/dashboard/maintain-sources/add-sources?request=add&country=${countrylist.country}`}>
-                          <button className="btn btn-success">Add</button>
-                        </Link>
+                        <button className="btn btn-success" onClick={()=>{this.handleAdd(countrylist.country)}}>Add</button>
                         {
                             <table className="table">
                               <thead>
@@ -209,6 +213,14 @@ class MaintainSources extends Component {
           </div>
       )
 
+  }
+  handleNewCountry(event){
+    console.log('inside NewCountry');
+    hashHistory.push(`/dashboard/maintain-sources/add-sources?request=add`)
+  }
+  handleAdd(country){
+    console.log('inside Add source for existing country');
+    hashHistory.push(`/dashboard/maintain-sources/add-sources?request=add&country=${country}`)
   }
 }
 const mapDispatchToProps = (dispatch) => {
