@@ -32,7 +32,7 @@ class AddSources extends Component {
           last_updated_by:this.props.location.query['last_updated_by']
         },
         requestType: this.props.location.query['request'],
-        readOnly: typeof this.props.location.query['country']!="undefined"?"readonly":""
+        readOnly: this.props.location.query['request']=="update"?"readonly":""
     };
   }
   componentWillMount(){
@@ -154,7 +154,7 @@ class AddSources extends Component {
                       value={this.state.form.country}
                       className="form-control col-md-7 col-xs-6"
                       type="text"
-                      readOnly={this.state.readOnly}
+                      readOnly={typeof this.props.location.query['country']!="undefined"?"readonly":""}
                       placeholder="Country"
                       maxLength="2"
                       onChange={
