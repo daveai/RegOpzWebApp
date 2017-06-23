@@ -16,6 +16,7 @@ import {
   actionUpdateRuleData
 } from '../../../actions/MaintainReportRuleAction';
 import './AddReportRules.css';
+
 class AddReportRules extends Component {
   constructor(props){
     super(props);
