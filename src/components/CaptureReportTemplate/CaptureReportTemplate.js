@@ -12,6 +12,7 @@ export default class RightPane extends Component {
     this.state = {
       report_id:"",
       country:"",
+      report_description:"",
     };
   }
   render(){
@@ -29,10 +30,12 @@ export default class RightPane extends Component {
               <input
                 type="text"
                 name="country"
+                maxLength="2"
+                required="required"
                 onChange={
                   (event) => {
                     this.setState( {
-                      country:event.target.value
+                      country:event.target.value.toLocaleUpperCase()
                     });
                   }
                 }
@@ -43,6 +46,8 @@ export default class RightPane extends Component {
                <input
                 type="text"
                 name="report_id"
+                maxLength="32"
+                required="required"
                 onChange={
                   (event) => {
                     this.setState( {
@@ -53,6 +58,21 @@ export default class RightPane extends Component {
                 className="form-control"
                 placeholder="Report Id"
                 value={this.state.report_id}
+                 />
+               <input
+                type="text"
+                name="report_description"
+                maxLength="1000"
+                onChange={
+                  (event) => {
+                    this.setState( {
+                      report_description:event.target.value
+                    });
+                  }
+                }
+                className="form-control"
+                placeholder="Report Description"
+                value={this.state.report_description}
                  />
               <input id="file"
                 onChange={this.handleFileSelect.bind(this)}
@@ -87,6 +107,8 @@ export default class RightPane extends Component {
   }
   handleFileSelect(event){
     var report_id = this.state.report_id;
+    var country = this.state.country;
+    var report_description = this.state.report_description;
     npro.start();
     var data = new FormData($("#uploadForm")[0]);
     $.each($('#file')[0].files, function(i, file) {
@@ -103,7 +125,7 @@ export default class RightPane extends Component {
       url: 'http://localhost:3000/api/v1.0.0/document',
       success: function(response) {
         npro.done();
-        hashHistory.push("/dashboard/data-grid?report_id="+report_id);
+        hashHistory.push("/dashboard/data-grid?report_id="+report_id+"&country="+country+"&report_description="+report_description);
         console.log(response);
 
       },

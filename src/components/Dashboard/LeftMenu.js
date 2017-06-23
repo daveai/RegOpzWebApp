@@ -19,7 +19,7 @@ class LeftMenu extends Component {
                         </div>
                         <div className="profile_info">
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <h2>John Smith</h2>
                         </div>
                     </div>
                     <br/>

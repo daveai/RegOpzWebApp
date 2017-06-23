@@ -14,7 +14,7 @@ export default class TopNav extends Component {
                         <ul className="nav navbar-nav navbar-right">
                             <li className="">
                                 <a href="javascript:;" className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="images/img.jpg" alt=""/>John Doe
+                                    <img src="images/img.jpg" alt=""/>John Smith
                                     <span className=" fa fa-angle-down"></span>
                                 </a>
                                 <ul className="dropdown-menu dropdown-usermenu pull-right">

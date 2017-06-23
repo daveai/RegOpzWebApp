@@ -157,10 +157,14 @@ class AddSources extends Component {
                       readOnly={this.state.readOnly}
                       placeholder="Country"
                       maxLength="2"
-                      style={{'text-transform':'uppercase'}}
                       onChange={
                         (event) => {
-                          this.state.form.country = event.target.value.toUpperCase();
+                          let form = this.state.form;
+                          form.country=event.target.value.toLocaleUpperCase();
+                          this.setState( {
+                            form:form
+                          });
+                          //this.state.form.country = event.target.value.toLocaleUpperCase();
                         }
                       }
                       />
