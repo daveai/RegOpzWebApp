@@ -329,8 +329,9 @@ class AddReportRules extends Component {
                     <DatePicker
                         dateFormat="YYYYMMDD"
                         selected={this.state.form.valid_from}
-                        onChange={this.handleValidFromDateChange.bind(this)}
+                        onChange={console.log("this.handleValidFromDateChange.bind(this)")}
                         placeholderText="Rule Valid From"
+                        readOnly="readonly"
                         className="view_data_date_picker_input form-control"
                     />
                   </div>
@@ -342,8 +343,9 @@ class AddReportRules extends Component {
                     <DatePicker
                         dateFormat="YYYYMMDD"
                         selected={this.state.form.valid_till}
-                        onChange={this.handleValidTillDateChange.bind(this)}
+                        onChange={console.log("this.handleValidTillDateChange.bind(this)")}
                         placeholderText="Rule Valid Till"
+                        readOnly="readonly"
                         className="view_data_date_picker_input form-control"
                     />
                   </div>

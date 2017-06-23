@@ -10,7 +10,8 @@ export default class RightPane extends Component {
     this.fileInput = null;
     this.uploadForm = null;
     this.state = {
-      report_id:""
+      report_id:"",
+      country:"",
     };
   }
   render(){
@@ -26,6 +27,20 @@ export default class RightPane extends Component {
               <p>Supported files are .xlsx .xlx, .csv, .odt</p>
             <form encType="multipart/form-data" id="uploadForm" ref={(uploadForm) => {this.uploadForm = uploadForm}} onSubmit={this.handleFormSubmit.bind(this)} className="dropzone">
               <input
+                type="text"
+                name="country"
+                onChange={
+                  (event) => {
+                    this.setState( {
+                      country:event.target.value
+                    });
+                  }
+                }
+                className="form-control"
+                placeholder="Country code"
+                value={this.state.country}
+                 />
+               <input
                 type="text"
                 name="report_id"
                 onChange={

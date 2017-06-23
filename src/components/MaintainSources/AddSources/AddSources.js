@@ -32,7 +32,7 @@ class AddSources extends Component {
           last_updated_by:this.props.location.query['last_updated_by']
         },
         requestType: this.props.location.query['request'],
-        readOnly: this.props.location.query['request']=="update"?"readonly":""
+        readOnly: typeof this.props.location.query['country']!="undefined"?"readonly":""
     };
   }
   componentWillMount(){
@@ -131,6 +131,7 @@ class AddSources extends Component {
                       defaultValue={this.state.form.source_file_delimiter}
                       type="text"
                       required="required"
+                      maxLength="1"
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
@@ -148,20 +149,21 @@ class AddSources extends Component {
                 </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Country <span className="required">*</span></label>
-                  <div className="col-md-6 col-sm-6 col-xs-12">
-                    <select
+                  <div className="col-md-1 col-sm-12 col-xs-12">
+                    <input
                       value={this.state.form.country}
-                      className="form-control"
+                      className="form-control col-md-7 col-xs-6"
+                      type="text"
+                      readOnly={this.state.readOnly}
+                      placeholder="Country"
+                      maxLength="2"
+                      style={{'text-transform':'uppercase'}}
                       onChange={
                         (event) => {
-                          this.state.form.country = event.target.value;
+                          this.state.form.country = event.target.value.toUpperCase();
                         }
                       }
-                      >
-                      <option>Choose option</option>
-                      <option value={"SG"}>SG</option>
-                      <option value={"HK"}>HK</option>
-                    </select>
+                      />
                   </div>
                 </div>
 
