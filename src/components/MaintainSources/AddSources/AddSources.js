@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
+import {bindActionCreators, dispatch} from 'redux';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {
   Link,
@@ -78,18 +78,17 @@ class AddSources extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Source ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <input value={this.state.form.source_id}
-                      readOnly={this.state.readOnly}
+                    <input
+                      value={this.state.form.source_id}
                       type="text"
+                      placeholder="System Reference ID"
+                      required="required"
                       className="form-control col-md-7 col-xs-12"
-                      onChange={
-                        (event) => {
-                          this.state.form.source_id = event.target.value;
-                        }
-                      }
+                      readOnly="readonly"
                       />
                   </div>
                 </div>
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Source Description <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
@@ -132,6 +131,7 @@ class AddSources extends Component {
                       defaultValue={this.state.form.source_file_delimiter}
                       type="text"
                       required="required"
+                      maxLength="1"
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
@@ -149,32 +149,22 @@ class AddSources extends Component {
                 </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Country <span className="required">*</span></label>
-                  <div className="col-md-6 col-sm-6 col-xs-12">
-                    <select
+                  <div className="col-md-1 col-sm-12 col-xs-12">
+                    <input
                       value={this.state.form.country}
-                      className="form-control"
+                      className="form-control col-md-7 col-xs-6"
+                      type="text"
+                      readOnly={typeof this.props.location.query['country']!="undefined"?"readonly":""}
+                      placeholder="Country"
+                      maxLength="2"
                       onChange={
                         (event) => {
-                          this.state.form.country = event.target.value;
-                        }
-                      }
-                      >
-                      <option>Choose option</option>
-                      <option value={"SG"}>SG</option>
-                      <option value={"HK"}>HK</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">ID <span className="required">*</span></label>
-                  <div className="col-md-6 col-sm-6 col-xs-12">
-                    <input value={this.state.form.id}  type="text"
-                      required="required"
-                      className="form-control col-md-7 col-xs-12"
-                      readOnly={this.state.readOnly}
-                      onChange={
-                        (event) => {
-                          this.state.form.id = event.target.value;
+                          let form = this.state.form;
+                          form.country=event.target.value.toLocaleUpperCase();
+                          this.setState( {
+                            form:form
+                          });
+                          //this.state.form.country = event.target.value.toLocaleUpperCase();
                         }
                       }
                       />
@@ -219,9 +209,8 @@ class AddSources extends Component {
                 <div className="form-group">
                   <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                     <div className="clearfix"></div>
-                    <button type="button" className="btn btn-primary">
-                      <Link to="/dashboard/maintain-sources" style={{color :'white'}}>
-                      Cancel</Link>
+                    <button type="button" className="btn btn-primary" onClick={()=>{this.handleCancel()}}>
+                      Cancel
                     </button>
                     <button type="submit" className="btn btn-success">Submit</button>
                   </div>
@@ -253,10 +242,12 @@ class AddSources extends Component {
   handleSubmit(event){
     console.log('inside submit',this.state.form);
     event.preventDefault();
+
     let data = {
       table_name:"data_source_information",
       update_info:this.state.form
     };
+    data.update_info.source_id=32767;
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
       this.props.insertSourceData(data);
@@ -266,6 +257,10 @@ class AddSources extends Component {
     }
 
     hashHistory.push("/dashboard/maintain-sources");
+  }
+  handleCancel(event){
+    console.log('inside cancel');
+    hashHistory.push("/dashboard/maintain-sources")
   }
 }
 function mapStateToProps(state){
