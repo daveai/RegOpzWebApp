@@ -11,16 +11,16 @@ import {
   actionGenerateReport,
   actionApplyRules
 } from '../../actions/ViewDataAction';
-import {
-  SourceTreeInfoComponent,
-  mapDispatchToProps,
-  mapStateToProps
-} from '../SourceTreeInfo/SourceTreeInfoComponent';
 import { BASE_URL } from '../../Constant/constant';
 
-class ReportTreeInfo extends SourceTreeInfoComponent {
-  constructor() {
+class ReportTreeInfoComponent extends Component {
+  constructor(props) {
     super(props);
+    this.state = {
+      sources: null
+    }
+    this.selectedSourceId = null;
+    this.selectedBusinessDate = null;
   }
 
   render() {
@@ -112,9 +112,33 @@ class ReportTreeInfo extends SourceTreeInfoComponent {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchSource: (business_date) => {
+      dispatch(actionFetchSource(business_date));
+    },
+    fetchReportFromDate: (source_id, business_date, page) => {
+      dispatch(actionFetchReportFromDate(source_id, business_date, page));
+    },
+    generateReport: (report_info) => {
+      dispatch(actionGenerateReport(report_info));
+    },
+    applyRules: (source_info) => {
+      dispatch(actionApplyRules(source_info));
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    sources: state.sources
+  }
+}
+
+
 const VisibleReportTreeInfoComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-) (ReportTreeInfo);
+) (ReportTreeInfoComponent);
 
 export default VisibleReportTreeInfoComponent;

@@ -46,58 +46,6 @@ class SourceTreeInfoComponent extends Component {
         <h2>No Data Found</h2>
       )
     } else {
-/*
-      if(this.props.apiFor == 'report'){
-        return(
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Report ID</th>
-                <th>Report Creation Date</th>
-                <th>Report Generation status</th>
-                <th>Report by</th>
-                <th>Operations</th>
-              </tr>
-            </thead>
-            <tbody>
-            {this.state.sources.map((item,index) => {
-              return (
-                <tr>
-                  <td><a href={`#/dashboard/data-grid?report_id=${item.report_id}&reporting_date=${item.reporting_date}`}>{item.report_id}</a></td>
-                  <td>{item.report_create_date}</td>
-                  <td>{item.report_create_status}</td>
-                  <td>{item.report_created_by}</td>
-                  <td>
-                    <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
-                    <button
-                      className="btn btn-default"
-                      onClick={
-                        (event) => {
-                          let report_info = {
-                            report_id:item.report_id,
-                            report_parameters:item.report_parameters,
-                            reporting_date:item.reporting_date
-                          }
-                          console.log(report_info)
-                          this.props.generateReport(report_info);
-                        }
-                      }
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Generate Report"
-                    >
-                      <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-          </table>
-        )
-
-      } else {
-*/
         return(
           <table className="table">
             <thead>
@@ -148,19 +96,6 @@ class SourceTreeInfoComponent extends Component {
   }
 
   dateOnOpen(business_date) {
-    /*if(this.props.apiFor == 'report'){
-      let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
-      axios.get(BASE_URL + "document/get-report-list?reporting_date=" + dateString)
-      .then(function (response) {
-        console.log(response);
-        this.setState({
-          sources:response.data
-        })
-      }.bind(this))
-      .catch(function (error) {
-        console.log(error);
-      });
-    } else {*/
       let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
       axios.get(BASE_URL + "view-data/get-sources?business_date=" + dateString)
       .then(function (response) {
