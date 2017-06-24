@@ -116,7 +116,6 @@ class ViewReportComponent extends Component {
                                     month={item}
                                     date={date_item}
                                     key={date_index}
-                                    /*apiFor={this.props.apiFor}*/
                                   />
                                 )
                               })
