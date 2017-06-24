@@ -8,7 +8,7 @@ export default class ViewReport extends Component {
   }
   render(){
     return(
-      <ViewReportComponent /*apiFor="report"*/ />
+      <ViewReportComponent/>
     );
   }
 }
