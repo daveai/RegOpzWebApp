@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import { connect } from 'react-redux'
+import { bindActionCreators, dispatch } from 'redux'
 import TreeView from 'react-treeview'
 import _ from 'lodash';
 import Collapsible from '../CollapsibleModified/Collapsible';
@@ -24,8 +24,9 @@ require('../../../node_modules/react-treeview/react-treeview.css')
 require('./ViewDataComponentStyle.css')
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import {BASE_URL} from '../../Constant/constant';
+import { BASE_URL } from '../../Constant/constant';
 import axios from 'axios';
+
 class ViewDataComponentV2 extends Component {
   constructor(props){
     super(props)
@@ -36,14 +37,11 @@ class ViewDataComponentV2 extends Component {
     }
     this.dataSource = null;
   }
+
   componentWillMount(){
-    let catalog = '';
-    if(this.props.apiFor == 'report')
-      catalog += 'report_catalog';
-    else
-      catalog += 'data_catalog';
-    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", catalog);
+    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   render(){
     return(
       <div className="container view_data_container">
@@ -76,6 +74,7 @@ class ViewDataComponentV2 extends Component {
       </div>
     )
   }
+
   handleStartDateChange(date){
     this.setState({startDate:date});
     if(this.props.apiFor == 'report')
@@ -83,6 +82,7 @@ class ViewDataComponentV2 extends Component {
     else
       this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   handleEndDateChange(date){
     this.setState({endDate:date});
     if(this.props.apiFor == 'report')
@@ -90,6 +90,7 @@ class ViewDataComponentV2 extends Component {
     else
       this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   renderAccordions(){
     this.dataSource = this.props.data_date_heads;
 
@@ -121,7 +122,6 @@ class ViewDataComponentV2 extends Component {
                                     month={item}
                                     date={date_item}
                                     key={date_index}
-                                    apiFor={this.props.apiFor}
                                   />
                                 )
                               })
@@ -140,6 +140,7 @@ class ViewDataComponentV2 extends Component {
     }
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDates:(startDate,endDate, table_name)=>{
@@ -168,6 +169,7 @@ const mapDispatchToProps = (dispatch) => {
     },
   }
 }
+
 function mapStateToProps(state){
   console.log("On mapState ", state.view_data_store);
   return {
@@ -176,8 +178,10 @@ function mapStateToProps(state){
     report_linkage:state.view_data_store.report_linkage
   }
 }
+
 const VisibleViewDataComponentV2 = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ViewDataComponentV2);
+
 export default VisibleViewDataComponentV2;
