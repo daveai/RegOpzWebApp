@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import RegOpzDataGridHeader from './RegOpzDataGridHeader';
 import RegOpzDataGridSideMarker from './RegOpzGridSideMarker';
 import RegOpzDataGridHorizontalLines from './RegOpzDataGridHorizontalLines';
 import RegOpzDataGridVerticalLines from './RegOpzDataGridVerticalLines';
 import RegOpzDataGridBody from './RegOpzDataGridBody';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import {
   actionFetchReportData,
@@ -14,8 +14,9 @@ import {
 import { hashHistory } from 'react-router';
 import { routerContext } from 'react-router';
 require('./RegOpzDataGrid.css');
+
 class RegOpzDataGrid extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.numberofCols = 52;
     this.numberofRows = 1000;
@@ -27,25 +28,26 @@ class RegOpzDataGrid extends Component {
     this.selectedSheetName = null;
     this.gridHight = 0;
   }
-  componentWillMount(){
+
+  componentWillMount() {
     this.props.fetchCapturedReport(this.report_id,this.reporting_date);
   }
-  render(){
-    if(this.props.captured_report.length > 0){
+
+  render() {
+    if (this.props.captured_report.length > 0) {
       this.data = this.props.captured_report[this.selectedSheet].matrix;
       let row_attr = this.props.captured_report[this.selectedSheet].row_attr;
       let col_attr = this.props.captured_report[this.selectedSheet].col_attr;
-      console.log('no of rows...',row_attr,row_attr.length);
+      console.log('no of rows...', row_attr, row_attr.length);
       this.numberofRows = Object.keys(row_attr).length;
       this.numberofCols = Object.keys(col_attr).length;
       this.gridHight = 0;
-      [... Array(parseInt(this.numberofRows))].map(function(item,index){
-          //var stylex = {};
-          if(typeof(row_attr[(index+1)+""]) != 'undefined') {
+      [... Array(parseInt(this.numberofRows))].map(function(item,index) {
+          if (typeof(row_attr[(index+1)+""]) != 'undefined') {
             this.gridHight += parseInt(row_attr[(index+1)+""].height) * 2;
           }
       }.bind(this));
-      console.log('grid hight',this.gridHight);
+      console.log('grid hight:', this.gridHight);
       return(
         <div className="reg_gridHolder">
           {this.renderBreadCrump()}
@@ -62,7 +64,6 @@ class RegOpzDataGrid extends Component {
                           (event) => {
                             hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
                           }
-
                         }
                         className="btn btn-circle btn-primary business_rules_ops_buttons"
                       >
@@ -84,7 +85,6 @@ class RegOpzDataGrid extends Component {
                             className="btn btn-primary"
                             onClick={(event) => {
                               this.selectedSheet = event.target.getAttribute("target");
-
                               this.forceUpdate();
                             }}
                           >
@@ -113,7 +113,7 @@ class RegOpzDataGrid extends Component {
                 rowAttr={this.props.captured_report[this.selectedSheet].row_attr}
               />
               <RegOpzDataGridVerticalLines
-                numberofCols={this.numberofCols} 
+                numberofCols={this.numberofCols}
                 height={this.gridHight}
                 colAttr={this.props.captured_report[this.selectedSheet].col_attr}
               />

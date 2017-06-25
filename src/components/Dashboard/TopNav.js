@@ -17,7 +17,7 @@ export default class TopNav extends Component {
                                     <img src="images/img.jpg" alt=""/>John Smith
                                     <span className=" fa fa-angle-down"></span>
                                 </a>
-                                <ul className="dropdown-menu dropdown-usermenu pull-right">
+                                <ul className="dropdown-menu dropdown-usermenu pull-right" style={{ "zIndex" : 9999 }}>
                                     <li>
                                         <a href="javascript:;">
                                             Profile</a>

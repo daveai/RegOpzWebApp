@@ -35,7 +35,6 @@ class ReportTreeInfoComponent extends Component {
   }
 
   renderSources() {
-    console.log('ReportTreeInfo: renderSources()');
     if (this.state.sources === null) {
       return(
         <h2>Loading...</h2>
@@ -97,7 +96,6 @@ class ReportTreeInfoComponent extends Component {
   }
 
   dateOnOpen(business_date) {
-    console.log("Called");
     let dateString = moment(business_date, 'YYYY-MMMM-D').format('YYYYMMDD');
     axios.get(BASE_URL + "document/get-report-list?reporting_date=" + dateString)
     .then(function (response) {

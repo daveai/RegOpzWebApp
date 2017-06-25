@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators, dispatch} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
 import ReactDOM from 'react-dom';
 import DataGrid from 'react-datagrid';
 import {
@@ -15,19 +15,16 @@ import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import { Button, Modal } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import _ from 'lodash';
-import {BASE_URL} from '../../Constant/constant';
+import { BASE_URL } from '../../Constant/constant';
 import axios from 'axios';
 require('react-datagrid/dist/index.css');
 require('./MaintainBusinessRules.css');
+
 class MaintainBusinessRules extends Component {
     constructor(props) {
         super(props);
-        this.cols = [
-
-        ];
-        this.data = [
-
-        ]
+        this.cols = [];
+        this.data = []
         this.newItem =  {
           "business_or_validation": "",
           "business_rule": "",
@@ -59,7 +56,7 @@ class MaintainBusinessRules extends Component {
             transform             : 'translate(-50%, -50%)'
           }
         };
-        this.state = {isModalOpen:false};
+        this.state = { isModalOpen: false };
         this.msg = "";
         this.modalInstance = null;
         this.linkageData = null;
@@ -69,11 +66,13 @@ class MaintainBusinessRules extends Component {
         this.selectedRulesAsString = null;
         this.operationName = "";
     }
-    componentWillMount(){
+
+    componentWillMount() {
       this.props.fetchBusinesRules(this.currentPage);
     }
+
     render() {
-      if(this.props.business_rules.length){
+      if (this.props.business_rules.length) {
         this.cols = this.props.business_rules[0].cols;
         this.data = this.props.business_rules[0].rows;
         this.count = this.props.business_rules[0].count;
@@ -99,7 +98,6 @@ class MaintainBusinessRules extends Component {
                           this.props.fetchBusinesRules(this.currentPage);
                         }
                       }
-
                     >
                       <i className="fa fa-refresh"></i>
                     </button>
@@ -297,7 +295,7 @@ class MaintainBusinessRules extends Component {
               }
               onClickDiscard={
                 () => {
-
+                  //  TODO:
                 }
               }
               ref={
@@ -329,8 +327,9 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
-    renderReportLinkage(linkageData){
-      if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
+
+    renderReportLinkage(linkageData) {
+      if (!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
         return(
           <div>
             <h4>No linked report found!</h4>
@@ -340,7 +339,7 @@ class MaintainBusinessRules extends Component {
         return(
           <ul>
             {
-              linkageData.map(function(item,index){
+              linkageData.map(function(item,index) {
                 return(
                   <li key={index}>
                     <a href="">
@@ -355,21 +354,24 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
-    handlePageClick(event){
+
+    handlePageClick(event) {
       event.preventDefault();
       this.props.fetchBusinesRules($(event.target).text());
-
     }
-    handleSelectRow(rownum, item){
+
+    handleSelectRow(rownum, item) {
       console.log("I am called at ", item);
       this.selectedRow = rownum;
       this.selectedRowItem = item;
     }
-    handleInsertClick(event){
+
+    handleInsertClick(event) {
       this.props.insertBusinessRule(this.newItem, this.selectedRow);
     }
-    handleDuplicateClick(event){
-      if(this.selectedRows.length == 0){
+
+    handleDuplicateClick(event) {
+      if (this.selectedRows.length == 0) {
         this.modalInstance.open("Please select at least one row");
       } else if (this.selectedRows.length > 1) {
         this.modalInstance.open("Please select only one row");
@@ -377,8 +379,9 @@ class MaintainBusinessRules extends Component {
         this.props.insertBusinessRule(this.selectedRows[0], this.selectedRow);
       }
     }
-    handleDeleteClick(event){
-      if(!this.selectedRowItem){
+
+    handleDeleteClick(event) {
+      if (!this.selectedRowItem) {
         this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select a row");
         this.operationName = "";
@@ -389,18 +392,21 @@ class MaintainBusinessRules extends Component {
         //this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
       }
     }
-    handleUpdateRow(item){
+
+    handleUpdateRow(item) {
       console.log("The final value in MaintainBusinessRules component",item);
       this.props.updateBusinessRule(item);
     }
-    handleSort(colName, direction){
+
+    handleSort(colName, direction) {
       this.orderBy = {colName:colName, direction:direction};
       this.props.fetchBusinesRules(this.currentPage, {colName:colName, direction:direction});
       $(".flat_grid_header_sort_button > i").removeClass("fa-caret-up");
       $(".flat_grid_header_sort_button > i").addClass("fa-caret-down");
     }
-    showLinkage(event){
-      if(this.selectedRows.length == 0){
+
+    showLinkage(event) {
+      if (this.selectedRows.length == 0) {
         this.modalInstance.open("Please select at least one row")
       } else {
         var params = {};
@@ -414,8 +420,9 @@ class MaintainBusinessRules extends Component {
         this.setState({isModalOpen:true})
       }
     }
-    showHistory(event){
-      if(this.selectedRows.length == 0){
+
+    showHistory(event) {
+      if (this.selectedRows.length == 0) {
         this.modalInstance.open("Please select at least one row")
       } else {
         var params = {};
@@ -429,30 +436,34 @@ class MaintainBusinessRules extends Component {
         this.setState({isModalOpen:true})
       }
     }
-    handleFilter(condition){
+
+    handleFilter(condition) {
       this.filterConditions[condition.field_name] = condition.value;
-      if(condition.field_name == "rule_execution_order") {
+      if (condition.field_name == "rule_execution_order") {
         this.filterConditions[condition.field_name] = parseInt(condition.value);
       }
-      if(condition.field_name == "id") {
+      if (condition.field_name == "id") {
         this.filterConditions[condition.field_name] = parseInt(condition.value);
       }
-      if(condition.value == ""){
+      if (condition.value == ""){
         delete this.filterConditions[condition.field_name];
       }
       console.log("Filter condition", this.filterConditions)
       this.flatGrid.filterData(this.filterConditions);
     }
-    handleFullSelect(selectedItems){
+
+    handleFullSelect(selectedItems) {
       console.log("Full selected items are ", selectedItems);
       this.selectedRows = selectedItems;
     }
+
     isInt(value) {
       return !isNaN(value) &&
              parseInt(Number(value)) == value &&
              !isNaN(parseInt(value, 10));
     }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchBusinesRules: (page,order) => {
@@ -473,14 +484,17 @@ const mapDispatchToProps = (dispatch) => {
 
   }
 }
+
 function mapStateToProps(state){
   return {
     business_rules:state.business_rules,
     report_linkage: state.report_linkage
   }
 }
+
 const VisibleMaintainBusinessRules = connect(
   mapStateToProps,
   mapDispatchToProps
 )(MaintainBusinessRules);
+
 export default VisibleMaintainBusinessRules;
