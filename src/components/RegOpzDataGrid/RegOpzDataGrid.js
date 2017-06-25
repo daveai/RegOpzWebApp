@@ -25,6 +25,7 @@ class RegOpzDataGrid extends Component {
     this.reporting_date = this.props.location.query['reporting_date'];
     this.selectedCell = null;
     this.selectedSheetName = null;
+    this.gridHight = 0;
   }
   componentWillMount(){
     this.props.fetchCapturedReport(this.report_id,this.reporting_date);
@@ -32,7 +33,19 @@ class RegOpzDataGrid extends Component {
   render(){
     if(this.props.captured_report.length > 0){
       this.data = this.props.captured_report[this.selectedSheet].matrix;
-      //this.numberofRows = this.data.length;
+      let row_attr = this.props.captured_report[this.selectedSheet].row_attr;
+      let col_attr = this.props.captured_report[this.selectedSheet].col_attr;
+      console.log('no of rows...',row_attr,row_attr.length);
+      this.numberofRows = Object.keys(row_attr).length;
+      this.numberofCols = Object.keys(col_attr).length;
+      this.gridHight = 0;
+      [... Array(parseInt(this.numberofRows))].map(function(item,index){
+          //var stylex = {};
+          if(typeof(row_attr[(index+1)+""]) != 'undefined') {
+            this.gridHight += parseInt(row_attr[(index+1)+""].height) * 2;
+          }
+      }.bind(this));
+      console.log('grid hight',this.gridHight);
       return(
         <div className="reg_gridHolder">
           {this.renderBreadCrump()}
@@ -85,12 +98,25 @@ class RegOpzDataGrid extends Component {
               </div>
             </div>
           </div>
-          <RegOpzDataGridHeader numberofCols={this.numberofCols} colAttr={this.props.captured_report[this.selectedSheet].col_attr} />
+          <RegOpzDataGridHeader
+            numberofCols={this.numberofCols}
+            colAttr={this.props.captured_report[this.selectedSheet].col_attr}
+          />
           <div className="clearfix"></div>
-          <RegOpzDataGridSideMarker numberofRows={this.numberofRows} rowAttr={this.props.captured_report[this.selectedSheet].row_attr} />
+          <RegOpzDataGridSideMarker
+            numberofRows={this.numberofRows}
+            rowAttr={this.props.captured_report[this.selectedSheet].row_attr}
+          />
           <div className="reg_grid_drawing_container">
-              <RegOpzDataGridHorizontalLines numberofRows={this.numberofRows} rowAttr={this.props.captured_report[this.selectedSheet].row_attr} />
-              <RegOpzDataGridVerticalLines numberofCols={this.numberofCols} height={this.numberofRows * 30} colAttr={this.props.captured_report[this.selectedSheet].col_attr} />
+              <RegOpzDataGridHorizontalLines
+                numberofRows={this.numberofRows}
+                rowAttr={this.props.captured_report[this.selectedSheet].row_attr}
+              />
+              <RegOpzDataGridVerticalLines
+                numberofCols={this.numberofCols} 
+                height={this.gridHight}
+                colAttr={this.props.captured_report[this.selectedSheet].col_attr}
+              />
               <RegOpzDataGridBody
                 data={this.data}
                 colAttr={this.props.captured_report[this.selectedSheet].col_attr}

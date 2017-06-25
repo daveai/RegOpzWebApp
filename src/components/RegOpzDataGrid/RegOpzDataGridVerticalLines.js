@@ -8,9 +8,21 @@ export default class RegOpzDataGridVerticallLines extends Component {
             height:this.props.height
         }
         this.colAttr = this.props.colAttr;
+        this.columns = [];
+        for(let i = 0; i < this.numberofCols; i++){
+            this.columns[i] = this.alphaSequence(i);
+        }
     }
     componentWillReceiveProps(nextProps){
       this.colAttr = nextProps.colAttr;
+      this.numberofCols = nextProps.numberofCols;
+      this.style = {
+          height:nextProps.height
+      }
+      this.columns = [];
+      for(let i = 0; i < this.numberofCols; i++){
+          this.columns[i] = this.alphaSequence(i);
+      }
     }
     render(){
         return(
