@@ -25,6 +25,7 @@ class VarianceAnalysisGrid extends Component{
     this.selectedSheet = 0;
     this.selectedCell = null;
     this.selectedSheetName = null;
+    this.gridHight = 0;
 
   }
 
@@ -62,7 +63,21 @@ class VarianceAnalysisGrid extends Component{
     }
 
     this.data=this.props.variance_report[this.selectedSheet].matrix;
-    //this.numberofRows = this.data.length;
+    this.numberofRows = this.data.length;
+    let row_attr = this.props.variance_report[this.selectedSheet].row_attr;
+    let col_attr = this.props.variance_report[this.selectedSheet].col_attr;
+    console.log('no of rows...',row_attr,row_attr.length);
+    this.numberofRows = Object.keys(row_attr).length;
+    this.numberofCols = Object.keys(col_attr).length;
+    this.gridHight = 0;
+    [... Array(parseInt(this.numberofRows))].map(function(item,index){
+        //var stylex = {};
+        if(typeof(row_attr[(index+1)+""]) != 'undefined') {
+          this.gridHight += parseInt(row_attr[(index+1)+""].height) * 2;
+        }
+    }.bind(this));
+    console.log('grid hight',this.gridHight);
+
     this.renderBackgroundColor();
 
     return(
@@ -114,7 +129,7 @@ class VarianceAnalysisGrid extends Component{
 
             <RegOpzDataGridVerticalLines
               numberofCols={this.numberofCols}
-              height={this.numberofRows * 30}
+              height={this.gridHight}
               colAttr={this.props.variance_report[this.selectedSheet].col_attr}
               />
               <RegOpzDataGridBody

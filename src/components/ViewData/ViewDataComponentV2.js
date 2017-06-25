@@ -18,8 +18,9 @@ import {
 } from '../../actions/ViewDataAction'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import Breadcrumbs from 'react-breadcrumbs';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import 'react-datepicker/dist/react-datepicker.css';
+require('react-datepicker/dist/react-datepicker.css');
 require('../../../node_modules/react-treeview/react-treeview.css')
 require('./ViewDataComponentStyle.css')
 import InfoModal from '../InfoModal/InfoModal';
@@ -44,33 +45,39 @@ class ViewDataComponentV2 extends Component {
 
   render(){
     return(
-      <div className="container view_data_container">
-        <div className="col col-lg-6">
-          <div className="row">
-            <div className="input-group">
-              <DatePicker
-                  selected={this.state.startDate}
-                  onChange={this.handleStartDateChange.bind(this)}
-                  placeholderText="Select start date"
-                  className="view_data_date_picker_input form-control"
-              />
+      <div>
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+        />
+        <div className="container view_data_container">
+          <div className="col col-lg-6">
+            <div className="row">
+              <div className="input-group">
+                <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleStartDateChange.bind(this)}
+                    placeholderText="Select start date"
+                    className="view_data_date_picker_input form-control"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col col-lg-6">
-          <div className="row">
-            <div className="input-group">
-              <DatePicker
-                  selected={this.state.endDate}
-                  onChange={this.handleEndDateChange.bind(this)}
-                  placeholderText="Select end date"
-                  className="view_data_date_picker_input form-control"
-              />
+          <div className="col col-lg-6">
+            <div className="row">
+              <div className="input-group">
+                <DatePicker
+                    selected={this.state.endDate}
+                    onChange={this.handleEndDateChange.bind(this)}
+                    placeholderText="Select end date"
+                    className="view_data_date_picker_input form-control"
+                />
+              </div>
             </div>
           </div>
+          <div className="clear"></div>
+          {this.renderAccordions()}
         </div>
-        <div className="clear"></div>
-        {this.renderAccordions()}
       </div>
     )
   }

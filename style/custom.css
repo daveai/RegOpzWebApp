@@ -1,20 +1,19 @@
-
-html , body{
-
- height:100%;
-
+/* RegOpz Custom CSS */
+@@charset "UTF-8";
+html,
+body {
+    height: 100%;
 }
-
 .full-width {
-
- width:100%;
-
- }
-
-.full-height{
- height:100%;
- }
-
+    width: 100%;
+}
+.full-height {
+    height: 100%;
+}
+.breadcrumbs {
+    margin-bottom: 5px;
+    width: 167vh;
+}
 .daterangepicker .ranges li {
     color: #73879C
 }
@@ -171,7 +170,7 @@ html , body{
 }
 .nav-sm .navbar.nav_title {
     width: 70px;
-		border: 0;
+    border: 0;
 }
 .nav-sm .navbar.nav_title a span {
     display: none
@@ -1668,7 +1667,7 @@ span.right {
     position: fixed;
     width: 230px;
     background: #2A3F54;
-	z-index:999;
+    z-index: 999;
 }
 .sidebar-footer a {
     padding: 7px 0 3px;
@@ -3218,9 +3217,9 @@ ul.project_files li a i {
 .form-group .btn {
     margin-bottom: -6px;
 }
-
-.input-group-btn .btn { margin-bottom:0; }
-
+.input-group-btn .btn {
+    margin-bottom: 0;
+}
 /*!
  * bootstrap-vertical-tabs - v1.2.1
  * https://dbtek.github.io/bootstrap-vertical-tabs
@@ -4158,7 +4157,6 @@ ul.notifications {
     min-height: 300px;
     border: 1px solid #e5e5e5
 }
-
 /*
 .x_content {
     direction: rtl;
@@ -4178,15 +4176,11 @@ ul.notifications {
         float: none;
     }
 }
-
-
 @media (max-width: 767px) {
-   .dataTables_length { float:none; }
+    .dataTables_length {
+        float: none;
+    }
 }
-
-
-
-
 /* CSS3 Checkbox */
 /*
 .checkbox-input { display:block;position:relative; }
@@ -4236,18 +4230,19 @@ table thead .checkbox { margin-top:-7px;margin-top:-21px; }
 table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 */
 
-.daterangepicker.xdisplay { width:228px; }
-
-.dataTables_wrapper > .row{
-  overflow:auto !important; /*prevent datatables overflowing its container*/
+.daterangepicker.xdisplay {
+    width: 228px;
 }
-
-
+.dataTables_wrapper > .row {
+    overflow: auto !important;
+    /*prevent datatables overflowing its container*/
+}
 /* Only for RegOpz */
+
 .x_panel_blank:hover {
-    -webkit-box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
-    -moz-box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
-    box-shadow: 2px 2px 2px 0px rgba(199,199,199,1);
+    -webkit-box-shadow: 2px 2px 2px 0px rgba(199, 199, 199, 1);
+    -moz-box-shadow: 2px 2px 2px 0px rgba(199, 199, 199, 1);
+    box-shadow: 2px 2px 2px 0px rgba(199, 199, 199, 1);
 }
 .x_panel_blank > .x_content_plush {
     position: absolute;
@@ -4265,14 +4260,14 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     color: rgba(38, 185, 154, 0.88);
 }
 #gridCont {
-  position: relative;
+    position: relative;
 }
 .slidePanelHeading {
-  float: none !important;
-  text-align: center;
+    float: none !important;
+    text-align: center;
 }
 .clearfix {
-  clear: both;
+    clear: both;
 }
 .fileUploadIconHolder {
     position: absolute;
@@ -4282,24 +4277,40 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     text-align: center;
 }
 .dropzone input[type='file'] {
-  display: none;
+    display: none;
 }
 .fileUploadIconHolder > i {
-  font-size: 72px;
-  color: #42f4d7;
-  animation-name: pulse_animation;
-  animation-duration: 5000ms;
-  transform-origin:70% 70%;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+    font-size: 72px;
+    color: #42f4d7;
+    animation-name: pulse_animation;
+    animation-duration: 5000ms;
+    transform-origin: 70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 @keyframes pulse_animation {
-	0% { transform: scale(1); }
-	30% { transform: scale(1); }
-	40% { transform: scale(1.08); }
-	50% { transform: scale(1); }
-	60% { transform: scale(1); }
-	70% { transform: scale(1.05); }
-	80% { transform: scale(1); }
-	100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.08);
+    }
+    50% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1);
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    80% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

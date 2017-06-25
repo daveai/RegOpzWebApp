@@ -8,6 +8,7 @@ export default class RegOpzDataGridSideMarker extends Component {
     }
     componentWillReceiveProps(nextProps){
       this.rowAttr = nextProps.rowAttr;
+      this.numberofRows = nextProps.numberofRows;
     }
     render() {
         return (
