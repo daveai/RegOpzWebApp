@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import DatePicker from 'react-datepicker';
 import {
@@ -16,8 +16,9 @@ import {
   actionUpdateRuleData
 } from '../../../actions/MaintainReportRuleAction';
 import './AddReportRules.css';
+
 class AddReportRules extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
         rulesTags: [],
@@ -27,22 +28,22 @@ class AddReportRules extends Component {
         requestType: this.props.location.query['request'],
         ruleIndex: this.props.location.query['index'],
         readOnly: null,
-        form:{
-          cell_calc_ref:null,
+        form: {
+          cell_calc_ref: null,
           report_id: this.props.location.query['report_id'],
           sheet_id: this.props.location.query['sheet'],
           cell_id:this.props.location.query['cell'],
-          source_id:null,
-          cell_business_rules:null,
-          aggregation_ref:null,
-          aggregation_func:null,
-          valid_from:null,
-          valid_to:null,
-          last_updated_by:null,
-          id:null
+          source_id: null,
+          cell_business_rules: null,
+          aggregation_ref: null,
+          aggregation_func: null,
+          valid_from: null,
+          valid_to: null,
+          last_updated_by: null,
+          id: null
         },
     };
-    this.state.readOnly = this.state.requestType=="update"?"readonly":"";
+    this.state.readOnly = this.state.requestType == "update" ? "readonly" : "";
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -51,12 +52,14 @@ class AddReportRules extends Component {
     this.handleAggRefAddition = this.handleAggRefAddition.bind(this);
     this.handleAggRefDrag = this.handleAggRefDrag.bind(this);
   }
-  componentWillMount(){
+  
+  componentWillMount() {
     this.props.fetchSources();
     if(typeof ruleIndex != 'undefined') {
       this.initialiseFormFields();
     }
   }
+  
   handleValidFromDateChange(date){
     let form = this.state.form;
     form.valid_from = date;
@@ -64,6 +67,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
+  
   handleValidTillDateChange(date){
     let form = this.state.form;
     form.valid_till = date;
@@ -71,6 +75,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
+  
   handleDelete(i) {
       let rulesTags = this.state.rulesTags;
       rulesTags.splice(i, 1);
@@ -84,9 +89,9 @@ class AddReportRules extends Component {
             text: tag
         });
         this.setState({rulesTags: rulesTags});
-    }
+   }
 
-    handleDrag(tag, currPos, newPos) {
+  handleDrag(tag, currPos, newPos) {
         let rulesTags = this.state.rulesTags;
 
         // mutate array
@@ -349,7 +354,8 @@ class AddReportRules extends Component {
                         className="view_data_date_picker_input form-control"
                     />
                   </div>
-                </div>
+                </div>                
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
@@ -371,10 +377,12 @@ class AddReportRules extends Component {
       )
     }
   }
+
   handleCancel(event){
     console.log('inside cancel');
     hashHistory.push(`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`)
   }
+  
   handleSubmit(event){
     console.log('inside submit',this.state.form);
     event.preventDefault();
