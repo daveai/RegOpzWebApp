@@ -6,13 +6,13 @@ import RegOpzDataGridHorizontalLines from './RegOpzDataGridHorizontalLines';
 import RegOpzDataGridVerticalLines from './RegOpzDataGridVerticalLines';
 import RegOpzDataGridBody from './RegOpzDataGridBody';
 import { connect } from 'react-redux';
-import {bindActionCreators, dispatch} from 'redux';
+import { bindActionCreators, dispatch } from 'redux';
 import {
   actionFetchReportData,
   actionDrillDown
 } from '../../actions/CaptureReportAction';
-import { hashHistory } from 'react-router';
-import { routerContext } from 'react-router';
+import { hashHistory, routerContext } from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 require('./RegOpzDataGrid.css');
 
 class RegOpzDataGrid extends Component {
@@ -137,17 +137,26 @@ class RegOpzDataGrid extends Component {
       )
     }
   }
-  renderBreadCrump(){
-    console.log('reporting_date',this.reporting_date)
-    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+
+  renderBreadCrump() {
+    return (
+      <div className="breadcrumb">
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+        />
+      </div>
+    )
+    /*
+    console.log('reporting_date', this.reporting_date);
+    if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
       return(
         <ol className="breadcrumb">
           <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
           <li><a href={window.location.href}>{`${this.report_id} (Manage Report Rules)`}</a></li>
         </ol>
       )
-    }
-    else{
+    } else {
       return(
         <ol className="breadcrumb">
           <li><a href="#/dashboard/view-report">View Report</a></li>
@@ -155,13 +164,16 @@ class RegOpzDataGrid extends Component {
         </ol>
       )
     }
+    */
   }
 }
-function mapStateToProps(state){
+
+function mapStateToProps(state) {
   return {
     captured_report:state.captured_report
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCapturedReport:(report_id, reporting_date) => {
@@ -172,8 +184,10 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
+
 const VisibleRegOpzDataGrid = connect(
   mapStateToProps,
   mapDispatchToProps
 )(RegOpzDataGrid);
+
 export default VisibleRegOpzDataGrid;

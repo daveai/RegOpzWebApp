@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
     Router,
@@ -43,8 +43,8 @@ class Index extends Component {
 
         );
     }
-    componentDidMount() {
-    }
+
+    componentDidMount() {}
 }
 
 ReactDOM.render(
@@ -52,23 +52,23 @@ ReactDOM.render(
         <Router history={hashHistory}>
             <Route component={Index}>
                 <Route path="/login" component={Login}/>
-                <Route path="/dashboard" component={Dashboard} >
+                <Route path="/dashboard" name="Dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
-                    <Route path="capture-report-template" component={CaptureReportTemplate} />
-                    <Route path="data-grid" component={RegOpzDataGrid} />
-                    <Route path="maintain-business-rules" component={MaintainBusinessRules} />
-                    <Route path="view-data" component={ViewDataComponentV2} />
-                    <Route path="view-data-on-grid" component={ViewDataComponent} />
-                    <Route path="view-report" component={ViewReport} />
-                    <Route path="create-report" component={CreateReport} />
-                    <Route path="drill-down" component={DrillDown} />
-                    <Route path="maintain-report-rules" component={MaintainReportRules} />
-                    <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
-                    <Route path="maintain-sources" component={MaintainSources} />
-                    <Route path="maintain-sources/add-sources" component={AddSources} />
-                    <Route path="variance-analysis" component={VarianceAnalysisForm} />
-                    <Route path="variance-analysis/variance-data-grid" component={VarianceAnalysisGrid} />
-                    <Route path="variance-analysis/variance-chart" component={VarianceAnalysisChart}/>
+                    <Route path="capture-report-template" name="Capture Report Template" component={CaptureReportTemplate} />
+                    <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
+                    <Route path="maintain-business-rules" name="Maintain Business Rules" component={MaintainBusinessRules} />
+                    <Route path="view-data" name="View Data" component={ViewDataComponentV2} />
+                    <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
+                    <Route path="view-report" name="View Report" component={ViewReport} />
+                    <Route path="create-report" name="Create Report" component={CreateReport} />
+                    <Route path="drill-down" name="DrillDown" component={DrillDown} />
+                    <Route path="maintain-report-rules" name="Maintain Report Rules" component={MaintainReportRules} />
+                    <Route path="maintain-report-rules/add-report-rules" name="Add Report Rules" component={AddReportRules} />
+                    <Route path="maintain-sources" name="Maintain Sources" component={MaintainSources} />
+                    <Route path="maintain-sources/add-sources" name="Add Sources" component={AddSources} />
+                    <Route path="variance-analysis" name="Variance Analysis" component={VarianceAnalysisForm} />
+                    <Route path="variance-analysis/variance-data-grid" name="Variance Analysis Grid" component={VarianceAnalysisGrid} />
+                    <Route path="variance-analysis/variance-chart" name="Variance Analysis Chart" component={VarianceAnalysisChart}/>
                 </Route>
             </Route>
         </Router>
