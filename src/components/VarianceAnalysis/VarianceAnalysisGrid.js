@@ -26,6 +26,7 @@ class VarianceAnalysisGrid extends Component{
     this.selectedCell = null;
     this.selectedSheetName = null;
     this.gridHight = 0;
+    this.gridWidth = 0;
 
   }
 
@@ -52,7 +53,11 @@ class VarianceAnalysisGrid extends Component{
 
     }
   }
-
+  alphaSequence(i) {
+      return i < 0
+          ? ""
+          : this.alphaSequence((i / 26) - 1) + String.fromCharCode((65 + i % 26) + "");
+  }
 
   render(){
 
@@ -70,6 +75,7 @@ class VarianceAnalysisGrid extends Component{
     this.numberofRows = Object.keys(row_attr).length;
     this.numberofCols = Object.keys(col_attr).length;
     this.gridHight = 0;
+    this.gridWidth = 0;
     [... Array(parseInt(this.numberofRows))].map(function(item,index){
         //var stylex = {};
         if(typeof(row_attr[(index+1)+""]) != 'undefined') {
@@ -77,6 +83,12 @@ class VarianceAnalysisGrid extends Component{
         }
     }.bind(this));
     console.log('grid hight',this.gridHight);
+    [... Array(parseInt(this.numberofCols))].map(function(item,index){
+        //var stylex = {};
+        if(typeof(col_attr[this.alphaSequence(index)]) != 'undefined'){
+          this.gridWidth += parseInt(col_attr[this.alphaSequence(index)]['width']) * 9 + 1;
+        }
+    }.bind(this));
 
     this.renderBackgroundColor();
 
@@ -109,43 +121,48 @@ class VarianceAnalysisGrid extends Component{
           </div>
         </div>
 
-        <RegOpzDataGridHeader
-          numberofCols={this.numberofCols}
-          colAttr={this.props.variance_report[this.selectedSheet].col_attr}
-        />
+        <div className="data_grid_container">
+          <RegOpzDataGridHeader
+            numberofCols={this.numberofCols}
+            colAttr={this.props.variance_report[this.selectedSheet].col_attr}
+          />
 
-        <div className="clearfix"></div>
+          <div className="clearfix"></div>
 
-      <RegOpzDataGridSideMarker
-        numberofRows={this.numberofRows}
-        rowAttr={this.props.variance_report[this.selectedSheet].row_attr}
-        />
+        <RegOpzDataGridSideMarker
+          numberofRows={this.numberofRows}
+          rowAttr={this.props.variance_report[this.selectedSheet].row_attr}
+          />
 
-        <div className="reg_grid_drawing_container">
-            <RegOpzDataGridHorizontalLines
-              numberofRows={this.numberofRows}
-              rowAttr={this.props.variance_report[this.selectedSheet].row_attr}
-              />
-
-            <RegOpzDataGridVerticalLines
-              numberofCols={this.numberofCols}
-              height={this.gridHight}
-              colAttr={this.props.variance_report[this.selectedSheet].col_attr}
-              />
-              <RegOpzDataGridBody
-                data={this.data}
-                colAttr={this.props.variance_report[this.selectedSheet].col_attr}
+          <div className="reg_grid_drawing_container">
+              <RegOpzDataGridHorizontalLines
+                numberofRows={this.numberofRows}
+                height={this.gridHight}
+                width={this.gridWidth}
                 rowAttr={this.props.variance_report[this.selectedSheet].row_attr}
-                onSelect = {
-                  (item) => {
-                    this.selectedCell = item;
-                    const obj=_.findWhere(this.data,{cell:this.selectedCell})
-                    console.log("On select",this.selectedCell,obj);
-                    this.props.setVarianceChartData(obj);
-                    hashHistory.push('/dashboard/variance-analysis/variance-chart');
+                />
+
+              <RegOpzDataGridVerticalLines
+                numberofCols={this.numberofCols}
+                height={this.gridHight}
+                width={this.gridWidth}
+                colAttr={this.props.variance_report[this.selectedSheet].col_attr}
+                />
+                <RegOpzDataGridBody
+                  data={this.data}
+                  colAttr={this.props.variance_report[this.selectedSheet].col_attr}
+                  rowAttr={this.props.variance_report[this.selectedSheet].row_attr}
+                  onSelect = {
+                    (item) => {
+                      this.selectedCell = item;
+                      const obj=_.findWhere(this.data,{cell:this.selectedCell})
+                      console.log("On select",this.selectedCell,obj);
+                      this.props.setVarianceChartData(obj);
+                      hashHistory.push('/dashboard/variance-analysis/variance-chart');
+                    }
                   }
-                }
-              />
+                />
+          </div>
         </div>
       </div>
     );
