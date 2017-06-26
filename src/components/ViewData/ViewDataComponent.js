@@ -120,7 +120,7 @@ class ViewDataComponent extends Component {
     }
     else {
       this.props.fetchReportFromDate(this.currentSourceId,this.currentBusinessDate,this.currentPage);
-      this.export_csv_business_ref = `${this.business_date}`
+      this.export_csv_business_ref = `${this.currentBusinessDate}`
     }
   }
   renderBreadCrump(){
@@ -130,6 +130,9 @@ class ViewDataComponent extends Component {
       }
       if(this.rules){
         this.lastRef = `${this.cell_calc_ref} Rules`
+      }
+      if(this.table == 'report_comp_agg_def'){
+        this.lastRef = `${this.cell_id} Comp Ref`
       }
       if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
         return(
@@ -406,7 +409,7 @@ class ViewDataComponent extends Component {
                             axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_ref=${this.export_csv_business_ref}&sql=${this.sql}`)
                             .then(function(response){
                               console.log("export csv",response);
-                              window.location.href = "http://localhost:3000/static/" + response.data.file_name;
+                              window.location.href = BASE_URL + "../../static/" + response.data.file_name;
                             })
                             .catch(function (error) {
                               console.log(error);
