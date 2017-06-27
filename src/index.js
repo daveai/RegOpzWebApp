@@ -25,6 +25,7 @@ import ViewReport from './components/ViewReport/ViewReport';
 import DrillDown from './components/DrillDown/DrillDown';
 import MaintainReportRules from './components/MaintainReportRules/MaintainReportRules';
 import AddReportRules from './components/MaintainReportRules/AddReportRules/AddReportRules';
+import AddReportAggRules from './components/MaintainReportRules/AddReportAggRules';
 import MaintainSources from './components/MaintainSources/MaintainSources';
 import AddSources from './components/MaintainSources/AddSources/AddSources';
 import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis';
@@ -64,6 +65,7 @@ ReactDOM.render(
                     <Route path="drill-down" component={DrillDown} />
                     <Route path="maintain-report-rules" component={MaintainReportRules} />
                     <Route path="maintain-report-rules/add-report-rules" component={AddReportRules} />
+                    <Route path="maintain-report-rules/add-report-agg-rules" component={AddReportAggRules} />
                     <Route path="maintain-sources" component={MaintainSources} />
                     <Route path="maintain-sources/add-sources" component={AddSources} />
                     <Route path="variance-analysis" component={VarianceAnalysisForm} />

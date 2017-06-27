@@ -134,6 +134,19 @@ class MaintainBusinessRules extends Component {
                     <button
                       data-toggle="tooltip"
                       data-placement="top"
+                      title="Update"
+                      onClick={
+                        this.handleUpdateClick.bind(this)
+                      }
+                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                    >
+                      <i className="fa fa-pencil"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
                       title="Delete"
                       onClick={
                         this.handleDeleteClick.bind(this)
@@ -385,6 +398,18 @@ class MaintainBusinessRules extends Component {
       } else {
         this.modalInstance.isDiscardToBeShown = true;
         this.operationName = "DELETE";
+        this.modalInstance.open(`Are you sure to delete this row (business rule: ${this.selectedRowItem['business_rule']}) ?`)
+        //this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
+      }
+    }
+    handleUpdateClick(event){
+      if(!this.selectedRowItem){
+        this.modalInstance.isDiscardToBeShown = false;
+        this.modalInstance.open("Please select a row");
+        this.operationName = "";
+      } else {
+        this.modalInstance.isDiscardToBeShown = true;
+        //this.operationName = "DELETE";
         this.modalInstance.open(`Are you sure to delete this row (business rule: ${this.selectedRowItem['business_rule']}) ?`)
         //this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
       }
