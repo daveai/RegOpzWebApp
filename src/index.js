@@ -17,6 +17,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
 import DashboardIndex from './components/Dashboard/DashBoardIndex';
 import MaintainBusinessRules from './components/MaintainBusinessRules/MaintainBusinessRules';
+import AddBusinessRule from './components/MaintainBusinessRules/AddBusinessRule/AddBusinessRule';
 import custom from '../js/custom';
 import RegOpzDataGrid from './components/RegOpzDataGrid/RegOpzDataGrid';
 import ViewDataComponentV2 from './components/ViewData/ViewDataComponentV2';
@@ -58,6 +59,7 @@ ReactDOM.render(
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
                     <Route path="data-grid" component={RegOpzDataGrid} />
                     <Route path="maintain-business-rules" component={MaintainBusinessRules} />
+                    <Route path="maintain-business-rules/add-business-rule" component={AddBusinessRule} />
                     <Route path="view-data" component={ViewDataComponentV2} />
                     <Route path="view-data-on-grid" component={ViewDataComponent} />
                     <Route path="view-report" component={ViewReport} />
