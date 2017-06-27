@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import { routerContext } from 'react-router';
 import {BASE_URL} from '../../Constant/constant';
 import npro from '../../../bower_components/nprogress/nprogress';
+import ModalAlert from '../ModalAlert/ModalAlert';
 require('../../../bower_components/nprogress/nprogress.css');
 export default class RightPane extends Component {
   constructor(props){
@@ -76,8 +77,16 @@ export default class RightPane extends Component {
                 value={this.state.report_description}
                  />
               <input id="file"
-                onChange={this.handleFileSelect.bind(this)}
-                ref={(fileInput) => {this.fileInput = fileInput}}
+                onChange={
+                  ()=>{
+                    this.handleFileSelect(this.modalInstance)
+                  }
+                }
+                ref={
+                  (fileInput) => {
+                    this.fileInput = fileInput
+                  }
+                }
                 type="file"
                 className="form-control" />
               <div className="fileUploadIconHolder">
@@ -93,6 +102,23 @@ export default class RightPane extends Component {
             </div>
           </div>
         </div>
+        <ModalAlert
+          onClickOkay={
+            () => {
+
+            }
+          }
+          onClickDiscard={
+            () => {
+
+            }
+          }
+          ref={
+            (modal) => {
+              this.modalInstance = modal
+            }
+          }
+        />
       </div>
     )
   }
@@ -106,7 +132,7 @@ export default class RightPane extends Component {
   handleFormSubmit(event){
     event.preventDefault();
   }
-  handleFileSelect(event){
+  handleFileSelect(modalInstance){
     var report_id = this.state.report_id;
     var country = this.state.country;
     var report_description = this.state.report_description;
@@ -128,11 +154,16 @@ export default class RightPane extends Component {
         npro.done();
         hashHistory.push("/dashboard/data-grid?report_id="+report_id+"&country="+country+"&report_description="+report_description);
         console.log(response);
-
       },
       error:function(response){
+        let modalMsg="";
         npro.done();
-        alert(response.responseJSON.msg);
+        console.log(response);
+        modalMsg = (typeof response.responseJSON == 'undefined' ? "Unknown error!No response from API server!": response.responseJSON.msg);
+        modalMsg = `${modalMsg} [${response.status}:${response.statusText}]`;
+        modalInstance.isDiscardToBeShown = false;
+        modalInstance.open(modalMsg);
+        //alert(response.responseJSON.msg);
       }
     });
   }

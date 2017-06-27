@@ -244,7 +244,7 @@ class MaintainBusinessRules extends Component {
                             axios.get(`${BASE_URL}business-rule/export_to_csv`)
                             .then(function(response){
                               console.log("export csv",response);
-                              window.location.href = "http://localhost:3000/static/" + response.data.file_name;
+                              window.location.href = BASE_URL + "../../static/" + response.data.file_name;
                             })
                             .catch(function (error) {
                               console.log(error);

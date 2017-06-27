@@ -5,16 +5,24 @@ export default class RegOpzDataGridHorizontalLines extends Component {
         super(props);
         this.numberofRows = this.props.numberofRows;
         this.rowAttr = this.props.rowAttr
+        this.style = {
+            height:this.props.height,
+            width:this.props.width
+        }
     }
     componentWillReceiveProps(nextProps){
       console.log('inside componentWillReceiveProps horizontal row',nextProps.numberofRows)
       this.numberofRows = nextProps.numberofRows;
       this.rowAttr = nextProps.rowAttr;
+      this.style = {
+          height:nextProps.height,
+          width:nextProps.width
+      }
     }
     render(){
         console.log('inside render horizontal row',this.numberofRows)
         return(
-          <div className="reg_horizontal_line_holder">
+          <div style={this.style} className="reg_horizontal_line_holder">
               {
                 [... Array(parseInt(this.numberofRows))].map(function(item,index){
                     var stylex = {};

@@ -54,19 +54,21 @@
 }
 
 .reg_gridHolder {
-  float: left;
-  height: 84vh;
-  min-width: 100px;
+  height: 87vh;
+  position: relative;
+}
+.data_grid_container {
+  overflow: auto;
+  height: 69vh;
+  position: relative;
 }
 
 .reg_header {
-  min-width: 100px;
   float: left;
-  margin-top: 82px;
 }
 
 .reg_grid_drawing_container {
-  width: 98.8%;
+  width: 100%;
   background-color: #ffffff;
   position: relative;
   left: 32px;
@@ -124,6 +126,7 @@
 
 .reg_sheet_buttons_holder {
   margin-bottom: 10px;
+  margin-left: 20px;
 }
 
 .rightClickContextMenu {
@@ -135,7 +138,7 @@
 }
 
 .mb-10 {
-  margin-bottom: 1px;
+  margin-bottom: 3px;
 }
 
 .reg_ops_button_holder {
