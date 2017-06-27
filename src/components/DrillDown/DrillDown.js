@@ -170,7 +170,7 @@ class DrillDownComponent extends Component {
         console.log('Maintain report rules')
         return(
           <div className="alert alert-success reg_cell_formula">
-            <button type="button" className="btn btn-primary btn-sm">Add Fromula</button>
+            <button type="button" className="btn btn-primary btn-sm" onClick={this.handleAddAggRule.bind(this)}>Add Fromula</button>
             No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
           </div>
         )
@@ -187,13 +187,16 @@ class DrillDownComponent extends Component {
     else{
       console.log('With agg rules data available')
       let item = this.drillDownResult.comp_agg_rules[0]
-      this.filter = `id=${item.id}`
       return(
         <div className="alert alert-success reg_cell_formula">
-          <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}&table=report_comp_agg_def&filter=${this.filter}`}>{item.comp_agg_ref}</a>
+          <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
         </div>
       )
     }
+  }
+
+  handleAddAggRule(){
+    hashHistory.push(`/dashboard/maintain-report-rules/add-report-agg-rules?request=add&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`);
   }
   showAddRuleButton(){
     if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
@@ -222,7 +225,8 @@ class DrillDownComponent extends Component {
   }
   handleAddRule(event){
     console.log('Inside add rule');
-    hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add&report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
+    hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add
+      &report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
   }
 }
 
