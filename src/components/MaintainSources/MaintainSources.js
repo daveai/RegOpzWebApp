@@ -52,7 +52,7 @@ class MaintainSources extends Component {
       let tags = this.tags.sourceTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       console.log('Add source',this.tags);
       let sources = this.convertTagsToString(this.tags.sourceTags)
@@ -82,7 +82,7 @@ class MaintainSources extends Component {
       let tags = this.tags.countryTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({countryTags: tags});
       console.log('Add country',this.tags);

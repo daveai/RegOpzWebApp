@@ -47,7 +47,7 @@ class MaintainReportRules extends Component {
       let tags = this.tags.reportTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({reportTags: tags});
       let reports = this.convertTagsToString(this.tags.reportTags)
@@ -76,7 +76,7 @@ class MaintainReportRules extends Component {
       let tags = this.tags.countryTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({countryTags: tags});
       let reports = this.convertTagsToString(this.tags.reportTags)

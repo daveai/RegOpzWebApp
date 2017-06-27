@@ -67,7 +67,7 @@ class AddReportRules extends Component {
   }
   handleValidTillDateChange(date){
     let form = this.state.form;
-    form.valid_till = date;
+    form.valid_to = date;
 
     this.setState({form:form});
 
@@ -343,7 +343,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <DatePicker
                         dateFormat="YYYYMMDD"
-                        selected={this.state.form.valid_till}
+                        selected={this.state.form.valid_to}
                         onChange={console.log("this.handleValidTillDateChange.bind(this)")}
                         placeholderText="Rule Valid Till"
                         readOnly="readonly"

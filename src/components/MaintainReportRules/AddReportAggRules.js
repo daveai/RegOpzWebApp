@@ -15,7 +15,6 @@ class AddReportAggRules extends Component {
       requestType: this.props.location.query['request'],
       form: {
         id: null,
-        country: null,
         report_id: this.props.location.query['report_id'],
         sheet_id: this.props.location.query['sheet_id'],
         cell_id: this.props.location.query['cell_id'],
@@ -113,10 +112,10 @@ class AddReportAggRules extends Component {
 
                   <div className="form-group">
                     <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="reporting-scale">Reporting Scale<span className="required">*</span></label>
-                    <div className="col-md-1 col-sm-1 col-xs-12">
+                    <div className="col-md-2 col-sm-2 col-xs-12">
                       <input
                         value={this.state.form.reporting_scale}
-                        type="text"
+                        type="number"
                         className="form-control col-md-7 col-xs-12"
                         onChange={(event) => {
                             let newState = {...this.state};
@@ -131,54 +130,64 @@ class AddReportAggRules extends Component {
                   <div className="form-group">
                     <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="rounding-option">Rounding Option<span className="required">*</span></label>
                     <div className="col-md-3 col-sm-3 col-xs-12">
-                      <input
-                        value={this.state.form.rounding_option}
-                        type="text"
-                        className="form-control col-md-7 col-xs-12"
-                        onChange={(event) => {
-                          let newState = {...this.state};
-                          newState.form.rounding_option = event.target.value;
-                          this.setState(newState);
+                      <select
+                        defaultValue = {this.state.form.rounding_option}
+                        className="form-control"
+                        onChange={
+                          (event) => {
+                            let newState = {...this.state};
+                            newState.form.rounding_option = event.target.value;
+                            this.setState(newState);
                           }
                         }
+                      >
+                        <option>Choose option</option>
+                        <option value="NONE">NONE</option>
+                        <option value="CEIL">CEIL</option>
+                        <option value="FLOOR">FLOOR</option>
+                        <option value="TRUNC">TRUNC</option>
+                        <option value="DECIMAL0">DECIMAL0</option>
+                        <option value="DECIMAL1">DECIMAL1</option>
+                        <option value="DECIMAL2">DECIMAL2</option>
+                        <option value="DECIMAL3">DECIMAL3</option>
+                        <option value="DECIMAL4">DECIMAL4</option>
+                        <option value="DECIMAL5">DECIMAL5</option>
+                        <option value="DECIMAL6">DECIMAL6</option>
+                        <option value="DECIMAL7">DECIMAL7</option>
+                        <option value="DECIMAL8">DECIMAL8</option>
+                        <option value="DECIMAL9">DECIMAL9</option>
+                        <option value="DECIMAL10">DECIMAL10</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid from <span className="required"> </span></label>
+                    <div className="col-md-6 col-sm-6 col-xs-12">
+                      <DatePicker
+                          dateFormat="YYYYMMDD"
+                          selected={this.state.form.valid_from}
+                          onChange={console.log("this.handleValidFromDateChange.bind(this)")}
+                          placeholderText="Rule Valid From"
+                          readOnly="readonly"
+                          className="view_data_date_picker_input form-control"
                       />
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="valid-from">Valid From<span className="required">*</span></label>
-                    <div className="col-md-3 col-sm-3 col-xs-12">
-                      <input
-                        value={this.state.form.valid_from}
-                        type="text"
-                        className="form-control col-md-7 col-xs-12"
-                        onChange={(event) => {
-                          let newState = {...this.state};
-                          newState.form.valid_from = event.target.value;
-                          this.setState(newState);
-                          }
-                        }
+                    <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Valid till <span className="required"> </span></label>
+                    <div className="col-md-6 col-sm-6 col-xs-12">
+                      <DatePicker
+                          dateFormat="YYYYMMDD"
+                          selected={this.state.form.valid_to}
+                          onChange={console.log("this.handleValidTillDateChange.bind(this)")}
+                          placeholderText="Rule Valid Till"
+                          readOnly="readonly"
+                          className="view_data_date_picker_input form-control"
                       />
                     </div>
                   </div>
-
-                  <div className="form-group">
-                    <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="valid-to">Valid To<span className="required">*</span></label>
-                    <div className="col-md-3 col-sm-3 col-xs-12">
-                      <input
-                        value={this.state.form.valid_to}
-                        type="text"
-                        className="form-control col-md-7 col-xs-12"
-                        onChange={(event) => {
-                          let newState = {...this.state};
-                          newState.form.valid_to = event.target.value;
-                          this.setState(newState);
-                        }
-                      }
-                      />
-                    </div>
-                  </div>
-
                   <div className="form-group">
                     <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="last-update-by">Last Updated By<span className="required">*</span></label>
                     <div className="col-md-3 col-sm-3 col-xs-12">

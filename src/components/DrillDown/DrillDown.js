@@ -225,8 +225,8 @@ class DrillDownComponent extends Component {
   }
   handleAddRule(event){
     console.log('Inside add rule');
-    hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add
-      &report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
+    hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add`
+      +`&report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
   }
 }
 
