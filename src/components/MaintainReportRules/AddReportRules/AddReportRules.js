@@ -279,6 +279,7 @@ class AddReportRules extends Component {
                       handleDelete={this.handleDelete}
                       handleAddition={this.handleAddition}
                       handleDrag={this.handleDrag}
+                      allowDeleteFromEmptyInput={false}
                       classNames={{
                         tagInput: 'tagInputClass',
                         tagInputField: 'tagInputFieldClass form-control',
@@ -296,6 +297,7 @@ class AddReportRules extends Component {
                       handleDelete={this.handleAggRefDelete}
                       handleAddition={this.handleAggRefAddition}
                       handleDrag={this.handleAggRefDrag}
+                      allowDeleteFromEmptyInput={false}
                       classNames={{
                         tagInput: 'tagInputClass',
                         tagInputField: 'tagInputFieldClass form-control',
