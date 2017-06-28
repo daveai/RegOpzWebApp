@@ -26,6 +26,7 @@ class AddBusinessRule extends Component {
         dataFieldsTags:[],
         fieldsSuggestions:[],
         dataFieldsSuggestions:[],
+        componentDidUpdateCount:0,
         requestType: this.props.location.query['request'],
         ruleIndex: this.props.location.query['index'],
         readOnly: null,
@@ -59,6 +60,18 @@ class AddBusinessRule extends Component {
     console.log('ruleIndex.....',this.state.ruleIndex, typeof this.props.business_rules)
     if(typeof this.state.ruleIndex != 'undefined') {
       Object.assign(this.state.form, this.props.business_rules[0].rows[this.state.ruleIndex]);
+      this.initialiseFormFields();
+    }
+  }
+  componentDidUpdate(){
+    //let table_name = document.getElementById("sourceId").options[this.state.form.source_id].getAttribute('target');
+    if(this.state.componentDidUpdateCount==0){
+      let table_name = this.sourceId.options[this.state.form.source_id].getAttribute('target');
+      //alert(table_name);
+      this.props.fetchSourceColumnList(table_name);
+      //set the value componentDidUpdateCount to 1 to indicate that column list Updated
+      //no need to call componentDidUpdate again
+      this.setState({componentDidUpdateCount:1});
     }
   }
   handleValidFromDateChange(date){
@@ -109,13 +122,17 @@ class AddBusinessRule extends Component {
     handleDataFieldsAddition(tag) {
         let dataFieldsTags = this.state.dataFieldsTags;
         console.log('inside dataFieldsTags addition 0',dataFieldsTags,this.state.dataFieldsTags);
-        dataFieldsTags.push({
-            id: dataFieldsTags.length + 1,
-            text: tag
-        });
-        console.log('inside dataFieldsTags addition 1',dataFieldsTags,this.state.dataFieldsTags);
+        // check whether its a valid rule to be added
+        if (this.state.fieldsSuggestions.indexOf(tag) != -1){
+          dataFieldsTags.push({
+              id: dataFieldsTags.length + 1,
+              text: tag
+          });
+        }
+        else{
+          alert("Not a valid data field, please check...",tag)
+        }
         this.setState({dataFieldsTags: dataFieldsTags});
-        console.log('inside dataFieldsTags addition 2',dataFieldsTags,this.state.dataFieldsTags);
     }
 
     handleDataFieldsDrag(tag, currPos, newPos) {
@@ -185,10 +202,10 @@ class AddBusinessRule extends Component {
       )
     } else {
       const { source_suggestion } = this.props.sources;
-      if(typeof(this.state.ruleIndex) != 'undefined'){
-        console.log('inside initialiseFormFields')
-        this.initialiseFormFields();
-      }
+      // if(typeof(this.state.ruleIndex) != 'undefined'){
+      //   console.log('inside initialiseFormFields')
+      //   this.initialiseFormFields();
+      // }
       console.log('in render',this.state)
       return(
         <div className="row">
@@ -303,6 +320,7 @@ class AddBusinessRule extends Component {
                       defaultValue = {this.state.form.source_id}
                       required="required"
                       className="form-control"
+                      ref={(select) => {this.sourceId = select;}}
                       onChange={
                         (event) => {
                           let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
@@ -333,6 +351,9 @@ class AddBusinessRule extends Component {
                       handleDelete={this.handleDataFieldsDelete}
                       handleAddition={this.handleDataFieldsAddition}
                       handleDrag={this.handleDataFieldsDrag}
+                      allowDeleteFromEmptyInput={false}
+                      autocomplete={true}
+                      minQueryLength={1}
                       classNames={{
                         tagInput: 'tagInputClass',
                         tagInputField: 'tagInputFieldClass form-control',

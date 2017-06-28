@@ -54,7 +54,9 @@ class AddReportRules extends Component {
   }
   componentWillMount(){
     this.props.fetchSources();
-    if(typeof ruleIndex != 'undefined') {
+    if(typeof this.state.ruleIndex != 'undefined') {
+      Object.assign(this.state.form , this.props.drill_down_result.cell_rules[this.state.ruleIndex]);
+      this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
       this.initialiseFormFields();
     }
   }
@@ -146,7 +148,7 @@ class AddReportRules extends Component {
       }
       initialiseFormFields(){
         //this.setState({form: this.props.drill_down_result.cell_rules[this.state.ruleIndex]});
-        this.state.form = this.props.drill_down_result.cell_rules[this.state.ruleIndex];
+        //this.state.form = this.props.drill_down_result.cell_rules[this.state.ruleIndex];
         if(this.state.rulesTags.length == 0){
           const {cell_business_rules}=this.state.form;
           let rulesTagsArray=cell_business_rules.split(',');
@@ -268,7 +270,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <select
                       value = {this.state.form.source_id}
-                      className="form-control"
+                      className="form-control"                      
                       onChange={
                         (event) => {
                           let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
@@ -301,6 +303,9 @@ class AddReportRules extends Component {
                       handleDelete={this.handleDelete}
                       handleAddition={this.handleAddition}
                       handleDrag={this.handleDrag}
+                      allowDeleteFromEmptyInput={false}
+                      autocomplete={true}
+                      minQueryLength={1}
                       classNames={{
                         tagInput: 'tagInputClass',
                         tagInputField: 'tagInputFieldClass form-control',
