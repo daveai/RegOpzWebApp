@@ -4,6 +4,10 @@ import {bindActionCreators, dispatch} from 'redux';
 import ReactDOM from 'react-dom';
 import DataGrid from 'react-datagrid';
 import {
+  Link,
+  hashHistory
+} from 'react-router';
+import {
   actionFetchBusinessRules,
   actionInsertBusinessRule,
   actionDeleteBusinessRule,
@@ -374,12 +378,13 @@ class MaintainBusinessRules extends Component {
 
     }
     handleSelectRow(rownum, item){
-      console.log("I am called at ", item);
+      console.log("I am called at ", item,rownum);
       this.selectedRow = rownum;
       this.selectedRowItem = item;
     }
     handleInsertClick(event){
-      this.props.insertBusinessRule(this.newItem, this.selectedRow);
+      //this.props.insertBusinessRule(this.newItem, this.selectedRow);
+      hashHistory.push(`/dashboard/maintain-business-rules/add-business-rule?request=add`);
     }
     handleDuplicateClick(event){
       if(this.selectedRows.length == 0){
@@ -387,7 +392,11 @@ class MaintainBusinessRules extends Component {
       } else if (this.selectedRows.length > 1) {
         this.modalInstance.open("Please select only one row");
       } else {
-        this.props.insertBusinessRule(this.selectedRows[0], this.selectedRow);
+        let data = {
+          table_name:"business_rules",
+          update_info:this.selectedRows[0]
+        };
+        this.props.insertBusinessRule(data, this.selectedRow);
       }
     }
     handleDeleteClick(event){
@@ -408,15 +417,16 @@ class MaintainBusinessRules extends Component {
         this.modalInstance.open("Please select a row");
         this.operationName = "";
       } else {
-        this.modalInstance.isDiscardToBeShown = true;
-        //this.operationName = "DELETE";
-        this.modalInstance.open(`Are you sure to delete this row (business rule: ${this.selectedRowItem['business_rule']}) ?`)
-        //this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
+        hashHistory.push(`/dashboard/maintain-business-rules/add-business-rule?request=update&index=${this.selectedRow}`)
       }
     }
     handleUpdateRow(item){
       console.log("The final value in MaintainBusinessRules component",item);
-      this.props.updateBusinessRule(item);
+      let data = {
+        table_name:"business_rules",
+        update_info:item
+      };
+      this.props.updateBusinessRule(data);
     }
     handleSort(colName, direction){
       this.orderBy = {colName:colName, direction:direction};

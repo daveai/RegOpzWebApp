@@ -27,7 +27,8 @@ class AddReportAggRules extends Component {
       }
     }
     // this.aggRulesList = new RegExp('[A-Z0-9]+') Options are included
-    this.aggRulesPattern = /(\w+([\+\-\*\/]\w+)?)|(\(\w+\))/g;
+    //this.aggRulesPattern = /(\w+([\+\-\*\/]\w+)?)|(\(\w+\))/g;
+    this.aggRulesPattern = /[\+\-\*\/\(\)\[\]\{\}\^]/g;
   }
 
  componentWillMount(){
@@ -92,18 +93,14 @@ class AddReportAggRules extends Component {
                         className="form-control col-md-7 col-xs-12"
                         onChange={(event) => {
                           let newState = {...this.state};
-                          var nstr = ''
-                          var str = event.target.value;
-                          do {
-                            nstr = str.replace(this.aggRulesPattern, '0');
-                          } while (nstr !== str && ((str = nstr) || 1));
-                          if (str === '0') {
-                            console.log("valid");
-                          } else {
-                            console.log("invalid");
+                          if(this.checkRuleValidity(event) == "valid") {
+                            newState.form.comp_agg_ref = event.target.value;
+                            this.setState(newState);
                           }
-                          newState.form.comp_agg_ref = event.target.value;
-                          this.setState(newState);
+                          else {
+                            alert("Invalid formula, please check");
+                            this.setState(newState);
+                          }
                          }
                         }
                       />
@@ -242,6 +239,31 @@ class AddReportAggRules extends Component {
     const url=`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${this.state.form.sheet_id}&cell=${this.state.form.cell_id}`;
     const encodedUrl = encodeURI(url);
     hashHistory.push(encodedUrl);
+  }
+  checkRuleValidity(event){
+    var nstr = ''
+    var str = event.target.value;
+    var str1 = event.target.value;
+    var nnstr=''
+    var aggRulesPattern = /[\+\-\*\/\(\)\[\]\{\}\^]/g;
+    //do {
+      //nstr = str.replace(this.aggRulesPattern, '0');
+      nstr = str.replace(aggRulesPattern, ',');
+      nstr = nstr.split(",");
+      nstr.map(function(item,index){
+          this.state.form.cell_business_rules += `${item.text},`;
+        }.bind(this));
+      console.log('inside while...',nstr,str);
+    //} while (nstr !== str && ((str = nstr) || 1));
+    nnstr = str1.replace(/(AB\b|A\b|ABC\b)/g,'2');
+    console.log('outside while...',nnstr,nstr,str);
+    if (str === '0') {
+      console.log("valid");
+      return "valid";
+    } else {
+      console.log("invalid");
+      return "invalid";
+    }
   }
 
 }

@@ -39,7 +39,7 @@ export function actionInsertBusinessRule(item, at) {
 export function actionUpdateBusinessRule(item) {
 	const url = BASE_URL + "business-rule";
 	console.log("item updating", item);
-	const request = axios.put(url + "/" + item['id'], item);
+	const request = axios.put(url + "/" + item['update_info']['id'], item);
 	return {
 		type: UPDATE_RULES,
 		payload: { result:"updated" }
