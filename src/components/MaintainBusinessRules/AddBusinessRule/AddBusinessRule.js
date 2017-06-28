@@ -147,10 +147,16 @@ class AddBusinessRule extends Component {
       //this.setState({form: this.props.drill_down_result.cell_rules[this.state.ruleIndex]});
       this.state.form = this.props.business_rules[0].rows[this.state.ruleIndex];
       if(this.state.rulesTags.length == 0){
-        this.state.rulesTags = [{id:1,text: this.state.form.python_implementation}];
+        this.state.rulesTags.push({id:1,text: this.state.form.python_implementation});
       }
       if(this.state.dataFieldsTags.length == 0){
-        this.state.dataFieldsTags = [{id:1,text: this.state.form.data_fields_list}];
+        const {data_fields_list}=this.state.form;
+        let dataFieldsTagsArray=data_fields_list.split(',');
+        dataFieldsTagsArray.map((item,index)=>{
+          if(item!=''){
+            this.state.dataFieldsTags.push({id:index+1,text:item});
+          }
+        })
       }
     }
 
@@ -377,7 +383,7 @@ class AddBusinessRule extends Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="rounding-option">Rule Type<span className="required">*</span></label>
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="rounding-option">Rule Type<span className="required"></span></label>
                   <div className="col-md-3 col-sm-3 col-xs-12">
                     <select
                       defaultValue = {this.state.form.rule_type}
@@ -454,16 +460,16 @@ class AddBusinessRule extends Component {
     console.log('inside submit',this.state.form);
     event.preventDefault();
     this.flatenTags();
-    // let data = {
-    //   table_name:"business_rules",
-    //   update_info:this.state.form
-    // };
+    let data = {
+      table_name:"business_rules",
+      update_info:this.state.form
+    };
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
-      this.props.insertBusinessRule(this.state.form,this.state.ruleIndex);
+      this.props.insertBusinessRule(data,this.state.ruleIndex);
     }
     else{
-      this.props.updateBusinessRule(this.state.form);
+      this.props.updateBusinessRule(data);
     }
 
     hashHistory.push(`/dashboard/maintain-business-rules`);

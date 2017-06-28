@@ -392,7 +392,11 @@ class MaintainBusinessRules extends Component {
       } else if (this.selectedRows.length > 1) {
         this.modalInstance.open("Please select only one row");
       } else {
-        this.props.insertBusinessRule(this.selectedRows[0], this.selectedRow);
+        let data = {
+          table_name:"business_rules",
+          update_info:this.selectedRows[0]
+        };
+        this.props.insertBusinessRule(data, this.selectedRow);
       }
     }
     handleDeleteClick(event){
@@ -418,7 +422,11 @@ class MaintainBusinessRules extends Component {
     }
     handleUpdateRow(item){
       console.log("The final value in MaintainBusinessRules component",item);
-      this.props.updateBusinessRule(item);
+      let data = {
+        table_name:"business_rules",
+        update_info:item
+      };
+      this.props.updateBusinessRule(data);
     }
     handleSort(colName, direction){
       this.orderBy = {colName:colName, direction:direction};
