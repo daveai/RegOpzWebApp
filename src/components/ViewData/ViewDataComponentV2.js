@@ -20,13 +20,13 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Breadcrumbs from 'react-breadcrumbs';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-require('react-datepicker/dist/react-datepicker.css');
-require('../../../node_modules/react-treeview/react-treeview.css')
-require('./ViewDataComponentStyle.css')
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
 import { BASE_URL } from '../../Constant/constant';
 import axios from 'axios';
+require('react-datepicker/dist/react-datepicker.css');
+require('../../../node_modules/react-treeview/react-treeview.css');
+require('./ViewDataComponentStyle.css');
 
 class ViewDataComponentV2 extends Component {
   constructor(props){
@@ -49,6 +49,7 @@ class ViewDataComponentV2 extends Component {
         <Breadcrumbs
           routes={this.props.routes}
           params={this.props.params}
+          wrapperClass="breadcrumb"
         />
         <div className="container view_data_container">
           <div className="col col-lg-6">

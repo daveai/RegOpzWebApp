@@ -4,15 +4,17 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import {
-        Link,
-        hashHistory
-      } from 'react-router';
+    Link,
+    hashHistory
+} from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 import _ from 'lodash';
 import {
   actionFetchSources
 } from '../../actions/MaintainSourcesAction';
 import './MaintainSources.css';
 import Collapsible from '../CollapsibleModified/Collapsible';
+
 class MaintainSources extends Component {
   constructor(props){
     super(props);
@@ -136,6 +138,11 @@ class MaintainSources extends Component {
       console.log('before coolapsible sourcelist suggestion lists',sourceSuggestions,countrySuggestions);
       return (
           <div className="reg_maintain_report_rules_container container">
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <div className="row">
               <div className="col col-lg-6">
                 <ReactTags

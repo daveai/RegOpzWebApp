@@ -14,6 +14,7 @@ export default class ViewReport extends Component {
         <Breadcrumbs
           routes={this.props.routes}
           params={this.props.params}
+          wrapperClass="breadcrumb"
         />
         <ViewReportComponent/>
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators, dispatch } from 'redux'
+import { Link } from 'react-router';
 import TreeView from 'react-treeview'
 import moment from 'moment'
 import axios from 'axios'
@@ -62,7 +63,7 @@ class SourceTreeInfoComponent extends Component {
               return (
                 <tr key={index}>
                   <td>{item.source_id}</td>
-                  <td><a href={`#/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</a></td>
+                  <td><Link to={`/dashboard/view-data/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</Link></td>
                   <td>{item.file_load_status}</td>
                   <td>{item.data_loaded_by}</td>
                   <td>
@@ -72,9 +73,9 @@ class SourceTreeInfoComponent extends Component {
                       onClick={
                         (event) => {
                           let source_info = {
-                            source_id:item.source_id,
-                            business_date:item.business_date,
-                            business_or_validation:"ALL"
+                            source_id: item.source_id,
+                            business_date: item.business_date,
+                            business_or_validation: "ALL"
                           }
                           this.props.applyRules(source_info);
                         }

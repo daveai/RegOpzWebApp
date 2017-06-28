@@ -10,10 +10,6 @@ body {
 .full-height {
     height: 100%;
 }
-.breadcrumbs {
-    margin-bottom: 5px;
-    width: 167vh;
-}
 .daterangepicker .ranges li {
     color: #73879C
 }

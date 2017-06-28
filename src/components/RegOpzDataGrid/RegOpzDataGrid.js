@@ -36,7 +36,7 @@ class RegOpzDataGrid extends Component {
   componentWillMount() {
     this.props.fetchCapturedReport(this.report_id,this.reporting_date);
   }
-  
+
   alphaSequence(i) {
       return i < 0
           ? ""
@@ -69,7 +69,11 @@ class RegOpzDataGrid extends Component {
       return(
         <div className="reg_gridHolder">
           <div>
-            {this.renderBreadCrump()}
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <div className="row">
               <div className="row reg_ops_button_holder">
                 <div className="row">
@@ -215,16 +219,7 @@ class RegOpzDataGrid extends Component {
     }
   }
 
-  renderBreadCrump() {
-    return (
-      <div className="breadcrumb">
-        <Breadcrumbs
-          routes={this.props.routes}
-          params={this.props.params}
-        />
-      </div>
-    )
-    /*
+  renderBreadCrumb() {
     console.log('reporting_date', this.reporting_date);
     if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
       return(
@@ -241,7 +236,6 @@ class RegOpzDataGrid extends Component {
         </ol>
       )
     }
-    */
   }
 }
 

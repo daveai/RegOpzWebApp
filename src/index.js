@@ -55,11 +55,17 @@ ReactDOM.render(
                 <Route path="/dashboard" name="Dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
                     <Route path="capture-report-template" name="Capture Report Template" component={CaptureReportTemplate} />
-                    <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
                     <Route path="maintain-business-rules" name="Maintain Business Rules" component={MaintainBusinessRules} />
-                    <Route path="view-data" name="View Data" component={ViewDataComponentV2} />
+                    <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
                     <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
-                    <Route path="view-report" name="View Report" component={ViewReport} />
+                    <Route path="view-data" name="View Data">
+                      <IndexRoute component={ViewDataComponentV2} />
+                      <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
+                    </Route>
+                    <Route path="view-report" name="View Report">
+                      <IndexRoute component={ViewReport} />
+                      <Route path="data-grid" component={RegOpzDataGrid} />
+                    </Route>
                     <Route path="create-report" name="Create Report" component={CreateReport} />
                     <Route path="drill-down" name="DrillDown" component={DrillDown} />
                     <Route path="maintain-report-rules" name="Maintain Report Rules" component={MaintainReportRules} />

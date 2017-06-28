@@ -14,6 +14,7 @@ import ModalAlert from '../ModalAlert/ModalAlert';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import { Button, Modal } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
+import Breadcrumbs from 'react-breadcrumbs';
 import _ from 'lodash';
 import { BASE_URL } from '../../Constant/constant';
 import axios from 'axios';
@@ -81,6 +82,11 @@ class MaintainBusinessRules extends Component {
         console.log("Linkage data ", this.linkageData);
         return (
           <div className="maintain_business_rules_container">
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <h1>Maintain Business Rules</h1>
             <div className="ops_icons">
                 <div className="btn-group">

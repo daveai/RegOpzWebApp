@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
 import { routerContext } from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 import {BASE_URL} from '../../Constant/constant';
 import npro from '../../../bower_components/nprogress/nprogress';
 import ModalAlert from '../ModalAlert/ModalAlert';
@@ -20,6 +21,11 @@ export default class RightPane extends Component {
   render(){
     return(
       <div className="row">
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+          wrapperClass="breadcrumb"
+        />
         <div className="col-md-12 col-sm-12 col-xs-12">
           <div className="x_panel">
             <div className="x_title">
