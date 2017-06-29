@@ -51,6 +51,8 @@ class AddReportRules extends Component {
     this.handleAggRefDelete = this.handleAggRefDelete.bind(this);
     this.handleAggRefAddition = this.handleAggRefAddition.bind(this);
     this.handleAggRefDrag = this.handleAggRefDrag.bind(this);
+    
+    this.searchAnywhere = this.searchAnywhere.bind(this);
   }
   componentWillMount(){
     this.props.fetchSources();
@@ -59,6 +61,13 @@ class AddReportRules extends Component {
       this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
       this.initialiseFormFields();
     }
+  }
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
   }
   handleValidFromDateChange(date){
     let form = this.state.form;
@@ -270,7 +279,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <select
                       value = {this.state.form.source_id}
-                      className="form-control"                      
+                      className="form-control"
                       onChange={
                         (event) => {
                           let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
@@ -303,6 +312,7 @@ class AddReportRules extends Component {
                       handleDelete={this.handleDelete}
                       handleAddition={this.handleAddition}
                       handleDrag={this.handleDrag}
+                      handleFilterSuggestions={this.searchAnywhere}
                       allowDeleteFromEmptyInput={false}
                       autocomplete={true}
                       minQueryLength={1}

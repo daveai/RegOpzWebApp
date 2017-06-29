@@ -54,6 +54,8 @@ class AddBusinessRule extends Component {
     this.handleDataFieldsDelete = this.handleDataFieldsDelete.bind(this);
     this.handleDataFieldsAddition = this.handleDataFieldsAddition.bind(this);
     this.handleDataFieldsDrag = this.handleDataFieldsDrag.bind(this);
+
+    this.searchAnywhere = this.searchAnywhere.bind(this);
   }
   componentWillMount(){
     this.props.fetchSources();
@@ -73,6 +75,13 @@ class AddBusinessRule extends Component {
       //no need to call componentDidUpdate again
       this.setState({componentDidUpdateCount:1});
     }
+  }
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
   }
   handleValidFromDateChange(date){
     let form = this.state.form;
@@ -356,6 +365,7 @@ class AddBusinessRule extends Component {
                       handleDelete={this.handleDataFieldsDelete}
                       handleAddition={this.handleDataFieldsAddition}
                       handleDrag={this.handleDataFieldsDrag}
+                      handleFilterSuggestions={this.searchAnywhere}
                       allowDeleteFromEmptyInput={false}
                       autocomplete={true}
                       minQueryLength={1}

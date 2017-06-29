@@ -25,6 +25,15 @@ class MaintainReportRules extends Component {
     this.handleDeleteCountry = this.handleDeleteCountry.bind(this);
     this.handleAdditionCountry = this.handleAdditionCountry.bind(this);
     this.handleDragCountry = this.handleDragCountry.bind(this);
+
+    this.searchAnywhere = this.searchAnywhere.bind(this);
+  }
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
   }
   convertTagsToString(tags){
     let selectedTags = [];
@@ -125,6 +134,10 @@ class MaintainReportRules extends Component {
                     handleDelete={this.handleDeleteReport}
                     handleAddition={this.handleAdditionReport}
                     handleDrag={this.handleDragReport}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Report ID"
                     classNames={{
                       tagInput: 'tagInputClass',
@@ -140,6 +153,10 @@ class MaintainReportRules extends Component {
                     handleDelete={this.handleDeleteCountry}
                     handleAddition={this.handleAdditionCountry}
                     handleDrag={this.handleDragCountry}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Country"
                     classNames={{
                       tagInput: 'tagInputClass',
