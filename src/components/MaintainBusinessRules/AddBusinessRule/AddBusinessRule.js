@@ -155,7 +155,12 @@ class AddBusinessRule extends Component {
         }.bind(this));
 
       this.state.dataFieldsTags.map(function(item,index){
-          this.state.form.data_fields_list += `${item.text},`;
+          if(index==0){
+            this.state.form.data_fields_list += `${item.text}`;
+          }
+          else {
+            this.state.form.data_fields_list += `,${item.text}`;
+          }
         }.bind(this));
 
       console.log('inside process form check',this.state.form);
