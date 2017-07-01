@@ -40,7 +40,8 @@ class AddReportRules extends Component {
           valid_from:null,
           valid_to:null,
           last_updated_by:null,
-          id:null
+          id:null,
+          comment:null
         },
     };
     this.state.readOnly = this.state.requestType=="update"?"readonly":"";
@@ -129,7 +130,9 @@ class AddReportRules extends Component {
         console.log('inside process',this.state);
         this.state.rulesTags.map(function(item,index){
             this.state.form.cell_business_rules += `${item.text},`;
+
           }.bind(this));
+        this.state.form.cell_business_rules=this.state.form.cell_business_rules.slice(0,-1);
 
         this.state.aggRefTags.map(function(item,index){
             this.state.form.aggregation_ref += `${item.text}`;
@@ -140,9 +143,17 @@ class AddReportRules extends Component {
       initialiseFormFields(){
         //this.setState({form: this.props.drill_down_result.cell_rules[this.state.ruleIndex]});
         this.state.form = this.props.drill_down_result.cell_rules[this.state.ruleIndex];
+
         if(this.state.rulesTags.length == 0){
-          this.state.rulesTags = [{id:1,text: this.state.form.cell_business_rules}];
+          const {cell_business_rules}=this.state.form;
+          let rulesTagsArray=cell_business_rules.split(',');
+          rulesTagsArray.map((item,index)=>{
+            if(item!=''){
+              this.state.rulesTags.push({id:index+1,text:item});
+            }
+          })
         }
+
         if(this.state.aggRefTags.length == 0){
           this.state.aggRefTags = [{id:1,text: this.state.form.aggregation_ref}];
         }
@@ -196,14 +207,16 @@ class AddReportRules extends Component {
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input
-                      defaultValue={this.state.form.id}
+                      value={this.state.form.id}
                       placeholder="System Reference ID"
                       readOnly="readonly"
                       type="text"
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
-                          this.state.form.id = event.target.value;
+                          let form=this.state.form;
+                          form.id = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -220,7 +233,9 @@ class AddReportRules extends Component {
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
-                          this.state.form.cell_calc_ref = event.target.value;
+                          let form=this.state.form;
+                          form.cell_calc_ref = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -248,13 +263,16 @@ class AddReportRules extends Component {
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Source ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <select
-                      defaultValue = {this.state.form.source_id}
+                      value = {this.state.form.source_id}
                       className="form-control"
                       onChange={
                         (event) => {
                           let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
-                          this.state.form.source_id = event.target.value;
-                          this.props.fetchBusinessRulesBySourceId(event.target.value);
+                          let form=this.state.form;
+                          form.source_id = event.target.value;
+                          this.setState({form:form});
+                          console.log('Source ID............',this.state.form.source_id);
+                          this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
                           console.log('table name in change event',table_name);
                           this.props.fetchSourceColumnList(table_name);
                         }
@@ -314,10 +332,12 @@ class AddReportRules extends Component {
                       placeholder="Enter Aggregation function"
                       required="required"
                       className="form-control col-md-7 col-xs-12"
-                      defaultValue={this.state.form.aggregation_func}
+                      value={this.state.form.aggregation_func}
                       onChange={
                         (event) => {
-                          this.state.form.aggregation_func = event.target.value;
+                          let form=this.state.form;
+                          form.aggregation_func = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -351,6 +371,27 @@ class AddReportRules extends Component {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <input
+                      type="text"
+                      placeholder="Enter a Comment"
+                      required="required"
+                      className="form-control col-md-7 col-xs-12"
+                      value={this.state.form.comment}
+                      onChange={
+                        (event) => {
+                          let form=this.state.form;
+                          form.comment = event.target.value;
+                          this.setState({form:form});
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
