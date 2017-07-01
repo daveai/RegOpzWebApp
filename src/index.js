@@ -8,11 +8,11 @@ import {
     hashHistory,
     browserHistory
 } from 'react-router';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import reducers from './reducers';
-import Login from './components/Login';
+import Login, { isLoggedIn } from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
 import DashboardIndex from './components/Dashboard/DashBoardIndex';
@@ -38,12 +38,10 @@ const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore
 
 class Index extends Component {
     render() {
-        return (
-            <div>
-                {this.props.children}
-            </div>
-
-        );
+      if (this.props.token !== null)
+        window.location.replace('/#/login');
+      else
+        return (<div> {this.props.children} </div>);
     }
     componentDidMount() {
     }
@@ -52,9 +50,12 @@ class Index extends Component {
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <Router history={hashHistory}>
-            <Route component={Index}>
-                <Route path="/login" component={Login}/>
-                <Route path="/dashboard" component={Dashboard} >
+            <Route path="/" component={VisibleIndex}>
+                <Route path="login" component={Login}/>
+                /*<Route path="/login" render={() => isLoggedIn() ?
+                    (<Redirect to="/dashboard"/>) :
+                    (<Login/>)}/>*/
+                <Route path="dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
                     <Route path="data-grid" component={RegOpzDataGrid} />
@@ -78,3 +79,12 @@ ReactDOM.render(
         </Router>
     </Provider>
 , document.querySelector(".react_container"));
+
+function mapStateToProps(state) {
+  token: state.login_store.token
+}
+
+const VisibleIndex = connect(
+  null,
+  mapStateToProps
+)(Index);
