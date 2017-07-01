@@ -40,7 +40,8 @@ class AddReportRules extends Component {
           valid_from:null,
           valid_to:null,
           last_updated_by:null,
-          id:null
+          id:null,
+          comment:null
         },
     };
     this.state.readOnly = this.state.requestType=="update"?"readonly":"";
@@ -147,7 +148,9 @@ class AddReportRules extends Component {
         console.log('inside process',this.state);
         this.state.rulesTags.map(function(item,index){
             this.state.form.cell_business_rules += `${item.text},`;
+
           }.bind(this));
+        this.state.form.cell_business_rules=this.state.form.cell_business_rules.slice(0,-1);
 
         this.state.aggRefTags.map(function(item,index){
             this.state.form.aggregation_ref += `${item.text}`;
@@ -169,6 +172,7 @@ class AddReportRules extends Component {
           console.log("Rules Tags........:",this.state.rulesTags);
           //this.state.rulesTags = [{id:1,text: this.state.form.cell_business_rules}];
         }
+
         if(this.state.aggRefTags.length == 0){
           this.state.aggRefTags.push({id:1,text: this.state.form.aggregation_ref});
         }
@@ -390,6 +394,27 @@ class AddReportRules extends Component {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <input
+                      type="text"
+                      placeholder="Enter a Comment"
+                      required="required"
+                      className="form-control col-md-7 col-xs-12"
+                      value={this.state.form.comment}
+                      onChange={
+                        (event) => {
+                          let form=this.state.form;
+                          form.comment = event.target.value;
+                          this.setState({form:form});
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
