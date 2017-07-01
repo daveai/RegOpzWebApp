@@ -51,11 +51,12 @@ class AddReportRules extends Component {
     this.handleAggRefDelete = this.handleAggRefDelete.bind(this);
     this.handleAggRefAddition = this.handleAggRefAddition.bind(this);
     this.handleAggRefDrag = this.handleAggRefDrag.bind(this);
-    
+
     this.searchAnywhere = this.searchAnywhere.bind(this);
   }
   componentWillMount(){
     this.props.fetchSources();
+    
     if(typeof this.state.ruleIndex != 'undefined') {
       Object.assign(this.state.form , this.props.drill_down_result.cell_rules[this.state.ruleIndex]);
       this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
