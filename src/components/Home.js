@@ -28,6 +28,7 @@ import VarianceAnalysisForm from './VarianceAnalysis/VarianceAnalysis';
 import VarianceAnalysisGrid from './VarianceAnalysis/VarianceAnalysisGrid';
 import VarianceAnalysisChart from './VarianceAnalysis/VarianceAnalysisChart';
 import CreateReport from './CreateReport/CreateReport';
+import ManageDefChange from './components/ManageDefChange/ManageDefChange';
 
 class HomeIndex extends Component {
     render() {
@@ -52,6 +53,7 @@ class HomeIndex extends Component {
                     <Route path="variance-analysis" component={VarianceAnalysisForm} />
                     <Route path="variance-analysis/variance-data-grid" component={VarianceAnalysisGrid} />
                     <Route path="variance-analysis/variance-chart" component={VarianceAnalysisChart}/>
+                    <Route path="workflow/manage-def-change" component={ManageDefChange} />
                 </Route>
             </Router>
         );

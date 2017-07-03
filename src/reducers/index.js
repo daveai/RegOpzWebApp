@@ -10,6 +10,7 @@ import MaintainSourcesReducer from './MaintainSourcesReducer';
 import VarianceAnalysisReducer from './VarianceAnalysisReducer';
 import CreateReportReducer from './CreateReportReducer';
 import LoginReducer from './LoginReducer';
+import DefChangeReducer from './DefChangeReducer';
 
 const rootReducer = combineReducers({
   business_rules: businessRulesReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   source_feeds: MaintainSourcesReducer,
   variance_analysis_store: VarianceAnalysisReducer,
   create_report_store: CreateReportReducer,
-  login_store: LoginReducer
+  login_store: LoginReducer,
+  def_change_store:DefChangeReducer
 });
 
 export default rootReducer;

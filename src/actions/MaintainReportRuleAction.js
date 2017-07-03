@@ -73,6 +73,8 @@ export function actionInsertRuleData(data) {
 
 // TODO:
 export function actionUpdateRuleData(id, data) {
+
+  console.log('Inside actionUpdateRuleData....:',data);
   return {
     type: UPDATE_MAINTAIN_RULE_DATA,
     payload: axios.put(BASE_URL + `report-rule/${id}`, data)
