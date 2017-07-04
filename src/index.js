@@ -8,10 +8,11 @@ import {
     hashHistory,
     browserHistory
 } from 'react-router';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import reducers from './reducers';
+import { actionRelogin } from './actions/LoginAction';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
@@ -33,28 +34,36 @@ import VarianceAnalysisForm from './components/VarianceAnalysis/VarianceAnalysis
 import VarianceAnalysisGrid from './components/VarianceAnalysis/VarianceAnalysisGrid';
 import VarianceAnalysisChart from './components/VarianceAnalysis/VarianceAnalysisChart';
 import CreateReport from './components/CreateReport/CreateReport';
+import setAuthorization from './utils/setAuthorization';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 
 class Index extends Component {
     render() {
-        return (
-            <div>
-                {this.props.children}
-            </div>
-
-        );
+      if (this.props.token !== null)
+        window.location.replace('/#/login');
+      else
+        return (<div> {this.props.children} </div>);
     }
     componentDidMount() {
     }
+}
+
+if (localStorage.RegOpzToken) {
+  let webToken = localStorage.RegOpzToken;
+  setAuthorization(webToken);
+  createStoreWithMiddleware.dispatch(actionRelogin(webToken));
 }
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
         <Router history={hashHistory}>
             <Route component={Index}>
-                <Route path="/login" component={Login}/>
-                <Route path="/dashboard" component={Dashboard} >
+                <Route path="login" component={Login}/>
+                /*<Route path="/login" render={() => isLoggedIn() ?
+                    (<Redirect to="/dashboard"/>) :
+                    (<Login/>)}/>*/
+                <Route path="dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
                     <Route path="data-grid" component={RegOpzDataGrid} />

@@ -1,5 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import LogOut from '../Logout';
+
 export default class TopNav extends Component {
     render() {
         return (
@@ -32,9 +34,7 @@ export default class TopNav extends Component {
                                         <a href="javascript:;">Help</a>
                                     </li>
                                     <li>
-                                        <a href="#/login">
-                                            <i className="fa fa-sign-out pull-right"></i>
-                                            Log Out</a>
+                                        <LogOut/>
                                     </li>
                                 </ul>
                             </li>

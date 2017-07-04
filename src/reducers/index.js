@@ -9,18 +9,20 @@ import MaintainReportRulesReducer from './MaintainReportRulesReducer';
 import MaintainSourcesReducer from './MaintainSourcesReducer';
 import VarianceAnalysisReducer from './VarianceAnalysisReducer';
 import CreateReportReducer from './CreateReportReducer';
+import LoginReducer from './LoginReducer';
 
 const rootReducer = combineReducers({
-  business_rules:businessRulesReducer,
-  report_linkage:ReportLinkageReducer,
-  view_data_store:ViewDataReducer,
-  report_store:ReportReducer,
-  sources:SourceReducer,
-  captured_report:CapturedReportReducer,
-  maintain_report_rules_store:MaintainReportRulesReducer,
-  source_feeds:MaintainSourcesReducer,
-  variance_analysis_store:VarianceAnalysisReducer,
-  create_report_store:CreateReportReducer
+  business_rules: businessRulesReducer,
+  report_linkage: ReportLinkageReducer,
+  view_data_store: ViewDataReducer,
+  report_store: ReportReducer,
+  sources: SourceReducer,
+  captured_report: CapturedReportReducer,
+  maintain_report_rules_store: MaintainReportRulesReducer,
+  source_feeds: MaintainSourcesReducer,
+  variance_analysis_store: VarianceAnalysisReducer,
+  create_report_store: CreateReportReducer,
+  login_store: LoginReducer
 });
 
 export default rootReducer;
