@@ -45,6 +45,9 @@ class AddBusinessRule extends Component {
           valid_to:null,
           last_updated_by:null
         },
+        audit_form:{
+          comment:null
+        }
     };
     this.state.readOnly = this.state.requestType=="update"?"readonly":"";
     this.handleRuleRefDelete = this.handleRuleRefDelete.bind(this);
@@ -160,6 +163,7 @@ class AddBusinessRule extends Component {
       this.state.form.data_fields_list = '';
       console.log('inside process',this.state);
       this.state.rulesTags.map(function(item,index){
+        console.log('Inside rulesTags.map....:',item.text);
           this.state.form.python_implementation += `${item.text}`;
         }.bind(this));
 
@@ -267,7 +271,7 @@ class AddBusinessRule extends Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Rule Ececution Order<span className="required">*</span></label>
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Rule Execution Order<span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input
                       placeholder="Enter Business Rule Ref"
@@ -467,6 +471,29 @@ class AddBusinessRule extends Component {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <textarea
+                      type="text"
+                      placeholder="Enter a Comment"
+                      required="required"
+                      className="form-control col-md-7 col-xs-12"
+                      value={this.state.audit_form.comment}
+                      maxLength="1000"
+                      minLength="20"
+                      onChange={
+                        (event) => {
+                          let {audit_form}=this.state;
+                          audit_form.comment = event.target.value;
+                          this.setState({audit_form});
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
@@ -500,6 +527,19 @@ class AddBusinessRule extends Component {
       table_name:"business_rules",
       update_info:this.state.form
     };
+
+    // add audit info to the data part
+    data['change_type']=this.state.requestType=='add'?'INSERT':'UPDATE';
+
+    let audit_info={
+      id:this.state.form.id,
+      table_name:data.table_name,
+      change_type:data.change_type
+    };
+    Object.assign(audit_info,this.state.audit_form);
+
+    data['audit_info']=audit_info;
+
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
       this.props.insertBusinessRule(data,this.state.ruleIndex);

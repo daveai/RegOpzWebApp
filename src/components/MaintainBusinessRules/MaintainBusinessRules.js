@@ -15,6 +15,7 @@ import {
   actionFetchReportLinkage } from '../../actions/BusinessRulesAction';
 import RightSlidePanel from '../RightSlidePanel/RightSlidePanel';
 import ModalAlert from '../ModalAlert/ModalAlert';
+import AuditModal from '../AuditModal/AuditModal';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import { Button, Modal } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
@@ -63,7 +64,10 @@ class MaintainBusinessRules extends Component {
             transform             : 'translate(-50%, -50%)'
           }
         };
-        this.state = {isModalOpen:false};
+        this.state = {
+          isModalOpen:false,
+          showAuditModal:false
+        };
         this.msg = "";
         this.modalInstance = null;
         this.linkageData = null;
@@ -72,6 +76,9 @@ class MaintainBusinessRules extends Component {
         this.selectedRows = [];
         this.selectedRulesAsString = null;
         this.operationName = "";
+        this.auditInfo={};
+        this.updateInfo=null;
+
     }
     componentWillMount(){
       this.props.fetchBusinesRules(this.currentPage);
@@ -306,9 +313,7 @@ class MaintainBusinessRules extends Component {
               onClickOkay={
                 () => {
                   if(this.operationName == "DELETE"){
-                    this.props.deleteBusinessRule(this.selectedRowItem['id'], this.selectedRow);
-                    this.selectedRowItem = null;
-                    this.selectedRow = null;
+                    this.setState({showAuditModal:true});
                   }
                 }
               }
@@ -338,6 +343,10 @@ class MaintainBusinessRules extends Component {
                   }}>Ok</Button>
               </Modal.Footer>
             </Modal>
+
+            < AuditModal showModal={this.state.showAuditModal}
+              onClickOkay={this.handleAuditOkayClick.bind(this)}
+            />
           </div>
         )
       } else {
@@ -381,6 +390,20 @@ class MaintainBusinessRules extends Component {
       console.log("I am called at ", item,rownum);
       this.selectedRow = rownum;
       this.selectedRowItem = item;
+
+      if(this.selectedRowItem['approval_status']!='A'){
+        console.log($("button [title='Delete']"));
+        $("button[title='Delete']").prop('disabled',true);
+        $("button[title='Update']").prop('disabled',true);
+        $("button[title='Duplicate']").prop('disabled',true);
+        //console.log("Button property........:",$("button[title='Delete']").prop('disabled'));
+
+      }
+      else{
+        $("button[title='Delete']").prop('disabled',false);
+        $("button[title='Update']").prop('disabled',false);
+        $("button[title='Duplicate']").prop('disabled',false);
+      }
     }
     handleInsertClick(event){
       //this.props.insertBusinessRule(this.newItem, this.selectedRow);
@@ -392,11 +415,14 @@ class MaintainBusinessRules extends Component {
       } else if (this.selectedRows.length > 1) {
         this.modalInstance.open("Please select only one row");
       } else {
-        let data = {
-          table_name:"business_rules",
-          update_info:this.selectedRows[0]
-        };
-        this.props.insertBusinessRule(data, this.selectedRow);
+        // let data = {
+        //   table_name:"business_rules",
+        //   update_info:this.selectedRows[0]
+        // };
+        this.operationName="INSERT";
+        this.updateInfo=this.selectedRows[0];
+        this.setState({showAuditModal:true});
+        // this.props.insertBusinessRule(data, this.selectedRow);
       }
     }
     handleDeleteClick(event){
@@ -422,11 +448,10 @@ class MaintainBusinessRules extends Component {
     }
     handleUpdateRow(item){
       console.log("The final value in MaintainBusinessRules component",item);
-      let data = {
-        table_name:"business_rules",
-        update_info:item
-      };
-      this.props.updateBusinessRule(data);
+      this.operationName="UPDATE";
+      this.updateInfo=item;
+      this.setState({showAuditModal:true});
+      //this.props.updateBusinessRule(data);
     }
     handleSort(colName, direction){
       this.orderBy = {colName:colName, direction:direction};
@@ -487,6 +512,57 @@ class MaintainBusinessRules extends Component {
              parseInt(Number(value)) == value &&
              !isNaN(parseInt(value, 10));
     }
+
+   handleAuditOkayClick(auditInfo){
+     let data={};
+     data["change_type"]=this.operationName;
+     data["table_name"]="business_rules";
+
+     if(this.operationName == "DELETE"){
+       this.auditInfo={
+         table_name:data["table_name"],
+         id:this.selectedRowItem["id"],
+         change_type:this.operationName,
+       };
+       Object.assign(this.auditInfo,auditInfo);
+       data["audit_info"]=this.auditInfo;
+
+       this.props.deleteBusinessRule(data,this.selectedRowItem['id'], this.selectedRow);
+       this.selectedRowItem = null;
+       this.selectedRow = null;
+       this.setState({showAuditModal:false});
+     }
+
+     if(this.operationName == "UPDATE"){
+       this.auditInfo={
+         table_name:data["table_name"],
+         id:this.selectedRowItem["id"],
+         change_type:this.operationName,
+       };
+       Object.assign(this.auditInfo,auditInfo);
+       data["audit_info"]=this.auditInfo;
+       data["update_info"]=this.updateInfo;
+
+       this.props.updateBusinessRule(data);
+       this.setState({showAuditModal:false});
+     }
+
+     if(this.operationName == "INSERT"){
+       this.auditInfo={
+         table_name:data["table_name"],
+         id:null,
+         change_type:this.operationName,
+       };
+       Object.assign(this.auditInfo,auditInfo);
+       data["audit_info"]=this.auditInfo;
+       data["update_info"]=this.updateInfo;
+
+       this.props.insertBusinessRule(data, this.selectedRow);
+       this.setState({showAuditModal:false});
+     }
+
+
+   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -496,8 +572,8 @@ const mapDispatchToProps = (dispatch) => {
     insertBusinessRule: (item, at) => {
       dispatch(actionInsertBusinessRule(item, at))
     },
-    deleteBusinessRule: (item,at) => {
-      dispatch(actionDeleteBusinessRule(item,at))
+    deleteBusinessRule: (data,item,at) => {
+      dispatch(actionDeleteBusinessRule(data,item,at))
     },
     updateBusinessRule:(item) => {
       dispatch(actionUpdateBusinessRule(item))
