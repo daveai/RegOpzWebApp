@@ -9,16 +9,16 @@ export default function(state={}, action) {
       if (action.payload.data.status == LOGIN_SUCCESS) {
         let webToken = action.payload.data.token;
         localStorage.setItem('RegOpzToken', webToken);
-        setAuthorization(token);
-        return { ...state, token: webToken }; //, name: action.meta.name, permission: action.meta.permission};
+        setAuthorization(webToken);
+        return { ...state, token: webToken, error: null }; //, name: action.meta.name, permission: action.meta.permission};
       }
-      return state;
+      return { error: action.payload.data.error };
     case LOGIN_CHECK:
-      return { ...state, token: payload };
+      return { ...state, token: action.payload, error: null };
     case LOGOUT:
       localStorage.removeItem('RegOpzToken');
       setAuthorization(false);
-      return { ...state, token: null };
+      return {};
     default:
       return state;
   }

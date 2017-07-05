@@ -13,7 +13,6 @@ class LoginComponent extends Component {
         this.state = {
             username: null,
             password: null,
-            errors: {},
             isLoading: false
         };
 
@@ -22,10 +21,7 @@ class LoginComponent extends Component {
     }
 
     render() {
-      if (this.props.token) {
-        window.location.replace('/#/dashboard');
-      } else {
-        const { username, password, errors, isLoading } = this.state;
+        const { username, password, isLoading } = this.state;
         return (
             <div>
                 <a className="hiddenanchor" id="signup"></a>
@@ -48,6 +44,8 @@ class LoginComponent extends Component {
 
                                 <div className="clearfix"></div>
 
+                                { this.props.error != null ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
+
                                 <div className="separator">
 
                                     <div className="clearfix"></div>
@@ -64,7 +62,6 @@ class LoginComponent extends Component {
                 </div>
             </div>
         );
-      }
     }
 
     componentDidMount() {
@@ -79,7 +76,6 @@ class LoginComponent extends Component {
     onSubmit(event) {
         event.preventDefault();
         this.setState({ isLoading: true });
-        const { router } = this.props;
         var data = {
           username: this.state.username,
           password: this.state.password
@@ -87,13 +83,15 @@ class LoginComponent extends Component {
         // Add salt to Password
         this.props.loginRequest(data);
         this.setState({ username: null, password: null, isLoading: false });
+        window.location.replace('/#/dashboard');
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   console.log("On map state of Login", state);
   return {
-    token: state.login_store.token
+    token: state.login_store.token,
+    error: state.login_store.error
     //name: state.name,
     //permission: state.permission
   }

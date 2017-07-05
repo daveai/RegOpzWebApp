@@ -8,7 +8,7 @@ import {
     hashHistory,
     browserHistory
 } from 'react-router';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import reducers from './reducers';
@@ -37,32 +37,39 @@ import CreateReport from './components/CreateReport/CreateReport';
 import setAuthorization from './utils/setAuthorization';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
+const store = createStoreWithMiddleware(reducers);
 
 class Index extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        token : null //localStorage.RegOpzToken
+      };
+    }
+
     render() {
-      if (this.props.token !== null)
-        window.location.replace('/#/login');
-      else
+        if (!this.state.token)
+          return (<Login {...this.props}/>);
         return (<div> {this.props.children} </div>);
     }
-    componentDidMount() {
-    }
-}
 
-if (localStorage.RegOpzToken) {
-  let webToken = localStorage.RegOpzToken;
-  setAuthorization(webToken);
-  createStoreWithMiddleware.dispatch(actionRelogin(webToken));
+    componentWillMount() {
+      if (localStorage.RegOpzToken) {
+        let webToken = localStorage.RegOpzToken;
+        setAuthorization(webToken);
+        store.dispatch(actionRelogin(webToken));
+        this.setState({ token: webToken });
+      } else {
+        this.setState({ token: null });
+      }
+    }
 }
 
 ReactDOM.render(
-    <Provider store={createStoreWithMiddleware(reducers)}>
+    <Provider store={store}>
         <Router history={hashHistory}>
             <Route component={Index}>
                 <Route path="login" component={Login}/>
-                /*<Route path="/login" render={() => isLoggedIn() ?
-                    (<Redirect to="/dashboard"/>) :
-                    (<Login/>)}/>*/
                 <Route path="dashboard" component={Dashboard} >
                     <IndexRoute component={DashboardIndex} />
                     <Route path="capture-report-template" component={CaptureReportTemplate} />
