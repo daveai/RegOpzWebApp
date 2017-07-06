@@ -2,7 +2,7 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_CHECK, LOGOUT } from '../actions/Lo
 import setAuthorization from '../utils/setAuthorization';
 
 // TODO: Create Redux state for user containing token
-export default function(state={}, action) {
+export default function(state = {}, action) {
   console.log("Action received at Login: ", action);
   switch (action.type) {
     case LOGIN_REQUEST:

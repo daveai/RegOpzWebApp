@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import {
   actionLoginRequest,
-  actionIsLoggedIn
+  actionIsLoggedIn,
+  LOGIN_SUCCESS
 } from '../actions/LoginAction';
 
 class LoginComponent extends Component {
@@ -22,6 +23,7 @@ class LoginComponent extends Component {
 
     render() {
         const { username, password, isLoading } = this.state;
+        const { error } = this.props;
         return (
             <div>
                 <a className="hiddenanchor" id="signup"></a>
@@ -44,7 +46,7 @@ class LoginComponent extends Component {
 
                                 <div className="clearfix"></div>
 
-                                { this.props.error != null ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
+                                { error != null ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
 
                                 <div className="separator">
 
@@ -91,7 +93,7 @@ function mapStateToProps(state) {
   console.log("On map state of Login", state);
   return {
     token: state.login_store.token,
-    error: state.login_store.error
+    //error: state.login_store.error
     //name: state.name,
     //permission: state.permission
   }
@@ -102,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
     loginRequest: (data) => {
       dispatch(actionLoginRequest(data));
     }
-  }
+  };
 }
 
 const VisibleLogin = connect(

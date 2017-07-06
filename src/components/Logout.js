@@ -16,7 +16,7 @@ class LogOutComponent extends Component {
   onLogOut(event) {
     event.preventDefault();
     this.props.logout();
-    window.location.replace('/#/login');
+    window.location.replace('/');
   }
 }
 
