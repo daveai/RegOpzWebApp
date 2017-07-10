@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators, dispatch} from 'redux'
-import TreeView from 'react-treeview'
 import _ from 'lodash';
 import {
   actionFetchDates,
@@ -20,7 +19,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import 'react-datepicker/dist/react-datepicker.css';
-require('../../../node_modules/react-treeview/react-treeview.css')
 require('./ViewDataComponentStyle.css')
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
 import InfoModal from '../InfoModal/InfoModal';

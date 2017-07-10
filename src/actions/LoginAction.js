@@ -12,7 +12,7 @@ export let LOGOUT        = 'LOGOUT';
 export function actionLoginRequest(data) {
   var url = BASE_URL + "users";
   console.log("Data recieved for login: ", data);
-  const request = axios.post(url, data);
+  const request = axios.post(url, null, { headers: { Authorization: 'Basic ' + btoa(`${data.username}:${data.password}`) }});
   console.log("Login request response: ", request);
   return {
     type: LOGIN_REQUEST,

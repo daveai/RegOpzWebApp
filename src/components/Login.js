@@ -82,7 +82,6 @@ class LoginComponent extends Component {
           username: this.state.username,
           password: this.state.password
         };
-        // Add salt to Password
         this.props.loginRequest(data);
         this.setState({ username: null, password: null, isLoading: false });
         window.location.replace('/#/dashboard');

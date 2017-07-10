@@ -16,7 +16,6 @@ import reducers from './reducers';
 import { actionRelogin } from './actions/LoginAction';
 import Login from './components/Login';
 import Dashboard from './components/Home';
-import setAuthorization from './utils/setAuthorization';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -31,8 +30,7 @@ class Index extends Component {
     componentWillMount() {
       if (localStorage.RegOpzToken) {
         let webToken = localStorage.RegOpzToken;
-        setAuthorization(webToken);
-        this.relogin(webToken);
+        store.dispatch(actionRelogin(webToken));
       }
   }
 }
@@ -43,17 +41,8 @@ function mapStateToProps(state) {
     };
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    relogin: (data) => {
-      dispatch(actionRelogin(data));
-    }
-  }
-}
-
 const VisibleIndex = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Index);
 
 ReactDOM.render(
