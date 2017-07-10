@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 import custom from '../../../js/custom';
 class LeftMenu extends Component {
     render() {
@@ -91,6 +92,9 @@ class LeftMenu extends Component {
                                         <i className="fa fa-code-fork"></i> Work Flow Management<span className="fa fa-chevron-down"></span>
                                     </a>
                                     <ul className="nav child_menu">
+                                      <li>
+                                          <Link href="/dashboard/workflow/manage-def-change"> Manage Definition Change</Link>
+                                      </li>
                                     </ul>
                                 </li>
                                 <li>

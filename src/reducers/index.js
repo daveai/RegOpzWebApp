@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   variance_analysis_store: VarianceAnalysisReducer,
   create_report_store: CreateReportReducer,
   login_store: LoginReducer,
-  def_change_store:DefChangeReducer
+  def_change_store: DefChangeReducer
 });
 
 export default rootReducer;
