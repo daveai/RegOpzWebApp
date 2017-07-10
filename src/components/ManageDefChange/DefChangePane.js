@@ -17,14 +17,18 @@ class DefChangePane extends Component{
 
   componentWillUpdate(){
     if (this.fetchFlag){
-      this.props.fetchRecordDetail(this.item.table_name,this.item.id);
+      if(this.item){
+        this.props.fetchRecordDetail(this.item.table_name,this.item.id);
+        }
     }
 
   }
 
   componentDidUpdate(){
-    this.renderDefChangeDetails(this.props.record_detail);
-    this.fetchFlag=!this.fetchFlag;
+    if(this.item){
+      this.renderDefChangeDetails(this.props.record_detail);
+      this.fetchFlag=!this.fetchFlag;
+    }
   }
 
   render(){
@@ -53,8 +57,7 @@ class DefChangePane extends Component{
         </div>
         <div className="form-group">
           <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-            <button type="button" className="btn btn-primary" onClick={this.handleReject.bind(this)}>
-              Reject</button>
+            <button type="button" className="btn btn-primary" onClick={this.handleReject.bind(this)}> Reject</button>
             <button type="button" className="btn btn-success" onClick={this.handleApprove.bind(this)}>Approve</button>
           </div>
        </div>
@@ -66,8 +69,16 @@ class DefChangePane extends Component{
               User {this.item.maker} has performed operation : {this.item.change_type} on table {this.item.table_name} and record id {this.item.id}.
             </p>
             {((item)=>{
-              if (this.item.change_type=="UPDATE")
-                return (<p> The column  {item.field_name} has been update from {item.old_val} to {item.new_val}. </p>);
+              //if (this.item.change_type=="UPDATE")
+                //return (<p> The column  {item.field_name} has been updated from {item.old_val} to {item.new_val}. </p>);
+                if (item.change_type=="UPDATE"){
+                    console.log("Pane Update Info........",item.update_info);
+                    const update_list=item.update_info.map((uitem,uindex)=>{
+                        console.log("Pane Uitem.....",uitem);
+                        return (<div>The column {uitem.field_name} has been updated from {uitem.old_val} to {uitem.new_val}.</div>);
+                    });
+                    return update_list;
+                }
             })(this.item)}
             <p> Following comment has been provided:"{this.item.maker_comment}" </p>
          </h4>
@@ -113,18 +124,25 @@ class DefChangePane extends Component{
   }
 
   handleReject(){
-
+    this.item.status="REJECTED";
+    this.item.checker_comment=this.state.comment;
+    this.props.onApprove(this.item);
+    this.setState({comment:null});
   }
 
   handleApprove(){
-
+    this.item.status="APPROVED";
+    this.item.checker_comment=this.state.comment;
+    this.props.onReject(this.item);
+    this.setState({comment:null});
   }
+
 }
 
 const mapDispatchToProps=(dispatch)=>{
   return{
     fetchRecordDetail:(table_name,id)=>{
-      dispatch(actionFetchRecordDetail(table_name,id))
+      dispatch(actionFetchRecordDetail(table_name,id));
     }
   };
 }

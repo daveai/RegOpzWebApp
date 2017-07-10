@@ -1,6 +1,11 @@
 import React,{Component} from 'react';
+import {dispatch} from 'redux';
+import {connect} from 'react-redux';
 import DefChangeList from './DefChangeList';
 import DefChangePane from './DefChangePane';
+import {actionFetchAuditList,
+        actionPostAuditDecision
+        } from '../../actions/DefChangeAction';
 
 require('./ManageDefChange.css');
 
@@ -27,8 +32,8 @@ class ManageDefChange extends Component{
                 <div className="col-sm-9 mail_view">
                     <DefChangePane
                       item={this.state.selectedListItem}
-                      onApprove={this.handleApprove.bind(this)}
-                      onReject={this.handleReject.bind(this)}/>
+                      onApprove={this.handleDecision.bind(this)}
+                      onReject={this.handleDecision.bind(this)}/>
                 </div>
               </div>
             </div>
@@ -43,14 +48,29 @@ class ManageDefChange extends Component{
     this.setState({selectedListItem:item});
   }
 
-  handleApprove(){
+  handleDecision(item){
+  this.props.postAuditDecision(item);
+  this.setState({selectedListItem:null});
 
   }
 
-  handleReject(){
-
-  }
+  // handleReject(item){
+  //   let item=this.state.selectedListItem;
+  //   item.status="REJECTED";
+  //   this.props.postAuditDecision(item);
+  //   this.setState({selectedListItem:null});
+  //
+  // }
 
 }
 
-export default ManageDefChange;
+const mapDispatchToProps=(dispatch)=>{
+  return{
+    postAuditDecision:(data)=>{
+      dispatch(actionPostAuditDecision(data));
+    }
+  };
+}
+
+const VisibleManageDefChange=connect(null,mapDispatchToProps)(ManageDefChange);
+export default VisibleManageDefChange;

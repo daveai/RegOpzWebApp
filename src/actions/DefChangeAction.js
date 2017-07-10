@@ -3,6 +3,7 @@ import { BASE_URL } from '../Constant/constant';
 
 export const FETCH_AUDIT_LIST='FETCH_AUDIT_LIST';
 export const FETCH_RECORD_DETAIL='FETCH_RECORD_DETAIL';
+export const POST_AUDIT_DECISION='POST_AUDIT_DECISION';
 
 export function actionFetchAuditList(){
   const url=BASE_URL+"workflow/def-change/get-audit-list";
@@ -22,4 +23,14 @@ export function actionFetchRecordDetail(table_name,id){
     type:FETCH_RECORD_DETAIL,
     payload:request
   };
+}
+
+export function actionPostAuditDecision(data){
+  const url=BASE_URL+"workflow/def-change/audit-decision";
+  const request=axios.post(url,data);
+
+  return{
+    type:POST_AUDIT_DECISION,
+    payload:request
+  }
 }
