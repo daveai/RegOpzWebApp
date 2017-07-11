@@ -46,7 +46,7 @@ class LoginComponent extends Component {
 
                                 <div className="clearfix"></div>
 
-                                { error != null ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
+                                { error ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
 
                                 <div className="separator">
 
@@ -92,7 +92,7 @@ function mapStateToProps(state) {
   console.log("On map state of Login", state);
   return {
     token: state.login_store.token,
-    //error: state.login_store.error
+    error: state.login_store.error
     //name: state.name,
     //permission: state.permission
   }

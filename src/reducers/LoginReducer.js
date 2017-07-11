@@ -1,20 +1,36 @@
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_CHECK, LOGOUT } from '../actions/LoginAction';
 import setAuthorization from '../utils/setAuthorization';
-import { key } from '../Constant/secret';
-import jwt from 'json-web-token';
+var jwtDecode = require('jwt-decode');
+
+function helperLogin(webToken) {
+  setAuthorization(webToken);
+  try {
+    const decrypt_token = jwtDecode(webToken);
+    return decrypt_token;
+  } catch (err) {
+    throw err;
+  }
+}
 
 // TODO: Create Redux state for user containing token
 export default function(state = {}, action) {
   console.log("Action received at Login: ", action);
   switch (action.type) {
     case LOGIN_REQUEST:
-      localStorage.setItem('RegOpzToken', action.payload.data);
-      setAuthorization(action.payload.data);
-      // Need to decrypt the key here
-      return { ...state, token: action.payload.data, error: null };
+      try {
+        const { tokenId, userId, role, permission } = helperLogin(action.payload.data);
+        localStorage.setItem('RegOpzToken', action.payload.data);
+        return { token: tokenId, user: userId, role: role, permission: permission, error: null };
+      } catch (err) {
+        return { error: err };
+      }
     case LOGIN_CHECK:
-      setAuthorization(action.payload);
-      return { ...state, token: action.payload, error: null };
+      try {
+        const { tokenId, userId, role, permission } = helperLogin(action.payload);
+        return { token: tokenId, user: userId, role: role, permission: permission, error: null };
+      } catch (err) {
+        return { error: err };
+      }
     case LOGOUT:
       localStorage.removeItem('RegOpzToken');
       setAuthorization(false);
