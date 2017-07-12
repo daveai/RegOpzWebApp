@@ -22,7 +22,7 @@ const store = createStoreWithMiddleware(reducers);
 
 class Index extends Component {
     render() {
-        if (!this.props.token)
+        if (!this.props.user)
           return (<Login {...this.props} />);
         return (<Dashboard {...this.props} />);
     }
@@ -37,7 +37,10 @@ class Index extends Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.login_store.token
+        user: state.login_store.user,
+        name: state.login_store.name,
+        role: state.login_store.role,
+        permission: state.login_store.permission
     };
 }
 

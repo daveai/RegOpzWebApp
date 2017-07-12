@@ -18,18 +18,18 @@ export default function(state = {}, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
       try {
-        const { tokenId, userId, role, permission } = helperLogin(action.payload.data);
+        const { name, role, permission } = helperLogin(action.payload.data);
         localStorage.setItem('RegOpzToken', action.payload.data);
-        return { token: tokenId, user: userId, role: role, permission: permission, error: null };
+        return { user: true, name: name, role: role, permission: permission, error: null };
       } catch (err) {
-        return { error: err };
+        return { error: err.message };
       }
     case LOGIN_CHECK:
       try {
-        const { tokenId, userId, role, permission } = helperLogin(action.payload);
-        return { token: tokenId, user: userId, role: role, permission: permission, error: null };
+        const { name, role, permission } = helperLogin(action.payload);
+        return { user:true, name: name, role: role, permission: permission, error: null };
       } catch (err) {
-        return { error: err };
+        return { error: err.message };
       }
     case LOGOUT:
       localStorage.removeItem('RegOpzToken');
