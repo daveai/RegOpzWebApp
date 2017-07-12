@@ -28,21 +28,31 @@ class DefChangeList extends Component{
     const msgList=audit_list.map((item,index)=>{
           //console.log(item,index);
           return(<li className="list_item_active" key={index} onClick={(event)=>{this.props.onSelectListItem(item)}}>
-                    <div>
-                      User {item.maker} has performed operation : {item.change_type} on table {item.table_name} and record id {item.id}.
-
+                    <div className="mail_list">
+                      <h3>{item.change_type}
+                      <small>on {item.table_name} of record id {item.id}</small>
+                      </h3>
                       {((item)=>{
                           if (item.change_type=="UPDATE"){
                               console.log("Update Info........",item.update_info);
                               const update_list=item.update_info.map((uitem,uindex)=>{
                                   console.log("Uitem.....",uitem);
-                                  return (<div key={uindex}>The column {uitem.field_name} has been updated from {uitem.old_val} to {uitem.new_val}.</div>);
+                                  return (<div key={uindex}>
+                                            <p>
+                                              <span className="badge">{uitem.field_name}</span>
+                                              <small>
+                                                <i className="fa fa-circle-o"></i><i>{uitem.old_val.toString().substring(0,30)} ...</i>
+                                                <i className="fa fa-circle"></i><i>{uitem.new_val.toString().substring(0,30)} ...</i>
+                                              </small>
+                                            </p>
+                                          </div>);
                               });
                               return update_list;
                           }
 
                       })(item)}
-                      Following comment has been provided:"{item.maker_comment}"
+
+                      <p><span className="badge">Comment</span>{item.maker_comment.toString().substring(0,125)} ...</p>
                     </div>
                 </li>
               );

@@ -13,11 +13,12 @@ import {
   actionDeleteBusinessRule,
   actionUpdateBusinessRule,
   actionFetchReportLinkage } from '../../actions/BusinessRulesAction';
+import {actionFetchAuditList} from '../../actions/DefChangeAction';
 import RightSlidePanel from '../RightSlidePanel/RightSlidePanel';
 import ModalAlert from '../ModalAlert/ModalAlert';
 import AuditModal from '../AuditModal/AuditModal';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Media } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import _ from 'lodash';
 import {BASE_URL} from '../../Constant/constant';
@@ -75,6 +76,8 @@ class MaintainBusinessRules extends Component {
         this.filterConditions = {};
         this.selectedRows = [];
         this.selectedRulesAsString = null;
+        this.selectedRulesIdAsString = null;
+        this.modalType = "";
         this.operationName = "";
         this.auditInfo={};
         this.updateInfo=null;
@@ -89,7 +92,12 @@ class MaintainBusinessRules extends Component {
         this.data = this.props.business_rules[0].rows;
         this.count = this.props.business_rules[0].count;
         this.pages = Math.ceil(this.count / 100);
-        this.linkageData = this.props.report_linkage;
+        if(this.modalType=="Report Linkage"){
+          this.linkageData = this.props.report_linkage;
+        }
+        if(this.modalType=="Rule Audit"){
+          this.linkageData = this.props.audit_list;
+        }
         console.log("Linkage data ", this.linkageData);
         return (
           <div className="maintain_business_rules_container">
@@ -108,6 +116,9 @@ class MaintainBusinessRules extends Component {
                           this.selectedRow = null;
                           this.currentPage = 0;
                           this.props.fetchBusinesRules(this.currentPage);
+                          $("button[title='Delete']").prop('disabled',false);
+                          $("button[title='Update']").prop('disabled',false);
+                          $("button[title='Duplicate']").prop('disabled',false);
                         }
                       }
 
@@ -292,6 +303,9 @@ class MaintainBusinessRules extends Component {
                           this.selectedRows = this.flatGrid.deSelectAll();
                           this.selectedRowItem = null;
                           this.selectedRow = null;
+                          $("button[title='Delete']").prop('disabled',false);
+                          $("button[title='Update']").prop('disabled',false);
+                          $("button[title='Duplicate']").prop('disabled',false);
                         }
                       }
                     >
@@ -328,13 +342,19 @@ class MaintainBusinessRules extends Component {
                 }
               }
             />
-            <Modal show={this.state.isModalOpen}>
-              <Modal.Header>
-                <Modal.Title>Report Linked to Rule {this.selectedRulesAsString}</Modal.Title>
+            <Modal
+              show={this.state.isModalOpen}
+              container={this}
+              onHide={(event) => {
+                  this.setState({isModalOpen:false});
+                }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{this.modalType} for <h6>{this.selectedRulesAsString}</h6></Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
-                {this.renderReportLinkage(this.linkageData)}
+                {this.renderModalBody(this.modalType,this.linkageData)}
               </Modal.Body>
 
               <Modal.Footer>
@@ -355,7 +375,17 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
+    renderModalBody(modalType,modalData){
+      console.log("Modal type",modalType,modalData);
+      if(modalType == "Report Linkage"){
+        return this.renderReportLinkage(modalData);
+      }
+      if(modalType == "Rule Audit"){
+        return this.renderChangeHistory(modalData);
+      }
+    }
     renderReportLinkage(linkageData){
+      console.log("Modal linkage data",linkageData);
       if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
         return(
           <div>
@@ -381,17 +411,72 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
+    renderChangeHistory(linkageData){
+      if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
+        return(
+          <div>
+            <h4>No linked report found!</h4>
+          </div>
+        )
+      else {
+        return(
+          <div className="dashboard-widget-content">
+            <ul className="list-unstyled timeline widget">
+            {
+              linkageData.map(function(item,index){
+                return(
+                  <li>
+                    <div className="block">
+                      <div className="block_content">
+                        <h2 className="title"></h2>
+                          <Media>
+                            <Media.Left>
+                              <h3>24</h3><h6>Jun</h6>
+                            </Media.Left>
+                            <Media.Body>
+                              <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
+                              <h6>{item.change_type} by {item.maker}</h6>
+                              <p>{item.maker_comment}</p>
+                                <Media>
+                                  <Media.Left>
+                                    {item.status}
+                                  </Media.Left>
+                                  <Media.Body>
+                                    <Media.Heading>Verification details</Media.Heading>
+                                    <p>{item.checker_comment}</p>
+                                  </Media.Body>
+                                </Media>
+                            </Media.Body>
+                          </Media>
+                        </div>
+                    </div>
+                  </li>
+                )
+              })
+            }
+          </ul>
+          </div>
+        )
+      }
+    }
     handlePageClick(event){
       event.preventDefault();
       this.props.fetchBusinesRules($(event.target).text());
 
     }
     handleSelectRow(rownum, item){
-      console.log("I am called at ", item,rownum);
-      this.selectedRow = rownum;
-      this.selectedRowItem = item;
+      if(this.selectedRows.length > 0){
+        console.log("I am called at ", item,rownum);
+        this.selectedRow = rownum;
+        this.selectedRowItem = item;
+      }
+      else {
+        console.log("I am called at ", item,rownum);
+        this.selectedRow = 0;
+        this.selectedRowItem = null;
+      }
 
-      if(this.selectedRowItem['approval_status']!='A'){
+      if(this.selectedRows.length > 1){
         console.log($("button [title='Delete']"));
         $("button[title='Delete']").prop('disabled',true);
         $("button[title='Update']").prop('disabled',true);
@@ -400,9 +485,16 @@ class MaintainBusinessRules extends Component {
 
       }
       else{
-        $("button[title='Delete']").prop('disabled',false);
-        $("button[title='Update']").prop('disabled',false);
-        $("button[title='Duplicate']").prop('disabled',false);
+        if(this.selectedRows.length ==1 && this.selectedRows[0]['approval_status'] != 'A'){
+          $("button[title='Delete']").prop('disabled',true);
+          $("button[title='Update']").prop('disabled',true);
+          $("button[title='Duplicate']").prop('disabled',true);
+        }
+        else {
+          $("button[title='Delete']").prop('disabled',false);
+          $("button[title='Update']").prop('disabled',false);
+          $("button[title='Duplicate']").prop('disabled',false);
+        }
       }
     }
     handleInsertClick(event){
@@ -414,6 +506,8 @@ class MaintainBusinessRules extends Component {
         this.modalInstance.open("Please select at least one row");
       } else if (this.selectedRows.length > 1) {
         this.modalInstance.open("Please select only one row");
+      } else if($("button[title='Duplicate']").prop('disabled')){
+        // do nothing;
       } else {
         // let data = {
         //   table_name:"business_rules",
@@ -430,6 +524,10 @@ class MaintainBusinessRules extends Component {
         this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select a row");
         this.operationName = "";
+      } else if (this.selectedRows.length > 1) {
+        this.modalInstance.open("Please select only one row");
+      } else if($("button[title='Delete']").prop('disabled')){
+        // do nothing;
       } else {
         this.modalInstance.isDiscardToBeShown = true;
         this.operationName = "DELETE";
@@ -442,6 +540,10 @@ class MaintainBusinessRules extends Component {
         this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select a row");
         this.operationName = "";
+      } else if (this.selectedRows.length > 1) {
+        this.modalInstance.open("Please select only one row");
+      } else if($("button[title='Update']").prop('disabled')){
+        // do nothing;
       } else {
         hashHistory.push(`/dashboard/maintain-business-rules/add-business-rule?request=update&index=${this.selectedRow}`)
       }
@@ -465,27 +567,35 @@ class MaintainBusinessRules extends Component {
       } else {
         var params = {};
         params.business_rule_list = [];
+        params.rule_id_list = [];
         for(let i = 0; i < this.selectedRows.length; i++){
           params.source_id = this.selectedRows[0].source_id;
           params.business_rule_list.push(this.selectedRows[i].business_rule);
+          params.rule_id_list.push(this.selectedRows[i].id);
         }
+        this.modalType = "Report Linkage";
         this.selectedRulesAsString = params.business_rule_list.toString();
+        this.selectedRulesIdAsString = params.rule_id_list.toString();
         this.props.fetchReportLinkage(params);
         this.setState({isModalOpen:true})
       }
     }
     showHistory(event){
-      if(this.selectedRows.length == 0){
+      if(this.selectedRows.length == -1){
         this.modalInstance.open("Please select at least one row")
       } else {
         var params = {};
         params.business_rule_list = [];
+        params.rule_id_list = [];
         for(let i = 0; i < this.selectedRows.length; i++){
           params.source_id = this.selectedRows[0].source_id;
           params.business_rule_list.push(this.selectedRows[i].business_rule);
+          params.rule_id_list.push(this.selectedRows[i].id);
         }
+        this.modalType = "Rule Audit";
         this.selectedRulesAsString = params.business_rule_list.toString();
-        //this.props.fetchReportLinkage(params);
+        this.selectedRulesIdAsString = params.rule_id_list.length > 0 ? params.rule_id_list.toString():"id";
+        this.props.fetchAuditList(this.selectedRulesIdAsString,"business_rules");
         this.setState({isModalOpen:true})
       }
     }
@@ -504,8 +614,30 @@ class MaintainBusinessRules extends Component {
       this.flatGrid.filterData(this.filterConditions);
     }
     handleFullSelect(selectedItems){
-      console.log("Full selected items are ", selectedItems);
-      this.selectedRows = selectedItems;
+      if(selectedItems.length > 0){
+        console.log("Full selected items are ", selectedItems);
+        this.selectedRows = selectedItems;
+      }
+      if(this.selectedRows.length > 1){
+        console.log($("button [title='Delete']"));
+        $("button[title='Delete']").prop('disabled',true);
+        $("button[title='Update']").prop('disabled',true);
+        $("button[title='Duplicate']").prop('disabled',true);
+        //console.log("Button property........:",$("button[title='Delete']").prop('disabled'));
+
+      }
+      else{
+        if(this.selectedRows.length ==1 && this.selectedRows[0]['approval_status'] != 'A'){
+          $("button[title='Delete']").prop('disabled',true);
+          $("button[title='Update']").prop('disabled',true);
+          $("button[title='Duplicate']").prop('disabled',true);
+        }
+        else {
+          $("button[title='Delete']").prop('disabled',false);
+          $("button[title='Update']").prop('disabled',false);
+          $("button[title='Duplicate']").prop('disabled',false);
+        }
+      }
     }
     isInt(value) {
       return !isNaN(value) &&
@@ -580,6 +712,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchReportLinkage :(params) => {
       dispatch(actionFetchReportLinkage(params))
+    },
+    fetchAuditList:(idList,tableName)=>{
+      dispatch(actionFetchAuditList(idList,tableName));
     }
 
   }
@@ -587,7 +722,8 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state){
   return {
     business_rules:state.business_rules,
-    report_linkage: state.report_linkage
+    report_linkage: state.report_linkage,
+    audit_list:state.def_change_store.audit_list
   }
 }
 const VisibleMaintainBusinessRules = connect(

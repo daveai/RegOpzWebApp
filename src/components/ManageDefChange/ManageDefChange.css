@@ -7,3 +7,8 @@
   color: white;
   background-color: #546784;
 }
+
+.panel_list_item_active:hover{
+  cursor:pointer;
+  background-color: #f7f7f7;
+}
