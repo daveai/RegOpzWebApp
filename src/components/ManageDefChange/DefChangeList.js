@@ -10,13 +10,25 @@ class DefChangeList extends Component{
   constructor(props){
     super(props);
 
-    //this.messageList=['abcd','efgh','ijkl'];
+    this.fetchFlag=true;
 
   }
 
   componentWillMount(){
     this.props.fetchAuditList();
 
+  }
+
+  componentWillUpdate(){
+    if(this.fetchFlag){
+      console.log("componentWillUpdate......",this.fetchFlag);
+      this.props.fetchAuditList();
+    }
+  }
+
+
+  componentDidUpdate(){
+    this.fetchFlag=!this.fetchFlag;
   }
 
   render(){

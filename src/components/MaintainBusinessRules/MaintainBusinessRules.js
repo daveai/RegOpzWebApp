@@ -485,7 +485,7 @@ class MaintainBusinessRules extends Component {
 
       }
       else{
-        if(this.selectedRows.length ==1 && this.selectedRows[0]['approval_status'] != 'A'){
+        if(this.selectedRows.length ==1 && this.selectedRows[0]['dml_allowed'] == 'N'){
           $("button[title='Delete']").prop('disabled',true);
           $("button[title='Update']").prop('disabled',true);
           $("button[title='Duplicate']").prop('disabled',true);

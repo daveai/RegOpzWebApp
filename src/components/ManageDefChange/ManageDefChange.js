@@ -21,7 +21,7 @@ class ManageDefChange extends Component{
         <div className="col-md-12">
           <div className="x_panel">
             <div className="x_title">
-              <h2>Manage Definition <small> Approve changes to report definiton</small></h2>
+              <h2>Manage Definition <small> Approve changes to report definition</small></h2>
               <div className="clearfix"></div>
             </div>
             <div className="x_content">

@@ -27,7 +27,7 @@ class DefChangePane extends Component{
 
   componentDidUpdate(){
     if(this.item){
-      this.renderDefChangeDetails(this.props.record_detail,this.item);
+      //this.renderDefChangeDetails(this.props.record_detail,this.item);
       this.fetchFlag=!this.fetchFlag;
     }
   }
