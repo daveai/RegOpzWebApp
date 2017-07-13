@@ -191,14 +191,14 @@ class DefChangePane extends Component{
   handleReject(){
     this.item.status="REJECTED";
     this.item.checker_comment=this.state.comment;
-    this.props.onApprove(this.item);
+    this.props.onReject(this.item);
     this.setState({comment:null});
   }
 
   handleApprove(){
     this.item.status="APPROVED";
     this.item.checker_comment=this.state.comment;
-    this.props.onReject(this.item);
+    this.props.onApprove(this.item);
     this.setState({comment:null});
   }
 
