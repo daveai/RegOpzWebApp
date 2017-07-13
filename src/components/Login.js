@@ -93,9 +93,7 @@ function mapStateToProps(state) {
   return {
     token: state.login_store.token,
     error: state.login_store.error
-    //name: state.name,
-    //permission: state.permission
-  }
+  };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -104,7 +102,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionLoginRequest(data));
     }
   };
-}
+};
 
 const VisibleLogin = connect(
   mapStateToProps,
