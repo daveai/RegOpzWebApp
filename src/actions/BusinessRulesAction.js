@@ -47,10 +47,10 @@ export function actionUpdateBusinessRule(item) {
 }
 
 // TODO:
-export function actionDeleteBusinessRule(item, at) {
+export function actionDeleteBusinessRule(data,item, at) {
 	const url = BASE_URL + "business-rule";
 	console.log("item updating", item);
-	const request = axios.delete(url + "/" + item);
+	const request = axios.put(url + "/" + item,data);
 	return {
 		type: DELETE_RULES,
 		payload: request,

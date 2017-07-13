@@ -40,8 +40,11 @@ class AddReportRules extends Component {
           valid_from:null,
           valid_to:null,
           last_updated_by:null,
-          id:null
-        },
+          id:null,
+          },
+        audit_form:{
+          comment:null
+        }
     };
     this.state.readOnly = this.state.requestType=="update"?"readonly":"";
     this.handleDelete = this.handleDelete.bind(this);
@@ -391,6 +394,27 @@ class AddReportRules extends Component {
                   </div>
                 </div>
                 <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <textarea
+                      type="text"
+                      placeholder="Enter a Comment"
+                      required="required"
+                      className="form-control col-md-7 col-xs-12"
+                      value={this.state.audit_form.comment}
+                      maxLength="1000"
+                      minLength="20"
+                      onChange={
+                        (event) => {
+                          let {audit_form}=this.state;
+                          audit_form.comment = event.target.value;
+                          this.setState({audit_form});
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input value="John Doe"  type="text" required="required" className="form-control col-md-7 col-xs-12" readOnly="readonly" />
@@ -419,10 +443,22 @@ class AddReportRules extends Component {
     console.log('inside submit',this.state.form);
     event.preventDefault();
     this.flatenTags();
+
     let data = {
       table_name:"report_calc_def",
       update_info:this.state.form
     };
+    data['change_type']=this.state.requestType=='add'?'INSERT':'UPDATE';
+
+    let audit_info={
+      id:this.state.form.id,
+      table_name:data.table_name,
+      change_type:data.change_type
+    };
+    Object.assign(audit_info,this.state.audit_form);
+
+    data['audit_info']=audit_info;
+
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
       this.props.insertRuleData(data);

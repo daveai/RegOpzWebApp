@@ -31,11 +31,13 @@ export default class AuditModal extends Component{
             <div className="form-group">
               <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="comment">Comment <span className="required">*</span></label>
               <div className="col-md-6 col-sm-6 col-xs-12">
-                <input
+                <textarea
                   value={this.state.form.comment}
                   placeholder="Comment"
                   type="text"
                   className="form-control col-md-7 col-xs-12"
+                  maxLength="1000"
+                  minLength="20"
                   onChange={(event)=>{
                     let form=this.state.form;
                     form.comment=event.target.value;

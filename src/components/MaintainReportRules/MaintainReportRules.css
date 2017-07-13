@@ -77,3 +77,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 .maintain_rep_rules_accordion_holder {
   margin-top: 10px;
 }
+
+.form-container {
+  min-height: 90vh;
+}

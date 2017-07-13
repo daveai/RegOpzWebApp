@@ -8,6 +8,8 @@ import {
   actionUpdateRuleData
 } from '../../actions/MaintainReportRuleAction';
 
+require('./MaintainReportRules.css');
+
 class AddReportAggRules extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,9 @@ class AddReportAggRules extends Component {
         valid_from: null,
         valid_to: null,
         last_updated_by: null
+      },
+      audit_form:{
+        comment:null
       }
     }
     // this.aggRulesList = new RegExp('[A-Z0-9]+') Options are included
@@ -40,7 +45,7 @@ class AddReportAggRules extends Component {
 
   render() {
     return(
-      <div className="row">
+      <div className="row form-container" >
         <div className="col col-lg-12">
           <div className="x_title">
             <h2>Maintain report rule <small>Add a new aggregation rule</small></h2>
@@ -186,6 +191,25 @@ class AddReportAggRules extends Component {
                     </div>
                   </div>
                   <div className="form-group">
+                    <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="comment">Comment<span className="required">*</span></label>
+                    <div className="col-md-5 col-sm-5 col-xs-12">
+                      <textarea
+                        value={this.state.audit_form.comment}
+                        minLength="20"
+                        maxLength="1000"
+                        required="true"
+                        type="text"
+                        className="form-control col-md-7 col-xs-12"
+                        onChange={(event) => {
+                          let newState = {...this.state};
+                          newState.audit_form.comment = event.target.value;
+                          this.setState(newState);
+                          }
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group">
                     <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="last-update-by">Last Updated By<span className="required">*</span></label>
                     <div className="col-md-3 col-sm-3 col-xs-12">
                       <input
@@ -225,6 +249,16 @@ class AddReportAggRules extends Component {
       table_name: "report_comp_agg_def",
       update_info: this.state.form
     };
+    data["change_type"]=this.state.requestType == "add"?"INSERT":"UPDATE";
+
+    let audit_info={
+      table_name:data["table_name"],
+      change_type:data["change_type"],
+    };
+
+    Object.assign(audit_info,this.state.audit_form);
+
+    data['audit_info']=audit_info;
 
     if (this.state.requestType == "add") {
       this.props.insertRuleData(data);
