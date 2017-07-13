@@ -14,16 +14,21 @@ class DefChangePane extends Component{
 
   componentWillReceiveProps(nextProps){
     this.item=nextProps.item;
-  }
-
-  componentWillUpdate(){
     if (this.fetchFlag){
       if(this.item){
         this.props.fetchRecordDetail(this.item.table_name,this.item.id);
         }
     }
-
   }
+
+  // componentWillUpdate(){
+  //   if (this.fetchFlag){
+  //     if(this.item){
+  //       this.props.fetchRecordDetail(this.item.table_name,this.item.id);
+  //       }
+  //   }
+  //
+  // }
 
   componentDidUpdate(){
     if(this.item){
@@ -153,13 +158,12 @@ class DefChangePane extends Component{
                                     auditItem.update_info.map((uitem,uindex)=>{
                                         console.log("audit item Uitem.....",uitem);
                                         if(uitem.field_name==column){
-                                          update_list.push(<div >
+                                          update_list.push(
                                                       <small>
                                                         <i className="fa fa-circle-o"></i><i>  {uitem.old_val}</i>
                                                         <br></br>
                                                         <i className="fa fa-circle"></i><i>  {uitem.new_val}</i>
                                                       </small>
-                                                  </div>
                                                 );
                                         }
                                     });
