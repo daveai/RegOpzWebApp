@@ -9,10 +9,12 @@ import MaintainReportRulesReducer from './MaintainReportRulesReducer';
 import MaintainSourcesReducer from './MaintainSourcesReducer';
 import VarianceAnalysisReducer from './VarianceAnalysisReducer';
 import CreateReportReducer from './CreateReportReducer';
+import UsersReducer from './UsersReducer';
 import LoginReducer from './LoginReducer';
 import DefChangeReducer from './DefChangeReducer';
 
 const rootReducer = combineReducers({
+  user_details: UsersReducer,
   business_rules: businessRulesReducer,
   report_linkage: ReportLinkageReducer,
   view_data_store: ViewDataReducer,

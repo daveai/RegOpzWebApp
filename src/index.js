@@ -37,10 +37,7 @@ class Index extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.login_store.user,
-        name: state.login_store.name,
-        role: state.login_store.role,
-        permission: state.login_store.permission
+        user: state.login_store.user
     };
 }
 
