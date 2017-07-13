@@ -16,7 +16,7 @@ import {
   actionInsertBusinessRule,
   actionUpdateBusinessRule
 } from '../../../actions/BusinessRulesAction';
-import './AddBusinessRule.css';
+require('./AddBusinessRule.css');
 
 class AddBusinessRule extends Component {
   constructor(props){

@@ -30,6 +30,10 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
+    node: {
+        net: 'empty',
+        dns: 'empty'
+    },
     devServer: {
         historyApiFallback: true,
         contentBase: './'

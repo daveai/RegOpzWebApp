@@ -1,18 +1,29 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
 import {
-    Router,
-    Route,
-    Link,
-    IndexRoute,
-    hashHistory,
-    browserHistory
-} from 'react-router'
-class Login extends Component {
-    login(e){
-        e.preventDefault();
+  actionLoginRequest,
+  actionIsLoggedIn,
+  LOGIN_SUCCESS
+} from '../actions/LoginAction';
+
+class LoginComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: null,
+            password: null,
+            isLoading: false
+        };
+
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
+
     render() {
+        const { username, password, isLoading } = this.state;
+        const { error } = this.props;
         return (
             <div>
                 <a className="hiddenanchor" id="signup"></a>
@@ -24,16 +35,18 @@ class Login extends Component {
                             <form>
                                 <h1>RegOpz Login</h1>
                                 <div>
-                                    <input type="text" className="form-control" placeholder="Username" required=""/>
+                                    <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.onChange} required=""/>
                                 </div>
                                 <div>
-                                    <input type="password" className="form-control" placeholder="Password" required=""/>
+                                    <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.onChange} required=""/>
                                 </div>
                                 <div>
-                                    <a className="btn btn-default submit" href="#/dashboard">Log in</a>
+                                    <button className="btn btn-default submit" onClick={this.onSubmit} disabled={!(username && password) || isLoading}>Log in</button>
                                 </div>
 
                                 <div className="clearfix"></div>
+
+                                { error ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
 
                                 <div className="separator">
 
@@ -52,10 +65,50 @@ class Login extends Component {
             </div>
         );
     }
+
     componentDidMount() {
         document.body.classList.add('login');
         document.title = "RegOpz Login";
+    }
 
+    onChange(event) {
+      this.setState({ [event.target.name]: event.target.value });
+    }
+
+    onSubmit(event) {
+        event.preventDefault();
+        this.setState({ isLoading: true });
+        var data = {
+          username: this.state.username,
+          password: this.state.password
+        };
+        this.props.loginRequest(data);
+        this.setState({ username: null, password: null, isLoading: false });
+        window.location.replace('/#/dashboard');
     }
 }
-export default Login;
+
+function mapStateToProps(state) {
+  console.log("On map state of Login", state);
+  return {
+    token: state.login_store.token,
+    error: state.login_store.error
+    //name: state.name,
+    //permission: state.permission
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginRequest: (data) => {
+      dispatch(actionLoginRequest(data));
+    }
+  };
+}
+
+const VisibleLogin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginComponent);
+
+export default VisibleLogin;
