@@ -15,7 +15,12 @@
 .list_item_active:hover{
   cursor:pointer;
   color: white;
-  background-color: #546784;
+  background-color: #8C97BA;
+}
+
+.list_item_select{
+  color: white;
+  background-color:#8C97BA;
 }
 
 .panel_list_item_active:hover{

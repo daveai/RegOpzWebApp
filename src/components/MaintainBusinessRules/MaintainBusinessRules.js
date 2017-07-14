@@ -329,6 +329,11 @@ class MaintainBusinessRules extends Component {
                   if(this.operationName == "DELETE"){
                     this.setState({showAuditModal:true});
                   }
+
+                 if(this.operationName=="INSERT"){
+                    console.log("this.operationName........Inside if condition........",this.operationName);
+                    this.setState({showAuditModal:true});
+                  }
                 }
               }
               onClickDiscard={
@@ -503,8 +508,10 @@ class MaintainBusinessRules extends Component {
     }
     handleDuplicateClick(event){
       if(this.selectedRows.length == 0){
+        this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select at least one row");
       } else if (this.selectedRows.length > 1) {
+        this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select only one row");
       } else if($("button[title='Duplicate']").prop('disabled')){
         // do nothing;
@@ -515,7 +522,8 @@ class MaintainBusinessRules extends Component {
         // };
         this.operationName="INSERT";
         this.updateInfo=this.selectedRows[0];
-        this.setState({showAuditModal:true});
+        this.modalInstance.isDiscardToBeShown = true;
+        this.modalInstance.open(`Are you sure to duplicate this row (business rule: ${this.selectedRowItem['business_rule']}) ?`);
         // this.props.insertBusinessRule(data, this.selectedRow);
       }
     }
@@ -627,7 +635,7 @@ class MaintainBusinessRules extends Component {
 
       }
       else{
-        if(this.selectedRows.length ==1 && this.selectedRows[0]['approval_status'] != 'A'){
+        if(this.selectedRows.length ==1 && this.selectedRows[0]['dml_allowed'] != 'N'){
           $("button[title='Delete']").prop('disabled',true);
           $("button[title='Update']").prop('disabled',true);
           $("button[title='Duplicate']").prop('disabled',true);
