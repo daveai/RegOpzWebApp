@@ -27,6 +27,15 @@ class MaintainReportRules extends Component {
     this.handleDeleteCountry = this.handleDeleteCountry.bind(this);
     this.handleAdditionCountry = this.handleAdditionCountry.bind(this);
     this.handleDragCountry = this.handleDragCountry.bind(this);
+
+    this.searchAnywhere = this.searchAnywhere.bind(this);
+  }
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
   }
   convertTagsToString(tags){
     let selectedTags = [];
@@ -49,7 +58,7 @@ class MaintainReportRules extends Component {
       let tags = this.tags.reportTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({reportTags: tags});
       let reports = this.convertTagsToString(this.tags.reportTags)
@@ -78,7 +87,7 @@ class MaintainReportRules extends Component {
       let tags = this.tags.countryTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({countryTags: tags});
       let reports = this.convertTagsToString(this.tags.reportTags)
@@ -100,23 +109,23 @@ class MaintainReportRules extends Component {
     this.props.fetchReportTemplateList();
   }
   render() {
-      if(this.props.maintain_report_rules_store.length == 0){
+      if(typeof this.props.report_template_list == 'undefined'){
         return(
           <h1>Loading...</h1>
         )
       }
       this.tags.countrySuggestions = [];
       this.tags.reportSuggestions = [];
-      this.props.maintain_report_rules_store[0].country_suggestion.map(function(country,index){
+      this.props.report_template_list.country_suggestion.map(function(country,index){
         this.tags.countrySuggestions.push(country.country)
       }.bind(this))
 
-      this.props.maintain_report_rules_store[0].report_suggestion.map(function(report,index){
+      this.props.report_template_list.report_suggestion.map(function(report,index){
         this.tags.reportSuggestions.push(report.report_id)
       }.bind(this))
       const { reportTags, reportSuggestions } = this.tags;
       const { countryTags, countrySuggestions } = this.tags;
-      console.log('before coolapsible countrylist',this.props.maintain_report_rules_store[0]);
+      console.log('before coolapsible countrylist',this.props.report_template_list);
       return (
           <div className="reg_maintain_report_rules_container container">
             <Breadcrumbs
@@ -132,6 +141,10 @@ class MaintainReportRules extends Component {
                     handleDelete={this.handleDeleteReport}
                     handleAddition={this.handleAdditionReport}
                     handleDrag={this.handleDragReport}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Report ID"
                     classNames={{
                       tagInput: 'tagInputClass',
@@ -147,6 +160,10 @@ class MaintainReportRules extends Component {
                     handleDelete={this.handleDeleteCountry}
                     handleAddition={this.handleAdditionCountry}
                     handleDrag={this.handleDragCountry}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Country"
                     classNames={{
                       tagInput: 'tagInputClass',
@@ -157,12 +174,12 @@ class MaintainReportRules extends Component {
               </div>
             </div>
             {
-                  this.props.maintain_report_rules_store[0].country.map(function(countrylist,countrylistindex){
+                  this.props.report_template_list.country.map(function(countrylist,countrylistindex){
                   return(
                   <div className="maintain_rep_rules_accordion_holder" >
                     <Collapsible trigger={countrylist.country} >
                       {
-                        this.props.maintain_report_rules_store[0].country[countrylistindex].report.map(function(reportlist,reportlistindex){
+                        this.props.report_template_list.country[countrylistindex].report.map(function(reportlist,reportlistindex){
                           return(
                             <Collapsible trigger={reportlist.report_id} key={reportlist.reportlistindex} >
                               <table className="table">
@@ -176,7 +193,7 @@ class MaintainReportRules extends Component {
                                 </thead>
                                 <tbody>
                                   {
-                                    this.props.maintain_report_rules_store[0].country[countrylistindex].report[reportlistindex].reportversions.map(function(reportversion,reportversionindex){
+                                    this.props.report_template_list.country[countrylistindex].report[reportlistindex].reportversions.map(function(reportversion,reportversionindex){
                                       return(
                                         <tr>
                                           <td><a href={`#/dashboard/data-grid?report_id=${reportversion.report_id}`}>{reportversion.report_id}</a></td>
@@ -213,7 +230,7 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state){
   console.log("on map state",state);
   return {
-    maintain_report_rules_store:state.maintain_report_rules_store
+    report_template_list:state.maintain_report_rules_store.report_template_list
   }
 }
 const VisibleMaintainReportRules = connect(

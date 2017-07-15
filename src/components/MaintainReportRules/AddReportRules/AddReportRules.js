@@ -33,15 +33,18 @@ class AddReportRules extends Component {
           report_id: this.props.location.query['report_id'],
           sheet_id: this.props.location.query['sheet'],
           cell_id:this.props.location.query['cell'],
-          source_id: null,
-          cell_business_rules: null,
-          aggregation_ref: null,
-          aggregation_func: null,
-          valid_from: null,
-          valid_to: null,
-          last_updated_by: null,
-          id: null
-        },
+          source_id:null,
+          cell_business_rules:null,
+          aggregation_ref:null,
+          aggregation_func:null,
+          valid_from:null,
+          valid_to:null,
+          last_updated_by:null,
+          id:null,
+          },
+        audit_form:{
+          comment:null
+        }
     };
     this.state.readOnly = this.state.requestType == "update" ? "readonly" : "";
     this.handleDelete = this.handleDelete.bind(this);
@@ -51,15 +54,25 @@ class AddReportRules extends Component {
     this.handleAggRefDelete = this.handleAggRefDelete.bind(this);
     this.handleAggRefAddition = this.handleAggRefAddition.bind(this);
     this.handleAggRefDrag = this.handleAggRefDrag.bind(this);
+
+    this.searchAnywhere = this.searchAnywhere.bind(this);
   }
   
   componentWillMount() {
     this.props.fetchSources();
-    if(typeof ruleIndex != 'undefined') {
+    if(typeof this.state.ruleIndex != 'undefined') {
+      Object.assign(this.state.form , this.props.drill_down_result.cell_rules[this.state.ruleIndex]);
+      this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
       this.initialiseFormFields();
     }
   }
-  
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
+  }
   handleValidFromDateChange(date){
     let form = this.state.form;
     form.valid_from = date;
@@ -70,7 +83,7 @@ class AddReportRules extends Component {
   
   handleValidTillDateChange(date){
     let form = this.state.form;
-    form.valid_till = date;
+    form.valid_to = date;
 
     this.setState({form:form});
 
@@ -84,12 +97,19 @@ class AddReportRules extends Component {
 
   handleAddition(tag) {
         let rulesTags = this.state.rulesTags;
-        rulesTags.push({
-            id: rulesTags.length + 1,
-            text: tag
-        });
-        this.setState({rulesTags: rulesTags});
-   }
+        // check whether its a valid rule to be added
+        if (this.state.rulesSuggestions.indexOf(tag) != -1){
+          rulesTags.push({
+              id: rulesTags.length + 1,
+              text: tag
+          });
+          this.setState({rulesTags: rulesTags});
+        }
+        else{
+          alert("Not a valid rule, please check...",tag)
+        }
+
+    }
 
   handleDrag(tag, currPos, newPos) {
         let rulesTags = this.state.rulesTags;
@@ -143,12 +163,20 @@ class AddReportRules extends Component {
       }
       initialiseFormFields(){
         //this.setState({form: this.props.drill_down_result.cell_rules[this.state.ruleIndex]});
-        this.state.form = this.props.drill_down_result.cell_rules[this.state.ruleIndex];
+        //this.state.form = this.props.drill_down_result.cell_rules[this.state.ruleIndex];
         if(this.state.rulesTags.length == 0){
-          this.state.rulesTags = [{id:1,text: this.state.form.cell_business_rules}];
+          const {cell_business_rules}=this.state.form;
+          let rulesTagsArray=cell_business_rules.split(',');
+          rulesTagsArray.map((item,index)=>{
+            if(item!=''){
+              this.state.rulesTags.push({id:index+1,text:item});
+            }
+          })
+          console.log("Rules Tags........:",this.state.rulesTags);
+          //this.state.rulesTags = [{id:1,text: this.state.form.cell_business_rules}];
         }
         if(this.state.aggRefTags.length == 0){
-          this.state.aggRefTags = [{id:1,text: this.state.form.aggregation_ref}];
+          this.state.aggRefTags.push({id:1,text: this.state.form.aggregation_ref});
         }
       }
 
@@ -200,14 +228,16 @@ class AddReportRules extends Component {
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <input
-                      defaultValue={this.state.form.id}
+                      value={this.state.form.id}
                       placeholder="System Reference ID"
                       readOnly="readonly"
                       type="text"
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
-                          this.state.form.id = event.target.value;
+                          let form=this.state.form;
+                          form.id = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -224,7 +254,9 @@ class AddReportRules extends Component {
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
-                          this.state.form.cell_calc_ref = event.target.value;
+                          let form=this.state.form;
+                          form.cell_calc_ref = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -252,13 +284,16 @@ class AddReportRules extends Component {
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Source ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <select
-                      defaultValue = {this.state.form.source_id}
+                      value = {this.state.form.source_id}
                       className="form-control"
                       onChange={
                         (event) => {
                           let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
-                          this.state.form.source_id = event.target.value;
-                          this.props.fetchBusinessRulesBySourceId(event.target.value);
+                          let form=this.state.form;
+                          form.source_id = event.target.value;
+                          this.setState({form:form});
+                          console.log('Source ID............',this.state.form.source_id);
+                          this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
                           console.log('table name in change event',table_name);
                           this.props.fetchSourceColumnList(table_name);
                         }
@@ -283,6 +318,10 @@ class AddReportRules extends Component {
                       handleDelete={this.handleDelete}
                       handleAddition={this.handleAddition}
                       handleDrag={this.handleDrag}
+                      handleFilterSuggestions={this.searchAnywhere}
+                      allowDeleteFromEmptyInput={false}
+                      autocomplete={true}
+                      minQueryLength={1}
                       classNames={{
                         tagInput: 'tagInputClass',
                         tagInputField: 'tagInputFieldClass form-control',
@@ -318,10 +357,12 @@ class AddReportRules extends Component {
                       placeholder="Enter Aggregation function"
                       required="required"
                       className="form-control col-md-7 col-xs-12"
-                      defaultValue={this.state.form.aggregation_func}
+                      value={this.state.form.aggregation_func}
                       onChange={
                         (event) => {
-                          this.state.form.aggregation_func = event.target.value;
+                          let form=this.state.form;
+                          form.aggregation_func = event.target.value;
+                          this.setState({form:form});
                         }
                       }
                     />
@@ -347,7 +388,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <DatePicker
                         dateFormat="YYYYMMDD"
-                        selected={this.state.form.valid_till}
+                        selected={this.state.form.valid_to}
                         onChange={console.log("this.handleValidTillDateChange.bind(this)")}
                         placeholderText="Rule Valid Till"
                         readOnly="readonly"
@@ -356,6 +397,27 @@ class AddReportRules extends Component {
                   </div>
                 </div>                
 
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <textarea
+                      type="text"
+                      placeholder="Enter a Comment"
+                      required="required"
+                      className="form-control col-md-7 col-xs-12"
+                      value={this.state.audit_form.comment}
+                      maxLength="1000"
+                      minLength="20"
+                      onChange={
+                        (event) => {
+                          let {audit_form}=this.state;
+                          audit_form.comment = event.target.value;
+                          this.setState({audit_form});
+                        }
+                      }
+                    />
+                  </div>
+                </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Last Updated by <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
@@ -387,10 +449,22 @@ class AddReportRules extends Component {
     console.log('inside submit',this.state.form);
     event.preventDefault();
     this.flatenTags();
+
     let data = {
       table_name:"report_calc_def",
       update_info:this.state.form
     };
+    data['change_type']=this.state.requestType=='add'?'INSERT':'UPDATE';
+
+    let audit_info={
+      id:this.state.form.id,
+      table_name:data.table_name,
+      change_type:data.change_type
+    };
+    Object.assign(audit_info,this.state.audit_form);
+
+    data['audit_info']=audit_info;
+
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
       this.props.insertRuleData(data);

@@ -59,6 +59,10 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
+    node: {
+        net: 'empty',
+        dns: 'empty'
+    },
     plugins: env.NODE_ENV !== 'developement' ? [
         new _plugin({
             'collections': true,

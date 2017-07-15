@@ -33,6 +33,7 @@ export default class RegOpzFlatGridCell extends Component {
         )
     }
     handleCellDoubleClick(event) {
+      if(this.props.data['dml_allowed']=='Y'){
         this.editingValue = this.state.value;
         console.log("The editing data (data,identifier,id)", this.props.data[this.props.identifier], this.props.identifier,this.props.data['id']);
         this.inputElem = document.createElement("input");
@@ -44,6 +45,10 @@ export default class RegOpzFlatGridCell extends Component {
         this.inputElem.focus();
         $(".flat_grid_row_container").removeClass('flat_grid_row_container_active');
         $(event.target).parent().parent(".flat_grid_row_container").addClass('flat_grid_row_container_active');
+      } else{
+        this.refs.modalAlert.isDiscardToBeShown=false;
+        this.refs.modalAlert.open("This is readonly record. No editing permitted.");
+      }
     }
     handleCellSingleClick(event){
       console.log("In single click...")
@@ -69,7 +74,9 @@ export default class RegOpzFlatGridCell extends Component {
         $(event.target).remove();
     }
     handleAlertOkayClick(){
-      this.props.onUpdateRow(this.props.data)
+      if(this.props.data['dml_allowed']=='Y'){
+        this.props.onUpdateRow(this.props.data);
+      }
     }
     handleAlertDiscardClick(){
       this.setState({

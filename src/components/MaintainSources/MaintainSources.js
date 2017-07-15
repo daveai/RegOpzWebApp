@@ -32,6 +32,15 @@ class MaintainSources extends Component {
     this.handleAdditionCountry = this.handleAdditionCountry.bind(this);
     this.handleDragCountry = this.handleDragCountry.bind(this);
     this.nextPropsCount = 0;
+
+    this.searchAnywhere = this.searchAnywhere.bind(this);
+  }
+  searchAnywhere(textInputValue, possibleSuggestionsArray) {
+    var lowerCaseQuery = textInputValue.toLowerCase()
+
+    return possibleSuggestionsArray.filter(function(suggestion)  {
+        return suggestion.toLowerCase().includes(lowerCaseQuery)
+    })
   }
   convertTagsToString(tags){
     let selectedTags = [];
@@ -54,7 +63,7 @@ class MaintainSources extends Component {
       let tags = this.tags.sourceTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       console.log('Add source',this.tags);
       let sources = this.convertTagsToString(this.tags.sourceTags)
@@ -84,7 +93,7 @@ class MaintainSources extends Component {
       let tags = this.tags.countryTags;
       tags.push({
           id: tags.length + 1,
-          text: tag
+          text: tag.toLocaleUpperCase()
       });
       this.setState({countryTags: tags});
       console.log('Add country',this.tags);
@@ -151,6 +160,10 @@ class MaintainSources extends Component {
                     handleDelete={this.handleDeleteSource}
                     handleAddition={this.handleAdditionSource}
                     handleDrag={this.handleDragSource}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Source Name"
                     classNames={{
                       tagInput: 'tagInputClass',
@@ -166,6 +179,10 @@ class MaintainSources extends Component {
                     handleDelete={this.handleDeleteCountry}
                     handleAddition={this.handleAdditionCountry}
                     handleDrag={this.handleDragCountry}
+                    handleFilterSuggestions={this.searchAnywhere}
+                    allowDeleteFromEmptyInput={false}
+                    autocomplete={true}
+                    minQueryLength={1}
                     placeholder="Enter Country"
                     classNames={{
                       tagInput: 'tagInputClass',

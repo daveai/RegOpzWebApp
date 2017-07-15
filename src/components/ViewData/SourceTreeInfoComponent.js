@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators, dispatch } from 'redux'
 import { Link } from 'react-router';
-import TreeView from 'react-treeview'
 import moment from 'moment'
 import axios from 'axios'
 import Collapsible from '../CollapsibleModified/Collapsible'

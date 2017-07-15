@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { connect } from 'react-redux'
-import { bindActionCreators, dispatch } from 'redux'
-import TreeView from 'react-treeview'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
 import Breadcrumbs from 'react-breadcrumbs';
 import _ from 'lodash';
 import {
@@ -16,17 +15,14 @@ import {
   actionInsertSourceData,
   actionUpdateSourceData,
   actionDeleteFromSourceData
-} from '../../actions/ViewDataAction'
+} from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import { BASE_URL } from '../../Constant/constant';
-import axios from 'axios';
 require('react-datepicker/dist/react-datepicker.css');
-require('../../../node_modules/react-treeview/react-treeview.css');
 require('./ViewDataComponentStyle.css');
 
 class ViewDataComponent extends Component {
