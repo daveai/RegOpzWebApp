@@ -114,7 +114,16 @@ class DefChangePane extends Component{
                        </table>
                      );
                  } else {
-                   return (<tr><td>This is a {item.change_type} request</td></tr>)
+                   return (<table className="table table-hover">
+                             <thead>
+                               <tr>
+                               </tr>
+                             </thead>
+                             <tbody>
+                                 <tr><td>This is a {item.change_type} request</td></tr>
+                             </tbody>
+                           </table>
+                       )
                  }
              })(this.item)}
 
