@@ -12,6 +12,7 @@ import CreateReportReducer from './CreateReportReducer';
 import UsersReducer from './UsersReducer';
 import LoginReducer from './LoginReducer';
 import DefChangeReducer from './DefChangeReducer';
+import RolesReducer from './RolesReducer';
 
 const rootReducer = combineReducers({
   user_details: UsersReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   variance_analysis_store: VarianceAnalysisReducer,
   create_report_store: CreateReportReducer,
   login_store: LoginReducer,
-  def_change_store: DefChangeReducer
+  def_change_store: DefChangeReducer,
+  role_management: RolesReducer
 });
 
 export default rootReducer;
