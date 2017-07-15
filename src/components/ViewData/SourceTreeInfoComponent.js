@@ -62,7 +62,7 @@ class SourceTreeInfoComponent extends Component {
               return (
                 <tr key={index}>
                   <td>{item.source_id}</td>
-                  <td><Link to={`/dashboard/view-data/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</Link></td>
+                  <td><Link to={`/dashboard/view-data-on-grid?business_date=${item.business_date}&source_id=${item.source_id}`}>{item.data_file_name}</Link></td>
                   <td>{item.file_load_status}</td>
                   <td>{item.data_loaded_by}</td>
                   <td>
