@@ -53,6 +53,7 @@ class DefChangeList extends Component{
                         $(".list_item_select").removeClass("list_item_select");
                         //console.log(event.target);
                         //console.log($(event.target).closest("li"));
+                        //$(event.target).closest("li").toggleClass("list_item_active");
                         $(event.target).closest("li").find(".mail_list").addClass("list_item_select");
                       }
                     }>
@@ -69,8 +70,8 @@ class DefChangeList extends Component{
                                             <p>
                                               <span className="badge">{uitem.field_name}</span> &nbsp;
                                               <small>
-                                                <i className="fa fa-circle-o"></i>&nbsp;<i>{uitem.old_val.toString().substring(0,30)} ...</i> &nbsp;
-                                                <i className="fa fa-circle"></i>&nbsp;<i>{uitem.new_val.toString().substring(0,30)} ...</i>
+                                                <i className="fa fa-circle-o"></i>&nbsp;<i>{uitem.old_val?uitem.old_val.toString().substring(0,30):""} ...</i> &nbsp;
+                                                <i className="fa fa-circle"></i>&nbsp;<i>{uitem.new_val?uitem.new_val.toString().substring(0,30):""} ...</i>
                                               </small>
                                             </p>
                                           </div>);
