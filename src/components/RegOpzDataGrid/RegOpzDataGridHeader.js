@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 export default class RegOpzDataGridHeader extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +12,8 @@ export default class RegOpzDataGridHeader extends Component {
         }
 
     }
-    componentWillReceiveProps(nextProps){
+
+    componentWillReceiveProps(nextProps) {
       this.colAttr = nextProps.colAttr;
       this.numberofCols = nextProps.numberofCols;
       this.columns = [];
@@ -19,6 +21,7 @@ export default class RegOpzDataGridHeader extends Component {
           this.columns[i] = this.alphaSequence(i);
       }
     }
+
     render() {
         var _self = this;
         return (

@@ -3,6 +3,7 @@ import {dispatch} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {hashHistory} from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 import { actionFetchReportList,
       actionFetchCountryList,
       actionCreateReport } from '../../actions/CreateReportAction';
@@ -83,6 +84,11 @@ import './CreateReport.css';
 
     return(
       <div className="row form-container">
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+          wrapperClass="breadcrumb"
+        />
         <div className="col col-lg-12">
           <div className="x_title">
             <h2>Create report <small>Create a new report</small></h2>

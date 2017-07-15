@@ -1,23 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import RegOpzDataGridHeader from './RegOpzDataGridHeader';
 import RegOpzDataGridSideMarker from './RegOpzGridSideMarker';
 import RegOpzDataGridHorizontalLines from './RegOpzDataGridHorizontalLines';
 import RegOpzDataGridVerticalLines from './RegOpzDataGridVerticalLines';
 import RegOpzDataGridBody from './RegOpzDataGridBody';
-import {connect} from 'react-redux';
-import {bindActionCreators, dispatch} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
 import {
   actionFetchReportData,
   actionDrillDown
 } from '../../actions/CaptureReportAction';
-import { hashHistory } from 'react-router';
-import { routerContext } from 'react-router';
+import { hashHistory, routerContext } from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 import {BASE_URL} from '../../Constant/constant';
 import axios from 'axios';
 require('./RegOpzDataGrid.css');
+
 class RegOpzDataGrid extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.numberofCols = 52;
     this.numberofRows = 1000;
@@ -31,20 +32,23 @@ class RegOpzDataGrid extends Component {
     this.gridHight = 0;
     this.gridWidth = 0;
   }
-  componentWillMount(){
+
+  componentWillMount() {
     this.props.fetchCapturedReport(this.report_id,this.reporting_date);
   }
+
   alphaSequence(i) {
       return i < 0
           ? ""
           : this.alphaSequence((i / 26) - 1) + String.fromCharCode((65 + i % 26) + "");
   }
+
   render(){
-    if(this.props.captured_report.length > 0){
+    if (this.props.captured_report.length > 0) {
       this.data = this.props.captured_report[this.selectedSheet].matrix;
       let row_attr = this.props.captured_report[this.selectedSheet].row_attr;
       let col_attr = this.props.captured_report[this.selectedSheet].col_attr;
-      console.log('no of rows...',row_attr,row_attr.length);
+      console.log('no of rows...', row_attr, row_attr.length);
       this.numberofRows = Object.keys(row_attr).length;
       this.numberofCols = Object.keys(col_attr).length;
       this.gridHight = 0;
@@ -65,7 +69,11 @@ class RegOpzDataGrid extends Component {
       return(
         <div className="reg_gridHolder">
           <div>
-            {this.renderBreadCrump()}
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <div className="row">
               <div className="row reg_ops_button_holder">
                 <div className="row">
@@ -79,7 +87,6 @@ class RegOpzDataGrid extends Component {
                           (event) => {
                             hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
                           }
-
                         }
                         className="btn btn-circle btn-primary business_rules_ops_buttons"
                       >
@@ -140,29 +147,28 @@ class RegOpzDataGrid extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col col-lg-12 reg_sheet_buttons_holder">
-                    <div className="btn-group">
-                      {
-                        this.props.captured_report.map((item,index) => {
-                          return(
-                            <button
-                              key={index}
-                              target={index}
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={(event) => {
-                                this.selectedSheet = event.target.getAttribute("target");
-
-                                this.forceUpdate();
-                              }}
-                            >
-                              {item['sheet']}
-                            </button>
-                          )
-                        })
-                      }
-                    </div>
+              </div>
+              <div className="row">
+                <div className="col col-lg-12 reg_sheet_buttons_holder">
+                  <div className="btn-group">
+                    {
+                      this.props.captured_report.map((item,index) => {
+                        return(
+                          <button
+                            key={index}
+                            target={index}
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={(event) => {
+                              this.selectedSheet = event.target.getAttribute("target");
+                              this.forceUpdate();
+                            }}
+                          >
+                            {item['sheet']}
+                          </button>
+                        )
+                      })
+                    }
                   </div>
                 </div>
               </div>
@@ -212,17 +218,17 @@ class RegOpzDataGrid extends Component {
       )
     }
   }
-  renderBreadCrump(){
-    console.log('reporting_date',this.reporting_date)
-    if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
+
+  renderBreadCrumb() {
+    console.log('reporting_date', this.reporting_date);
+    if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
       return(
         <ol className="breadcrumb">
           <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
           <li><a href={window.location.href}>{`${this.report_id} (Manage Report Rules)`}</a></li>
         </ol>
       )
-    }
-    else{
+    } else {
       return(
         <ol className="breadcrumb">
           <li><a href="#/dashboard/view-report">View Report</a></li>
@@ -232,11 +238,13 @@ class RegOpzDataGrid extends Component {
     }
   }
 }
-function mapStateToProps(state){
+
+function mapStateToProps(state) {
   return {
     captured_report:state.captured_report
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCapturedReport:(report_id, reporting_date) => {
@@ -247,8 +255,10 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
+
 const VisibleRegOpzDataGrid = connect(
   mapStateToProps,
   mapDispatchToProps
 )(RegOpzDataGrid);
+
 export default VisibleRegOpzDataGrid;
