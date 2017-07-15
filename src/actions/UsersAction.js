@@ -11,9 +11,9 @@ export function actionFetchUsers() {
   var url = BASE_URL + "users";
   console.log("Fetching users from API.");
   const request = axios.get(url);
-  console.log("Login request response: ", request);
+  console.log("Fetch users request response: ", request);
   return {
-    type: LOGIN_REQUEST,
+    type: FETCH_USER_ACTION,
     payload: request
   };
 }

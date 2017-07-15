@@ -1,0 +1,13 @@
+/*
+ * Stylesheet for Manage Roles Component
+ */
+
+.data-holder {
+  border: 1px solid;
+  min-height: 110px;
+  margin: 2px;
+}
+
+.no-padding {
+  padding: 0px;
+}
