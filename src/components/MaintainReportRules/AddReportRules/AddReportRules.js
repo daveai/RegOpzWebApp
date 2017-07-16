@@ -28,6 +28,7 @@ class AddReportRules extends Component {
         requestType: this.props.location.query['request'],
         ruleIndex: this.props.location.query['index'],
         readOnly: null,
+        viewOnly:null,
         form:{
           cell_calc_ref:null,
           report_id: this.props.location.query['report_id'],
@@ -46,7 +47,8 @@ class AddReportRules extends Component {
           comment:null
         }
     };
-    this.state.readOnly = this.state.requestType=="update"?"readonly":"";
+    this.state.readOnly = this.state.requestType=="update"|| this.state.requestType=="view"?"readonly":"";
+    this.state.viewOnly=this.state.requestType=="view"?"readonly":"";
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -248,6 +250,7 @@ class AddReportRules extends Component {
                       value={this.state.form.cell_calc_ref}
                       type="text"
                       required="required"
+                      readOnly={this.state.viewOnly}
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
@@ -280,69 +283,109 @@ class AddReportRules extends Component {
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Source ID <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <select
-                      value = {this.state.form.source_id}
-                      className="form-control"
-                      onChange={
-                        (event) => {
-                          let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
-                          let form=this.state.form;
-                          form.source_id = event.target.value;
-                          this.setState({form:form});
-                          console.log('Source ID............',this.state.form.source_id);
-                          this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
-                          console.log('table name in change event',table_name);
-                          this.props.fetchSourceColumnList(table_name);
-                        }
+                    {
+                      (()=>{
+                      if(this.state.requestType!='view'){
+                         return(
+                            <select
+                              value = {this.state.form.source_id}
+                              className="form-control"
+                              onChange={
+                                (event) => {
+                                  let table_name = (event.target.options[event.target.selectedIndex].getAttribute('target'));
+                                  let form=this.state.form;
+                                  form.source_id = event.target.value;
+                                  this.setState({form:form});
+                                  console.log('Source ID............',this.state.form.source_id);
+                                  this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
+                                  console.log('table name in change event',table_name);
+                                  this.props.fetchSourceColumnList(table_name);
+                                }
+                              }
+                            >
+                              <option>Choose option</option>
+                              {
+                                source_suggestion.map(function(item,index){
+                                  return(
+                                    <option key={index} target={item.source_table_name} value={item.source_id}>{item.source_id} - {item.source_table_name}</option>
+                                  )
+                                })
+                              }
+                            </select>);
                       }
-                    >
-                      <option>Choose option</option>
-                      {
-                        source_suggestion.map(function(item,index){
-                          return(
-                            <option key={index} target={item.source_table_name} value={item.source_id}>{item.source_id} - {item.source_table_name}</option>
-                          )
-                        })
+                      else{
+                        return(
+                          <input value={this.state.form.source_id}  type="text" required="required" className="form-control col-md-7 col-xs-12" readOnly="readonly" />
+                        );
                       }
-                    </select>
+                    })()
+                  }
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Report Rules <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <ReactTags tags={rulesTags}
-                      suggestions={rulesSuggestions}
-                      handleDelete={this.handleDelete}
-                      handleAddition={this.handleAddition}
-                      handleDrag={this.handleDrag}
-                      handleFilterSuggestions={this.searchAnywhere}
-                      allowDeleteFromEmptyInput={false}
-                      autocomplete={true}
-                      minQueryLength={1}
-                      classNames={{
-                        tagInput: 'tagInputClass',
-                        tagInputField: 'tagInputFieldClass form-control',
-                        suggestions: 'suggestionsClass',
-                      }}
-                      placeholder="Enter Business Rule"
-                    />
+                    {
+                      (()=>{
+                        if(this.state.requestType!='view'){
+
+                            return(
+                              <ReactTags tags={rulesTags}
+                              suggestions={rulesSuggestions}
+                              handleDelete={this.handleDelete}
+                              handleAddition={this.handleAddition}
+                              handleDrag={this.handleDrag}
+                              handleFilterSuggestions={this.searchAnywhere}
+                              allowDeleteFromEmptyInput={false}
+                              autocomplete={true}
+                              minQueryLength={1}
+                              classNames={{
+                                tagInput: 'tagInputClass',
+                                tagInputField: 'tagInputFieldClass form-control',
+                                suggestions: 'suggestionsClass',
+                              }}
+                              placeholder="Enter Business Rule"
+                            />);
+                          }
+                          else{
+                              console.log(this.state.form.cell_business_rules);
+                              return(
+                                <input value={this.state.form.cell_business_rules}  type="text" required="required" className="form-control col-md-7 col-xs-12" readOnly="readonly" />
+                              );
+
+                          }
+                  })()
+                }
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first-name">Aggregation Logic <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
-                    <ReactTags tags={aggRefTags}
-                      suggestions={fieldsSuggestions}
-                      handleDelete={this.handleAggRefDelete}
-                      handleAddition={this.handleAggRefAddition}
-                      handleDrag={this.handleAggRefDrag}
-                      classNames={{
-                        tagInput: 'tagInputClass',
-                        tagInputField: 'tagInputFieldClass form-control',
-                        suggestions: 'suggestionsClass',
-                      }}
-                      placeholder="Enter Aggregation Definition"
-                    />
+                    {
+                      (()=>{
+                        if(this.state.requestType!='view'){
+                          return(
+                              <ReactTags tags={aggRefTags}
+                              suggestions={fieldsSuggestions}
+                              handleDelete={this.handleAggRefDelete}
+                              handleAddition={this.handleAggRefAddition}
+                              handleDrag={this.handleAggRefDrag}
+                              classNames={{
+                                tagInput: 'tagInputClass',
+                                tagInputField: 'tagInputFieldClass form-control',
+                                suggestions: 'suggestionsClass',
+                              }}
+                              placeholder="Enter Aggregation Definition"
+                            />
+                        );
+                      }else{
+                        return(
+                          <input value={this.state.form.aggregation_ref}  type="text" required="required" className="form-control col-md-7 col-xs-12" readOnly="readonly" />
+                        );
+
+                    }
+                    })()
+                  }
                   </div>
                 </div>
 
@@ -352,6 +395,7 @@ class AddReportRules extends Component {
                     <input
                       type="text"
                       placeholder="Enter Aggregation function"
+                      readOnly={this.state.viewOnly}
                       required="required"
                       className="form-control col-md-7 col-xs-12"
                       value={this.state.form.aggregation_func}
@@ -402,6 +446,7 @@ class AddReportRules extends Component {
                       required="required"
                       className="form-control col-md-7 col-xs-12"
                       value={this.state.audit_form.comment}
+                      readOnly={this.state.viewOnly}
                       maxLength="1000"
                       minLength="20"
                       onChange={
@@ -425,7 +470,14 @@ class AddReportRules extends Component {
                   <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                     <button type="button" className="btn btn-primary" onClick={()=>{this.handleCancel()}}>
                       Cancel</button>
-                    <button type="submit" className="btn btn-success" >Submit</button>
+                    {
+                      (()=>{
+                      if(this.state.requestType!='view'){
+                        console.log("this.state.requestType........",this.state.requestType);
+                        return(<button type="submit" className="btn btn-success" >Submit</button>);
+                      }
+                      })()
+                    }
                   </div>
                 </div>
               </form>
@@ -448,7 +500,7 @@ class AddReportRules extends Component {
       table_name:"report_calc_def",
       update_info:this.state.form
     };
-    data['change_type']=this.state.requestType=='add'?'INSERT':'UPDATE';
+    data['change_type']=this.state.requestType=='add'?'INSERT':(this.state.requestType=='update'?'UPDATE':'VIEW');
 
     let audit_info={
       id:this.state.form.id,
@@ -463,7 +515,7 @@ class AddReportRules extends Component {
     if(this.state.requestType == "add"){
       this.props.insertRuleData(data);
     }
-    else{
+    else if (this.state.requestType == "update"){
       this.props.updateRuleData(this.state.form.id,data);
     }
 

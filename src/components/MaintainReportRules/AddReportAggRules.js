@@ -15,6 +15,7 @@ class AddReportAggRules extends Component {
     super(props);
     this.state = {
       requestType: this.props.location.query['request'],
+      viewOnly:null,
       form: {
         id: null,
         report_id: this.props.location.query['report_id'],
@@ -34,6 +35,7 @@ class AddReportAggRules extends Component {
     // this.aggRulesList = new RegExp('[A-Z0-9]+') Options are included
     //this.aggRulesPattern = /(\w+([\+\-\*\/]\w+)?)|(\(\w+\))/g;
     this.aggRulesPattern = /[\+\-\*\/\(\)\[\]\{\}\^]/g;
+    this.state.viewOnly=this.props.location.query['request']=='view'?"true":"";
   }
 
  componentWillMount(){
@@ -96,6 +98,7 @@ class AddReportAggRules extends Component {
                         value={this.state.form.comp_agg_ref}
                         type="text"
                         className="form-control col-md-7 col-xs-12"
+                        readOnly={this.state.viewOnly}
                         onChange={(event) => {
                           let newState = {...this.state};
                           if(this.checkRuleValidity(event) == "valid") {
@@ -117,6 +120,7 @@ class AddReportAggRules extends Component {
                     <div className="col-md-2 col-sm-2 col-xs-12">
                       <input
                         value={this.state.form.reporting_scale}
+                        readOnly={this.state.viewOnly}
                         type="number"
                         className="form-control col-md-7 col-xs-12"
                         onChange={(event) => {
@@ -135,6 +139,7 @@ class AddReportAggRules extends Component {
                       <select
                         defaultValue = {this.state.form.rounding_option}
                         className="form-control"
+                        readOnly={this.state.viewOnly}
                         onChange={
                           (event) => {
                             let newState = {...this.state};
@@ -199,6 +204,7 @@ class AddReportAggRules extends Component {
                         maxLength="1000"
                         required="true"
                         type="text"
+                        readOnly={this.state.viewOnly}
                         className="form-control col-md-7 col-xs-12"
                         onChange={(event) => {
                           let newState = {...this.state};
@@ -215,6 +221,7 @@ class AddReportAggRules extends Component {
                       <input
                         value={this.state.form.last_updated_by}
                         type="text"
+                        readOnly={this.state.viewOnly}
                         className="form-control col-md-7 col-xs-12"
                         onChange={(event) => {
                           let newState = {...this.state};
@@ -230,7 +237,15 @@ class AddReportAggRules extends Component {
                     <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                       <button type="button" className="btn btn-primary" onClick={this.handleCancel.bind(this)}>
                         Cancel</button>
-                      <button type="submit" className="btn btn-success" >Submit</button>
+                      {
+                        (()=>{
+                          console.log(this.state.requestType);
+                          if(this.state.requestType!="view"){
+                            return(<button type="submit" className="btn btn-success" >Submit</button>);
+                          }
+                        })()
+                      }
+
                     </div>
                   </div>
 
