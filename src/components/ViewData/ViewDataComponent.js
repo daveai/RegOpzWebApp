@@ -443,7 +443,10 @@ class ViewDataComponent extends Component {
                dataSource={this.props.report[0].rows}
                onSelectRow={
                  (indexOfGrid) => {
-                   this.selectedIndexOfGrid = indexOfGrid;
+                   if(this.selectedItems.length == 1){
+                     this.selectedIndexOfGrid = indexOfGrid;
+                     console.log("Inside Single select ", indexOfGrid);
+                   }
                    console.log("Single select ", indexOfGrid);
                  }
                }
@@ -463,7 +466,13 @@ class ViewDataComponent extends Component {
                onFullSelect = {
                  (items) => {
                    console.log("Selected Items ", items);
-                   this.selectedItems = items;
+                   if(this.selectedItems.length==0 || (this.selectedItems[0].id != items[0].id)) {
+                     console.log("Inside Selected Items ", items);
+                     this.selectedItems = items;
+                   } else {
+                     this.selectedItems = this.flatGrid.deSelectAll();
+                   }
+
                  }
                }
                ref={
