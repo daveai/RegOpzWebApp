@@ -129,10 +129,11 @@ class DrillDownComponent extends Component {
   renderCellCalcRefItem(item,index){
     if(this.reporting_date == undefined || this.reporting_date == 'undefined'){
       this.filter = `cell_calc_ref='${item.cell_calc_ref}'`
+      let requestType=item.dml_allowed=='Y'?'update':'view'
       return(
         <tr>
           <td>
-            <Link to={`dashboard/maintain-report-rules/add-report-rules?request=update&index=${index}`}>{item.cell_calc_ref}</Link>
+            <Link to={`dashboard/maintain-report-rules/add-report-rules?request=${requestType}&index=${index}`}>{item.cell_calc_ref}</Link>
           </td>
           <td>{item.source_id}</td>
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
@@ -142,7 +143,22 @@ class DrillDownComponent extends Component {
             <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
             </span>
           </td>
-          <td><button type="button" className="btn btn-round btn-warning" onClick={()=>{this.handleDelete(item,index)}}>Delete</button></td>
+            {
+              ((dml_allowed)=>{
+                if(dml_allowed=='Y'){
+                  return(
+                  <td>
+                    <button type="button"
+                            className="btn btn-round btn-warning"
+                            onClick={()=>{this.handleDelete(item,index)}}
+                    >Delete</button>
+                  </td>
+                  );
+                }else{
+                  <td>---</td>
+                }
+              })(item.dml_allowed)
+            }
         </tr>
       )
     }
@@ -187,11 +203,20 @@ class DrillDownComponent extends Component {
     else{
       console.log('With agg rules data available')
       let item = this.drillDownResult.comp_agg_rules[0]
-      return(
-        <div className="alert alert-success reg_cell_formula">
-          <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
-        </div>
-      )
+      if(item.dml_allowed!='N'){
+          return(
+            <div className="alert alert-success reg_cell_formula">
+              <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+            </div>
+          );
+      }else {
+        return(
+          <div className="alert alert-success reg_cell_formula">
+            <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=view&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+          </div>
+        );
+
+      }
     }
   }
 

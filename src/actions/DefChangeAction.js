@@ -27,7 +27,10 @@ export function actionFetchRecordDetail(table_name,id){
 
 export function actionPostAuditDecision(data){
   const url=BASE_URL+"workflow/def-change/audit-decision";
-  const request=axios.post(url,data);
+  const request=axios.post(url,data)
+                     .then(function (response) {
+                        console.log("PostAuthDecision respose...",response);
+                      });
 
   return{
     type:POST_AUDIT_DECISION,

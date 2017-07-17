@@ -9,11 +9,11 @@ class DefChangePane extends Component{
     super(props);
     this.item=this.props.item;
     this.state={comment:null,
-                commentNoOfCharacter:0
+                commentNoOfCharacter:0,
+                isModalOpen:false
               };
     this.fetchFlag=true;
-    this.isModalOpen=false;
-  }
+    }
 
   componentWillReceiveProps(nextProps){
     this.item=nextProps.item;
@@ -58,8 +58,7 @@ class DefChangePane extends Component{
                 required="required"
                 className="form-control col-md-6 col-sm-12 col-xs-12"
                 onChange={(event)=>{
-                             this.setState({comment:event.target.value});
-                             this.setState({commentNoOfCharacter:event.target.value.length});
+                             this.setState({comment:event.target.value,commentNoOfCharacter:event.target.value.length});
                            }
                          }
               />
@@ -84,16 +83,7 @@ class DefChangePane extends Component{
          <div className="clearfix" />
          <div className="ln_solid" />
          <div><h4>Change Summary</h4>
-           <table className="table table-hover">
-             <thead>
-               <tr>
-                 <th>#</th>
-                 <th>Column Name</th>
-                 <th>New Value</th>
-                 <th>Old Value</th>
-               </tr>
-             </thead>
-             <tbody>
+
              {((item)=>{
                  if (item.change_type=="UPDATE"){
                      console.log("Update Info........",item.update_info);
@@ -108,13 +98,35 @@ class DefChangePane extends Component{
                                 </tr>
                               );
                      });
-                     return update_list;
+                     return(
+                       <table className="table table-hover">
+                         <thead>
+                           <tr>
+                             <th>#</th>
+                             <th>Column Name</th>
+                             <th>New Value</th>
+                             <th>Old Value</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           {update_list}
+                         </tbody>
+                       </table>
+                     );
                  } else {
-                   return (<tr><td>This is a {item.change_type} request</td></tr>)
+                   return (<table className="table table-hover">
+                             <thead>
+                               <tr>
+                               </tr>
+                             </thead>
+                             <tbody>
+                                 <tr><td>This is a {item.change_type} request</td></tr>
+                             </tbody>
+                           </table>
+                       )
                  }
              })(this.item)}
-            </tbody>
-          </table>
+
          </div>
          <div className="clearfix" />
          <div className="ln_solid" />
