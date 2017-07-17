@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
-// import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import InfoModal from '../InfoModal/InfoModal';
-import ModalAlert from '../ModalAlert/ModalAlert';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import {
   actionFetchRoles
@@ -50,16 +48,16 @@ class ManageRolesComponent extends Component {
           return(
             <div className="row data-holder" key={ index }>
               <div className="col-md-3">
-                <a href="#">
+                <Link to={`/dashboard/manage-roles/add-roles?role=${ item.role }`}>
                   <h2>{ item.role }</h2>
-                </a>
+                </Link>
               </div>
               <div className="col-md-9 no-padding">
                 {
                   item.permissions.map((perm, index) => {
                     return(
                       <Collapsible trigger={ perm.component } key={ index }>
-                        <span className="btn btn-default">{ perm.permission }</span>
+                        <span className="label label-success">{ perm.permission }</span>
                       </Collapsible>
                     );
                   })

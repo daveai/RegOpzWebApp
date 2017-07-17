@@ -35,10 +35,22 @@ class LoginComponent extends Component {
                             <form>
                                 <h1>RegOpz Login</h1>
                                 <div>
-                                    <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.onChange} required=""/>
+                                    <input type="text"
+                                    className="form-control"
+                                    placeholder="Username"
+                                    name="username"
+                                    value={ this.state.username }
+                                    onChange={ this.onChange }
+                                    required=""/>
                                 </div>
                                 <div>
-                                    <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.onChange} required=""/>
+                                    <input type="password"
+                                    className="form-control"
+                                    placeholder="Password"
+                                    name="password"
+                                    value={ this.state.password }
+                                    onChange={ this.onChange }
+                                    required=""/>
                                 </div>
                                 <div>
                                     <button className="btn btn-default submit" onClick={this.onSubmit} disabled={!(username && password) || isLoading}>Log in</button>
