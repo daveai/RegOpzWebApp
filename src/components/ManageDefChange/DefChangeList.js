@@ -46,7 +46,17 @@ class DefChangeList extends Component{
     console.log("Audit List........",audit_list);
     const msgList=audit_list.map((item,index)=>{
           //console.log(item,index);
-          return(<li className="list_item_active" key={index} onClick={(event)=>{this.props.onSelectListItem(item)}}>
+          return(<li className="list_item_active"
+                      key={index}
+                      onClick={(event)=>{
+                        this.props.onSelectListItem(item);
+                        $(".list_item_select").removeClass("list_item_select");
+                        //console.log(event.target);
+                        //console.log($(event.target).closest("li"));
+                        //$(event.target).closest("li").toggleClass("list_item_active");
+                        $(event.target).closest("li").find(".mail_list").addClass("list_item_select");
+                      }
+                    }>
                     <div className="mail_list">
                       <h3>{item.change_type}
                       <small>on {item.table_name} of record id {item.id}</small>
@@ -60,8 +70,8 @@ class DefChangeList extends Component{
                                             <p>
                                               <span className="badge">{uitem.field_name}</span> &nbsp;
                                               <small>
-                                                <i className="fa fa-circle-o"></i>&nbsp;<i>{uitem.old_val.toString().substring(0,30)} ...</i> &nbsp;
-                                                <i className="fa fa-circle"></i>&nbsp;<i>{uitem.new_val.toString().substring(0,30)} ...</i>
+                                                <i className="fa fa-circle-o"></i>&nbsp;<i>{uitem.old_val?uitem.old_val.toString().substring(0,30):""} ...</i> &nbsp;
+                                                <i className="fa fa-circle"></i>&nbsp;<i>{uitem.new_val?uitem.new_val.toString().substring(0,30):""} ...</i>
                                               </small>
                                             </p>
                                           </div>);

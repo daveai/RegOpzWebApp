@@ -13,6 +13,7 @@ import RegOpzDataGridBody from './VarianceAnalysisGridBody';
 import '../RegOpzDataGrid/RegOpzDataGrid.css';
 import './VarianceAnalysis.css';
 import _ from 'lodash';
+import Breadcrumbs from 'react-breadcrumbs';
 
 
 
@@ -94,29 +95,40 @@ class VarianceAnalysisGrid extends Component{
 
     return(
       <div className="reg_gridHolder">
-        <div className="row">
-          <div className="col col-lg-12 reg_sheet_buttons_holder">
-            <div className="btn-group">
-              {
-                  this.props.variance_report.map((item,index) => {
-                    return(
-                      <button
-                        key={index}
-                        target={index}
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={(event) => {
-                          this.selectedSheet = event.target.getAttribute("target");
+        <div>
+          <Breadcrumbs
+            routes={this.props.routes}
+            params={this.props.params}
+            wrapperClass="breadcrumb"
+          />
+          <div className="row">
+            <div className="row reg_ops_button_holder">
+              <div className="row">
+                <div className="col col-lg-12 mb-10 reg_sheet_buttons_holder">
+                  <div className="btn-group">
+                    {
+                        this.props.variance_report.map((item,index) => {
+                          return(
+                            <button
+                              key={index}
+                              target={index}
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={(event) => {
+                                this.selectedSheet = event.target.getAttribute("target");
 
-                          this.forceUpdate();
-                        }}
-                      >
-                        {item['sheet']}
-                      </button>
-                    );
-                  })
-              }
+                                this.forceUpdate();
+                              }}
+                            >
+                              {item['sheet']}
+                            </button>
+                          );
+                        })
+                    }
 
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

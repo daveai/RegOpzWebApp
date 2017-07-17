@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import TreeView from 'react-treeview';
 import moment from 'moment';
 import axios from 'axios';
 import Collapsible from '../CollapsibleModified/Collapsible';
@@ -61,7 +60,7 @@ class ReportTreeInfoComponent extends Component {
           {this.state.sources.map((item,index) => {
             return (
               <tr>
-                <td><Link to={`/dashboard/view-report/data-grid?report_id=${item.report_id}&reporting_date=${item.reporting_date}`} params={{ name: item.report_id }}> {item.report_id} </Link></td>
+                <td><Link to={`/dashboard/data-grid?report_id=${item.report_id}&reporting_date=${item.reporting_date}`} params={{ name: item.report_id }}> {item.report_id} </Link></td>
                 <td>{item.report_create_date}</td>
                 <td>{item.report_create_status}</td>
                 <td>{item.report_created_by}</td>

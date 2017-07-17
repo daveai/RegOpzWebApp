@@ -149,7 +149,7 @@ class RegOpzDataGrid extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col col-lg-12 reg_sheet_buttons_holder">
+                <div className="row reg_sheet_buttons_holder">
                   <div className="btn-group">
                     {
                       this.props.captured_report.map((item,index) => {

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
-import TreeView from 'react-treeview';
 import _ from 'lodash';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import ReportTreeInfoComponent from './ReportTreeInfoComponent';
@@ -21,10 +20,7 @@ import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import { BASE_URL } from '../../Constant/constant';
-import axios from 'axios';
 require('react-datepicker/dist/react-datepicker.css');
-require('../../../node_modules/react-treeview/react-treeview.css');
 require('../ViewData/ViewDataComponentStyle.css');
 
 class ViewReportComponent extends Component {

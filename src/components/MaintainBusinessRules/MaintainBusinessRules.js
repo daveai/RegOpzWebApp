@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import ReactDOM from 'react-dom';
+import moment from 'moment';
 import DataGrid from 'react-datagrid';
 import {
   Link,
@@ -18,7 +19,7 @@ import RightSlidePanel from '../RightSlidePanel/RightSlidePanel';
 import ModalAlert from '../ModalAlert/ModalAlert';
 import AuditModal from '../AuditModal/AuditModal';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import { Button, Modal, Media } from 'react-bootstrap';
+import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import Breadcrumbs from 'react-breadcrumbs';
 import _ from 'lodash';
@@ -120,7 +121,7 @@ class MaintainBusinessRules extends Component {
                           this.selectedRows = this.flatGrid.deSelectAll();
                           this.selectedRowItem = null;
                           this.selectedRow = null;
-                          this.currentPage = 0;
+                          //this.currentPage = 0;
                           this.props.fetchBusinesRules(this.currentPage);
                           $("button[title='Delete']").prop('disabled',false);
                           $("button[title='Update']").prop('disabled',false);
@@ -334,6 +335,11 @@ class MaintainBusinessRules extends Component {
                   if(this.operationName == "DELETE"){
                     this.setState({showAuditModal:true});
                   }
+
+                  if(this.operationName=="INSERT"){
+                    console.log("this.operationName........Inside if condition........",this.operationName);
+                    this.setState({showAuditModal:true});
+                  }
                 }
               }
               onClickDiscard={
@@ -359,7 +365,7 @@ class MaintainBusinessRules extends Component {
               </Modal.Header>
 
               <Modal.Body>
-                {this.renderModalBody(this.modalType,this.linkageData)}
+                {this.renderModalBody(this.modalType,this.linkageData,this.selectedRulesAsString)}
               </Modal.Body>
 
               <Modal.Footer>
@@ -380,16 +386,16 @@ class MaintainBusinessRules extends Component {
         )
       }
     }
-    renderModalBody(modalType,modalData){
+    renderModalBody(modalType,modalData,selectedRulesAsString){
       console.log("Modal type",modalType,modalData);
       if(modalType == "Report Linkage"){
-        return this.renderReportLinkage(modalData);
+        return this.renderReportLinkage(modalData,selectedRulesAsString);
       }
       if(modalType == "Rule Audit"){
         return this.renderChangeHistory(modalData);
       }
     }
-    renderReportLinkage(linkageData){
+    renderReportLinkage(linkageData,selectedRulesAsString){
       console.log("Modal linkage data",linkageData);
       if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
         return(
@@ -399,20 +405,62 @@ class MaintainBusinessRules extends Component {
         )
       else {
         return(
-          <ul>
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Report</th>
+                <th>Sheet</th>
+                <th>Cell</th>
+                <th>InUse</th>
+                <th>Rules</th>
+              </tr>
+            </thead>
+            <tbody>
             {
-              linkageData.map(function(item,index) {
+              linkageData.map(function(item,index){
+                let cell_business_rules = item.cell_business_rules.toString().split(",");
+                const selectedRules = selectedRulesAsString.toString().split(",");
                 return(
-                  <li key={index}>
-                    <a href="">
-                      {item.report_id + ", " + item.sheet_id + ", " + item.cell_id + ", " + item.cell_business_rules}
-                    </a>
-                  </li>
+                  <tr>
+                     <th scope="row">{index + 1}</th>
+                     <td>{item.report_id}</td>
+                     <td>{item.sheet_id}</td>
+                     <td>{item.cell_id}</td>
+                     <td>
+                       {
+                         ((in_use)=>{
+                           if(in_use=='Y'){
+                             return(
+                               <Label bsStyle="success">{in_use}</Label>
+                             );
+                           }else{
+                             return(<Label bsStyle="warning">{in_use}</Label>);
+                           }
+                         })(item.in_use)
+                       }
+                     </td>
+                     <td><p>{
+                             ((rules,selectedRules)=>{
+                               let rule_list =[];
+                               rules.map(function(rule,index){
+                                 if(selectedRules.indexOf(rule) == -1){
+                                   rule_list.push(rule);
+                                   rule_list.push(" ");
+                                 }else{
+                                   rule_list.push(<Label bsStyle="primary">{rule}</Label>);
+                                   rule_list.push(" ");
+                                 }
+                               })
+                               return rule_list;
+                           })(cell_business_rules,selectedRules)
+                         }</p></td>
+                  </tr>
                 )
               })
-            }
-
-          </ul>
+          }
+          </tbody>
+        </table>
         )
       }
     }
@@ -420,7 +468,7 @@ class MaintainBusinessRules extends Component {
       if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
         return(
           <div>
-            <h4>No linked report found!</h4>
+            <h4>No audit change report found!</h4>
           </div>
         )
       else {
@@ -436,18 +484,39 @@ class MaintainBusinessRules extends Component {
                         <h2 className="title"></h2>
                           <Media>
                             <Media.Left>
-                              <h3>24</h3><h6>Jun</h6>
+                              <h3>{moment(item.date_of_change?item.date_of_change:"20170624T203000").format('DD')}</h3>
+                              <h6>{moment(item.date_of_change?item.date_of_change:"20170624").format('MMM')},
+                              <small>{moment(item.date_of_change?item.date_of_change:"20170624").format('YYYY')}</small></h6>
                             </Media.Left>
                             <Media.Body>
                               <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
-                              <h6>{item.change_type} by {item.maker}</h6>
+                              <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
                               <p>{item.maker_comment}</p>
                                 <Media>
                                   <Media.Left>
-                                    {item.status}
+                                    {
+                                      ((status)=>{
+                                        if(status=="PENDING"){
+                                          return(<Label bsStyle="primary">{status}</Label>)
+                                        } else if (status=="REJECTED"){
+                                          return(<Label bsStyle="warning">{status}</Label>)
+                                        } else if(status=="APPROVED"){
+                                          return(<Label bsStyle="success">{status}</Label>)
+                                        } else {
+                                          return(<Label>{status}</Label>)
+                                        }
+                                      }
+                                    )(item.status)}
                                   </Media.Left>
                                   <Media.Body>
                                     <Media.Heading>Verification details</Media.Heading>
+                                      {
+                                        ((status)=>{
+                                          if(status!="PENDING"){
+                                            return(<h6>by {item.checker} on <small>{item.date_of_change}</small></h6>)
+                                          }
+                                        }
+                                      )(item.status)}
                                     <p>{item.checker_comment}</p>
                                   </Media.Body>
                                 </Media>
@@ -505,11 +574,12 @@ class MaintainBusinessRules extends Component {
       //this.props.insertBusinessRule(this.newItem, this.selectedRow);
       hashHistory.push(`/dashboard/maintain-business-rules/add-business-rule?request=add`);
     }
-
-    handleDuplicateClick(event) {
-      if (this.selectedRows.length == 0) {
+    handleDuplicateClick(event){
+      if(this.selectedRows.length == 0){
+        this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select at least one row");
       } else if (this.selectedRows.length > 1) {
+        this.modalInstance.isDiscardToBeShown = false;
         this.modalInstance.open("Please select only one row");
       } else if($("button[title='Duplicate']").prop('disabled')){
         // do nothing;
@@ -520,7 +590,8 @@ class MaintainBusinessRules extends Component {
         // };
         this.operationName="INSERT";
         this.updateInfo=this.selectedRows[0];
-        this.setState({showAuditModal:true});
+        this.modalInstance.isDiscardToBeShown = true;
+        this.modalInstance.open(`Are you sure to duplicate this row (business rule: ${this.selectedRowItem['business_rule']}) ?`);
         // this.props.insertBusinessRule(data, this.selectedRow);
       }
     }
@@ -636,7 +707,7 @@ class MaintainBusinessRules extends Component {
 
       }
       else{
-        if(this.selectedRows.length ==1 && this.selectedRows[0]['approval_status'] != 'A'){
+        if(this.selectedRows.length ==1 && this.selectedRows[0]['dml_allowed'] != 'N'){
           $("button[title='Delete']").prop('disabled',true);
           $("button[title='Update']").prop('disabled',true);
           $("button[title='Duplicate']").prop('disabled',true);

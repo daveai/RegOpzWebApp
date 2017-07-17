@@ -247,9 +247,9 @@ class AddSources extends Component {
       table_name:"data_source_information",
       update_info:this.state.form
     };
-    data.update_info.source_id=32767;
     console.log('inside submit',this.state.form);
     if(this.state.requestType == "add"){
+      data.update_info.source_id=32767;
       this.props.insertSourceData(data);
     }
     else{
