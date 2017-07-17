@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import Collapsible from '../CollapsibleModified/Collapsible';
@@ -13,16 +13,29 @@ class ManageRolesComponent extends Component {
   constructor(props) {
     super(props);
     this.dataSource = null;
+    this.addRoles = this.addRoles.bind(this);
   }
 
   componentWillMount() {
     this.props.fetchPermission();
   }
 
+  addRoles(e) {
+      const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles');
+      hashHistory.push(encodedUrl);
+  }
+
   render() {
     return(
       <div className="panel panel-default">
+        <div className="panel-body">
           { this.renderPermissions() }
+        </div>
+        <div className="panel-footer">
+          <button type="button" className="btn btn-success" onClick={ this.addRoles }>
+            Add New Role
+          </button>
+        </div>
       </div>
     );
   }
@@ -41,7 +54,7 @@ class ManageRolesComponent extends Component {
     }
 
     return(
-      <div className="panel-body">
+      <div className="container-fluid">
       {
         this.dataSource.map((item, index) => {
           console.log(index, item);

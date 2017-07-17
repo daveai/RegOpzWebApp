@@ -23,7 +23,7 @@ export function actionFetchRoles() {
 
 // TODO: Fetch single Role Details
 export function actionFetchOneRole(role) {
-    var url = BASE_URL + `roles?role=${role}`;
+    var url = BASE_URL + `roles/${role}`;
     console.log("Fetching roles from API for role", role);
     const request = axios.get(url);
     console.log("Fetch roles request response:", request);
@@ -65,6 +65,18 @@ export function actionUpdateRoles(data) {
     console.log("Update roles request response:", request);
     return {
       type: UPDATE_ROLE_ACTION,
+      payload: request
+    };
+}
+
+// TODO: Delete role data
+export function actionDeleteRoles(role) {
+    var url = BASE_URL + `roles/${role}`;
+    console.log("Deleting roles to API.", role);
+    const request = axios.delete(url);
+    console.log("Delete roles request response:", request);
+    return {
+      type: DELETE_ROLE_ACTION,
       payload: request
     };
 }
