@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
 import _ from 'lodash';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
@@ -14,16 +14,16 @@ import {
   actionUpdateSourceData,
   actionDeleteFromSourceData,
   actionFetchDatesForReport
-} from '../../actions/ViewDataAction'
+} from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import Breadcrumbs from 'react-breadcrumbs';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import 'react-datepicker/dist/react-datepicker.css';
-require('./ViewDataComponentStyle.css')
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import {BASE_URL} from '../../Constant/constant';
-import axios from 'axios';
+require('react-datepicker/dist/react-datepicker.css');
+require('./ViewDataComponentStyle.css');
+
 class ViewDataComponentV2 extends Component {
   constructor(props){
     super(props)
@@ -34,44 +34,51 @@ class ViewDataComponentV2 extends Component {
     }
     this.dataSource = null;
   }
+
   componentWillMount(){
-    if(this.props.apiFor == 'report')
-      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101",'report_catalog');
-    else
-      this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
+    this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   render(){
     return(
-      <div className="container view_data_container">
-        <div className="col col-lg-6">
-          <div className="row">
-            <div className="input-group">
-              <DatePicker
-                  selected={this.state.startDate}
-                  onChange={this.handleStartDateChange.bind(this)}
-                  placeholderText="Select start date"
-                  className="view_data_date_picker_input form-control"
-              />
+      <div>
+        <Breadcrumbs
+          routes={this.props.routes}
+          params={this.props.params}
+          wrapperClass="breadcrumb"
+        />
+        <div className="container view_data_container">
+          <div className="col col-lg-6">
+            <div className="row">
+              <div className="input-group">
+                <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleStartDateChange.bind(this)}
+                    placeholderText="Select start date"
+                    className="view_data_date_picker_input form-control"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col col-lg-6">
-          <div className="row">
-            <div className="input-group">
-              <DatePicker
-                  selected={this.state.endDate}
-                  onChange={this.handleEndDateChange.bind(this)}
-                  placeholderText="Select end date"
-                  className="view_data_date_picker_input form-control"
-              />
+          <div className="col col-lg-6">
+            <div className="row">
+              <div className="input-group">
+                <DatePicker
+                    selected={this.state.endDate}
+                    onChange={this.handleEndDateChange.bind(this)}
+                    placeholderText="Select end date"
+                    className="view_data_date_picker_input form-control"
+                />
+              </div>
             </div>
           </div>
+          <div className="clear"></div>
+          {this.renderAccordions()}
         </div>
-        <div className="clear"></div>
-        {this.renderAccordions()}
       </div>
     )
   }
+
   handleStartDateChange(date){
     this.setState({startDate:date});
     if(this.props.apiFor == 'report')
@@ -79,6 +86,7 @@ class ViewDataComponentV2 extends Component {
     else
       this.props.fetchDates(date ? moment(date).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   handleEndDateChange(date){
     this.setState({endDate:date});
     if(this.props.apiFor == 'report')
@@ -86,6 +94,7 @@ class ViewDataComponentV2 extends Component {
     else
       this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",date ? moment(date).format('YYYYMMDD') : "30200101", 'data_catalog');
   }
+
   renderAccordions(){
     this.dataSource = this.props.data_date_heads;
 
@@ -117,7 +126,6 @@ class ViewDataComponentV2 extends Component {
                                     month={item}
                                     date={date_item}
                                     key={date_index}
-                                    apiFor={this.props.apiFor}
                                   />
                                 )
                               })
@@ -136,6 +144,7 @@ class ViewDataComponentV2 extends Component {
     }
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDates:(startDate,endDate, table_name)=>{
@@ -164,6 +173,7 @@ const mapDispatchToProps = (dispatch) => {
     },
   }
 }
+
 function mapStateToProps(state){
   console.log("On mapState ", state.view_data_store);
   return {
@@ -172,8 +182,10 @@ function mapStateToProps(state){
     report_linkage:state.view_data_store.report_linkage
   }
 }
+
 const VisibleViewDataComponentV2 = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ViewDataComponentV2);
+
 export default VisibleViewDataComponentV2;

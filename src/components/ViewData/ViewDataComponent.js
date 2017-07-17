@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
+import Breadcrumbs from 'react-breadcrumbs';
 import _ from 'lodash';
 import {
   actionFetchDates,
@@ -14,19 +15,18 @@ import {
   actionInsertSourceData,
   actionUpdateSourceData,
   actionDeleteFromSourceData
-} from '../../actions/ViewDataAction'
+} from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
-import 'react-datepicker/dist/react-datepicker.css';
-require('./ViewDataComponentStyle.css')
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
-import {BASE_URL} from '../../Constant/constant';
-import axios from 'axios';
+require('react-datepicker/dist/react-datepicker.css');
+require('./ViewDataComponentStyle.css');
+
 class ViewDataComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       drawerHandleStyle:{
@@ -39,8 +39,8 @@ class ViewDataComponent extends Component {
       menuPanelHolderStyle:{
         width:"320px"
       },
-      startDate:null,
-      endDate:null
+      startDate: null,
+      endDate: null
     }
 
     this.isMenuPanelOpen = 0;
@@ -67,11 +67,13 @@ class ViewDataComponent extends Component {
     this.table = this.props.location.query['table'];
     this.filter = this.props.location.query['filter'];
   }
-  componentWillMount(){
+
+  componentWillMount() {
     //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
     this.fetchDataToGrid();
   }
-  componentDidMount(){
+
+  componentDidMount() {
     console.log('inside component did mount',this.props.report)
     if(this.props.report.length != 0){
       if(this.props.report[0].cols.length != 0){
@@ -82,19 +84,20 @@ class ViewDataComponent extends Component {
       this.pages = 0;
     }
   }
-  fetchDataToGrid(){
+
+  fetchDataToGrid() {
     //this.props.fetchDates(this.state.startDate ? moment(this.state.startDate).format('YYYYMMDD') : "19000101",this.state.endDate ? moment(this.state.endDate).format('YYYYMMDD') : "30200101");
-    if(this.origin == 'drilldown'){
+    if (this.origin == 'drilldown') {
       let drill_info = {
               params:{
                 drill_kwargs: {
-                  report_id:this.report_id,
-                  sheet_id:this.sheet_id,
-                  cell_id:this.cell_id,
-                  reporting_date:this.reporting_date,
-                  source_id:this.source_id,
-                  cell_calc_ref:this.cell_calc_ref,
-                  page:this.currentPage
+                  report_id: this.report_id,
+                  sheet_id: this.sheet_id,
+                  cell_id: this.cell_id,
+                  reporting_date: this.reporting_date,
+                  source_id: this.source_id,
+                  cell_calc_ref: this.cell_calc_ref,
+                  page: this.currentPage
                 }
               }
             }
@@ -102,34 +105,32 @@ class ViewDataComponent extends Component {
       console.log('this.props.report.length',this.props.report.length);
       console.log('this.pages',this.pages);
       this.export_csv_business_ref = `${this.reporting_date}.${this.report_id}.${this.sheet_id}.${this.cell_id}.${this.cell_calc_ref}`
-      if(this.table){
+      if (this.table) {
         console.log('Inside table of fetch data to grid')
         this.props.fetchTableData(this.table,this.filter,this.currentPage);
         this.export_csv_business_ref = `${this.export_csv_business_ref}.rules`
         console.log('Inside table of fetch data to grid props',this.props.report)
-      }
-      else if (this.rules){
+      } else if (this.rules) {
         this.props.fetchDrillDownRulesReport(this.rules,this.source_id,this.currentPage);
         this.export_csv_business_ref = `${this.export_csv_business_ref}.rules`
-      }
-      else{
+      } else {
         this.props.fetchDrillDownReport(drill_info);
       }
-    }
-    else {
+    } else {
       this.props.fetchReportFromDate(this.currentSourceId,this.currentBusinessDate,this.currentPage);
       this.export_csv_business_ref = `${this.currentBusinessDate}`
     }
   }
-  renderBreadCrump(){
-    if(this.origin == 'drilldown'){
-      if(this.cell_calc_ref){
+
+  renderBreadCrumb() {
+    if (this.origin == 'drilldown'){
+      if (this.cell_calc_ref){
         this.lastRef = this.cell_calc_ref
       }
-      if(this.rules){
+      if (this.rules){
         this.lastRef = `${this.cell_calc_ref} Rules`
       }
-      if(this.table == 'report_comp_agg_def'){
+      if (this.table == 'report_comp_agg_def'){
         this.lastRef = `${this.cell_id} Comp Ref`
       }
       if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
@@ -150,8 +151,7 @@ class ViewDataComponent extends Component {
           <li><a href={window.location.href}>{`${this.lastRef}`}</a></li>
         </ol>
       )
-    }
-    else{
+    } else{
       return(
         <ol className="breadcrumb">
           <li><a href="#/dashboard/view-data">View Data</a></li>
@@ -159,19 +159,23 @@ class ViewDataComponent extends Component {
         </ol>
       )
     }
-
   }
-  renderGridAtRightPane(){
+
+  renderGridAtRightPane() {
     console.log(this.props.report.length, this.pages)
-    if(this.props.report.length != 0 && this.pages != -1){
-      if(this.props.report[0].cols.length != 0){
+    if (this.props.report.length != 0 && this.pages != -1) {
+      if (this.props.report[0].cols.length != 0) {
         this.pages = Math.ceil(this.props.report[0].count / 100);
         this.sourceTableName = this.props.report[0].table_name;
         this.sourceTableCols = this.props.report[0].cols;
         this.sql = this.props.report[0].sql;
         return(
           <div>
-            {this.renderBreadCrump()}
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <div className="ops_icons">
                 <div className="btn-group">
                     <button
@@ -186,7 +190,6 @@ class ViewDataComponent extends Component {
                           this.fetchDataToGrid();
                         }
                       }
-
                     >
                       <i className="fa fa-refresh"></i>
                     </button>
@@ -440,7 +443,10 @@ class ViewDataComponent extends Component {
                dataSource={this.props.report[0].rows}
                onSelectRow={
                  (indexOfGrid) => {
-                   this.selectedIndexOfGrid = indexOfGrid;
+                   if(this.selectedItems.length == 1){
+                     this.selectedIndexOfGrid = indexOfGrid;
+                     console.log("Inside Single select ", indexOfGrid);
+                   }
                    console.log("Single select ", indexOfGrid);
                  }
                }
@@ -460,7 +466,13 @@ class ViewDataComponent extends Component {
                onFullSelect = {
                  (items) => {
                    console.log("Selected Items ", items);
-                   this.selectedItems = items;
+                   if(this.selectedItems.length==0 || (this.selectedItems[0].id != items[0].id)) {
+                     console.log("Inside Selected Items ", items);
+                     this.selectedItems = items;
+                   } else {
+                     this.selectedItems = this.flatGrid.deSelectAll();
+                   }
+
                  }
                }
                ref={
@@ -478,12 +490,14 @@ class ViewDataComponent extends Component {
       )
     }
   }
+
   isInt(value) {
     return !isNaN(value) &&
            parseInt(Number(value)) == value &&
            !isNaN(parseInt(value, 10));
   }
-  render(){
+
+  render() {
     console.log("report linkage",this.props.report_linkage);
     this.dataSource = this.props.data_date_heads;
     console.log('in render ',this.pages);
@@ -511,7 +525,8 @@ class ViewDataComponent extends Component {
       </div>
     )
   }
-  renderReportLinkageModal(){
+
+  renderReportLinkageModal() {
     console.log("report linkage on modal",this.props.report_linkage);
     let recordId =  ((this.selectedItems.length >0) ? this.selectedItems[this.selectedItems.length -1]['id'] : "" )
     if(typeof(this.props.report_linkage) != 'undefined'){
@@ -551,6 +566,7 @@ class ViewDataComponent extends Component {
 
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDates:(startDate,endDate)=>{
@@ -588,6 +604,7 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
+
 function mapStateToProps(state){
   console.log("On mapState ", state.view_data_store);
   console.log("On mapState report ", state.report_store);
@@ -597,8 +614,10 @@ function mapStateToProps(state){
     report_linkage:state.view_data_store.report_linkage
   }
 }
+
 const VisibleViewDataComponent = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ViewDataComponent);
+
 export default VisibleViewDataComponent;

@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
+import Breadcrumbs from 'react-breadcrumbs';
 import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import _ from 'lodash';
 import {
   actionFetchReportTemplate
 } from '../../actions/MaintainReportRuleAction';
-import './MaintainReportRules.css';
 import Collapsible from '../CollapsibleModified/Collapsible';
+require('./MaintainReportRules.css');
+
 class MaintainReportRules extends Component {
   constructor(props){
     super(props);
@@ -126,6 +128,11 @@ class MaintainReportRules extends Component {
       console.log('before coolapsible countrylist',this.props.report_template_list);
       return (
           <div className="reg_maintain_report_rules_container container">
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
             <div className="row">
               <div className="col col-lg-6">
                 <ReactTags

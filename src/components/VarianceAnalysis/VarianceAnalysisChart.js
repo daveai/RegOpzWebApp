@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {dispatch} from 'redux';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
+import Breadcrumbs from 'react-breadcrumbs';
 
 class VarianceAnalysisChart extends Component{
   constructor(props){
@@ -16,16 +17,25 @@ class VarianceAnalysisChart extends Component{
     console.log(this.props.chart_data);
 
     return(
-      <BarChart width={600} height={300} data={this.props.chart_data}
-      margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-           <XAxis dataKey="date"/>
-           <YAxis/>
-           <CartesianGrid strokeDasharray="3 3"/>
-           <Tooltip/>
-           <Legend />
-           <Bar dataKey="value" fill="#8884d8" />
+      <div className="row form-container">
+        <div>
+          <Breadcrumbs
+            routes={this.props.routes}
+            params={this.props.params}
+            wrapperClass="breadcrumb"
+          />
+          <BarChart width={600} height={300} data={this.props.chart_data}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+               <XAxis dataKey="date"/>
+               <YAxis/>
+               <CartesianGrid strokeDasharray="3 3"/>
+               <Tooltip/>
+               <Legend />
+               <Bar dataKey="value" fill="#8884d8" />
 
-      </BarChart>
+          </BarChart>
+        </div>
+      </div>
     );
   }
 }

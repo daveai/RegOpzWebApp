@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 export default class RightSlidePanel extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,7 @@ export default class RightSlidePanel extends Component {
             isClosed: true
         }
     }
+
     render() {
         return (
             <div className="RightSlidePanel" ref="rightSlidePanel" style={this.state.style}>
@@ -58,6 +60,7 @@ export default class RightSlidePanel extends Component {
             </div>
         )
     }
+
     toggleMe() {
         if (this.state.isClosed == true) {
             this.setState({
@@ -74,6 +77,5 @@ export default class RightSlidePanel extends Component {
                 isClosed: true
             })
         }
-
     }
 }

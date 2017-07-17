@@ -1,18 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import RegOpzFlatGridHeader from './RegOpzFlatGridHeader';
 import RegOpzFlatGridRow from './RegOpzFlatGridRow';
 import _ from 'lodash';
 require('./RegOpzFlatGridStyle.css');
+
 export default class RegOpzFlatGrid extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.cols = props.columns;
         this.data = props.dataSource;
         this.filterConditions = null;
         this.flatGridRows = null;
     }
-    componentWillReceiveProps(nextProps){
+
+    componentWillReceiveProps(nextProps) {
         this.cols = nextProps.columns;
         this.data = nextProps.dataSource;
         if(this.filterConditions){
@@ -21,16 +23,19 @@ export default class RegOpzFlatGrid extends Component {
             this.data = nextProps.dataSource;
         }
     }
-    setDataSource(data){
+
+    setDataSource(data) {
         this.data = data;
         this.forceUpdate();
     }
-    filterData(conditions){
+
+    filterData(conditions) {
         this.filterConditions = conditions;
         this.data = _.where( this.props.dataSource,this.filterConditions);
         this.forceUpdate();
     }
-    render(){
+
+    render() {
         return(
             <div className="flat_grid_container">
                 <RegOpzFlatGridHeader columns={this.cols} onSort={this.props.onSort} onFilter={this.props.onFilter} />
@@ -48,7 +53,8 @@ export default class RegOpzFlatGrid extends Component {
             </div>
         )
     }
-    deSelectAll(){
+
+    deSelectAll() {
       this.flatGridRows.deSelectAll();
       return [];
     }

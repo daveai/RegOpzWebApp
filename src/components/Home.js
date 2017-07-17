@@ -61,3 +61,30 @@ class HomeIndex extends Component {
 }
 
 export default HomeIndex;
+
+/*
+<Route path="/dashboard" name="Dashboard" component={Dashboard} >
+                    <IndexRoute component={DashboardIndex} />
+                    <Route path="capture-report-template" name="Capture Report Template" component={CaptureReportTemplate} />
+                    <Route path="maintain-business-rules" name="Maintain Business Rules" component={MaintainBusinessRules} />
+                    <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
+                    <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
+                    <Route path="view-data" name="View Data">
+                      <IndexRoute component={ViewDataComponentV2} />
+                      <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
+                    </Route>
+                    <Route path="view-report" name="View Report">
+                      <IndexRoute component={ViewReport} />
+                      <Route path="data-grid" component={RegOpzDataGrid} />
+                    </Route>
+                    <Route path="create-report" name="Create Report" component={CreateReport} />
+                    <Route path="drill-down" name="DrillDown" component={DrillDown} />
+                    <Route path="maintain-report-rules" name="Maintain Report Rules" component={MaintainReportRules} />
+                    <Route path="maintain-report-rules/add-report-rules" name="Add Report Rules" component={AddReportRules} />
+                    <Route path="maintain-sources" name="Maintain Sources" component={MaintainSources} />
+                    <Route path="maintain-sources/add-sources" name="Add Sources" component={AddSources} />
+                    <Route path="variance-analysis" name="Variance Analysis" component={VarianceAnalysisForm} />
+                    <Route path="variance-analysis/variance-data-grid" name="Variance Analysis Grid" component={VarianceAnalysisGrid} />
+                    <Route path="variance-analysis/variance-chart" name="Variance Analysis Chart" component={VarianceAnalysisChart}/>
+                </Route>
+*/

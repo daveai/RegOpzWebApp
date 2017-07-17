@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import DatePicker from 'react-datepicker';
 import {
@@ -18,7 +18,7 @@ import {
 import './AddReportRules.css';
 
 class AddReportRules extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
         rulesTags: [],
@@ -59,7 +59,8 @@ class AddReportRules extends Component {
 
     this.searchAnywhere = this.searchAnywhere.bind(this);
   }
-  componentWillMount(){
+  
+  componentWillMount() {
     this.props.fetchSources();
     if(typeof this.state.ruleIndex != 'undefined') {
       Object.assign(this.state.form , this.props.drill_down_result.cell_rules[this.state.ruleIndex]);
@@ -81,6 +82,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
+  
   handleValidTillDateChange(date){
     let form = this.state.form;
     form.valid_to = date;
@@ -88,6 +90,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
+  
   handleDelete(i) {
       let rulesTags = this.state.rulesTags;
       rulesTags.splice(i, 1);
@@ -110,7 +113,7 @@ class AddReportRules extends Component {
 
     }
 
-    handleDrag(tag, currPos, newPos) {
+  handleDrag(tag, currPos, newPos) {
         let rulesTags = this.state.rulesTags;
 
         // mutate array
@@ -436,7 +439,8 @@ class AddReportRules extends Component {
                         className="view_data_date_picker_input form-control"
                     />
                   </div>
-                </div>
+                </div>                
+
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
                   <div className="col-md-6 col-sm-6 col-xs-12">
@@ -487,10 +491,12 @@ class AddReportRules extends Component {
       )
     }
   }
+
   handleCancel(event){
     console.log('inside cancel');
     hashHistory.push(`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`)
   }
+  
   handleSubmit(event){
     console.log('inside submit',this.state.form);
     event.preventDefault();
