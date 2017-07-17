@@ -140,7 +140,11 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleInsertClick.bind(this)
                       }
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-plus"></i>
                     </button>
@@ -153,7 +157,11 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleDuplicateClick.bind(this)
                       }
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-copy"></i>
                     </button>
@@ -179,7 +187,11 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleDeleteClick.bind(this)
                       }
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-remove"></i>
                     </button>
@@ -260,7 +272,11 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Report Link"
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-link"></i>
                     </button>
@@ -281,7 +297,11 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Export CSV"
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                       onClick={
                         (event) => {
                             axios.get(`${BASE_URL}business-rule/export_to_csv`)
@@ -303,7 +323,11 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Deselect All"
+<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
                       className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
+=======
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+>>>>>>> Minor fix for styling of business rules button holder
                       onClick={
                         (event) => {
                           this.selectedRows = this.flatGrid.deSelectAll();
