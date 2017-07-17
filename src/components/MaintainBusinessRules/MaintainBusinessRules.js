@@ -115,7 +115,7 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Refresh"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                           this.selectedRows = this.flatGrid.deSelectAll();
@@ -140,9 +140,9 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleInsertClick.bind(this)
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                     >
-                      <i className="fa fa-newspaper-o"></i>
+                      <i className="fa fa-plus"></i>
                     </button>
                 </div>
                 <div className="btn-group">
@@ -153,7 +153,7 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleDuplicateClick.bind(this)
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-copy"></i>
                     </button>
@@ -166,7 +166,7 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleUpdateClick.bind(this)
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-pencil"></i>
                     </button>
@@ -179,7 +179,7 @@ class MaintainBusinessRules extends Component {
                       onClick={
                         this.handleDeleteClick.bind(this)
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-remove"></i>
                     </button>
@@ -190,7 +190,7 @@ class MaintainBusinessRules extends Component {
                       this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                       this.forceUpdate();
                     }}
-                      className="btn btn-circle btn-primary business_rules_ops_buttons">
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-fast-backward"></i>
                     </button>
                 </div>
@@ -203,7 +203,7 @@ class MaintainBusinessRules extends Component {
                       }
 
                     }}
-                     className="btn btn-circle btn-primary business_rules_ops_buttons">
+                     className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-chevron-left"></i>
                     </button>
                 </div>
@@ -241,7 +241,7 @@ class MaintainBusinessRules extends Component {
                         this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                         this.forceUpdate();
                       }
-                    }} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-chevron-right"></i>
                     </button>
                 </div>
@@ -250,7 +250,7 @@ class MaintainBusinessRules extends Component {
                       this.currentPage = this.pages - 1;
                       this.props.fetchBusinesRules(this.currentPage, this.orderBy);
                       this.forceUpdate();
-                    }} className="btn btn-circle btn-primary business_rules_ops_buttons">
+                    }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-fast-forward"></i>
                     </button>
                 </div>
@@ -260,7 +260,7 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Report Link"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-link"></i>
                     </button>
@@ -271,7 +271,7 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="History"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-history"></i>
                     </button>
@@ -281,7 +281,7 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Export CSV"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                             axios.get(`${BASE_URL}business-rule/export_to_csv`)
@@ -303,7 +303,7 @@ class MaintainBusinessRules extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Deselect All"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                           this.selectedRows = this.flatGrid.deSelectAll();

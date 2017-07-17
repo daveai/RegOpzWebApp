@@ -165,13 +165,38 @@ class DrillDownComponent extends Component {
                   return(
                   <td>
                     <button type="button"
-                            className="btn btn-round btn-warning"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="History"
+                            className="btn btn-primary btn-xs"
+                            onClick={()=>{console.log("History call")}}
+                    >
+                      <i className="fa fa-history"></i>
+                    </button>
+                    <button type="button"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Delete"
+                            className="btn btn-warning btn-xs"
                             onClick={()=>{this.handleDelete(item,index)}}
-                    >Delete</button>
+                    >
+                      <i className="fa fa-remove"></i>
+                    </button>
                   </td>
                   );
                 }else{
-                  return(<td><Label>Change Not Allowed</Label></td>);
+                  return(<td>
+                            <button type="button"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="History"
+                                  className="btn btn-primary btn-xs"
+                                  onClick={()=>{console.log("History call")}}
+                            >
+                              <i className="fa fa-history"></i>
+                            </button>
+                          </td>
+                      );
                 }
               })(item.dml_allowed)
             }
@@ -235,7 +260,8 @@ class DrillDownComponent extends Component {
       if(item.dml_allowed!='N'){
           return(
             <div className="alert alert-success reg_cell_formula">
-              <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>&nbsp;
+              <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+              <span>   </span>
               {
                 ((in_use)=>{
                   if(in_use=='Y'){
@@ -247,12 +273,23 @@ class DrillDownComponent extends Component {
                   }
                 })(item.in_use)
               }
+              <span>   </span>
+              <button type="button"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="History"
+                    className="btn btn-primary btn-xs"
+                    onClick={()=>{console.log("History call")}}
+              >
+                <i className="fa fa-history"></i>
+              </button>
             </div>
           );
       }else {
         return(
           <div className="alert alert-success reg_cell_formula">
-            <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=view&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>&nbsp;
+            <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=view&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+            <span>   </span>
               {
                 ((in_use)=>{
                   if(in_use=='Y'){
@@ -264,6 +301,16 @@ class DrillDownComponent extends Component {
                   }
                 })(item.in_use)
               }
+              <span>   </span>
+              <button type="button"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="History"
+                    className="btn btn-primary btn-xs"
+                    onClick={()=>{console.log("History call")}}
+              >
+                <i className="fa fa-history"></i>
+              </button>
           </div>
         );
 

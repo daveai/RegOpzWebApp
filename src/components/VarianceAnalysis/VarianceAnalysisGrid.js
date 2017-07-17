@@ -69,6 +69,7 @@ class VarianceAnalysisGrid extends Component{
     }
 
     this.data=this.props.variance_report[this.selectedSheet].matrix;
+    this.selectedSheetName = this.props.variance_report[this.selectedSheet]['sheet'];
     this.numberofRows = this.data.length;
     let row_attr = this.props.variance_report[this.selectedSheet].row_attr;
     let col_attr = this.props.variance_report[this.selectedSheet].col_attr;
@@ -106,6 +107,7 @@ class VarianceAnalysisGrid extends Component{
               <div className="row">
                 <div className="col col-lg-12 mb-10 reg_sheet_buttons_holder">
                   <div className="btn-group">
+                    <button className="btn btn-success btn-sm">Showing <i className="fa fa-cube"></i> {this.selectedSheetName}</button>
                     {
                         this.props.variance_report.map((item,index) => {
                           return(
@@ -113,7 +115,7 @@ class VarianceAnalysisGrid extends Component{
                               key={index}
                               target={index}
                               type="button"
-                              className="btn btn-primary"
+                              className="btn btn-warning btn-xs"
                               onClick={(event) => {
                                 this.selectedSheet = event.target.getAttribute("target");
 

@@ -46,6 +46,7 @@ class RegOpzDataGrid extends Component {
   render(){
     if (this.props.captured_report.length > 0) {
       this.data = this.props.captured_report[this.selectedSheet].matrix;
+      this.selectedSheetName = this.props.captured_report[this.selectedSheet]['sheet'];
       let row_attr = this.props.captured_report[this.selectedSheet].row_attr;
       let col_attr = this.props.captured_report[this.selectedSheet].col_attr;
       console.log('no of rows...', row_attr, row_attr.length);
@@ -88,7 +89,7 @@ class RegOpzDataGrid extends Component {
                             hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
                           }
                         }
-                        className="btn btn-circle btn-primary business_rules_ops_buttons"
+                        className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                       >
                         <i className="fa fa-cog"></i>
                       </button>
@@ -98,7 +99,7 @@ class RegOpzDataGrid extends Component {
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Export xlsx"
-                        className="btn btn-circle btn-primary business_rules_ops_buttons"
+                        className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                         onClick={
                           (event) => {
                               const url = BASE_URL + `document/get-report-export-to-excel?`
@@ -125,7 +126,7 @@ class RegOpzDataGrid extends Component {
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Export Report Rules"
-                        className="btn btn-circle btn-primary business_rules_ops_buttons"
+                        className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
                         onClick={
                           (event) => {
                               const url = BASE_URL + `document/get-report-rule-export-to-excel?`
@@ -145,12 +146,38 @@ class RegOpzDataGrid extends Component {
                         <i className="fa fa-puzzle-piece"></i>
                       </button>
                     </div>
+                    <div className="btn-group">
+                      <button
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Report Rules History"
+                        className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                        onClick={
+                          (event) => {
+                              const url = BASE_URL + `document/get-report-rule-export-to-excel?`
+                                        + `report_id=${this.report_id}`;
+                              axios.get(url)
+                              .then(function(response){
+                                console.log("export xlsx",response);
+                                window.location.href = BASE_URL + "../../static/" + response.data.file_name;
+
+                              })
+                              .catch(function (error) {
+                                console.log(error);
+                              });
+                          }
+                        }
+                      >
+                        <i className="fa fa-history"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="row">
                 <div className="row reg_sheet_buttons_holder">
                   <div className="btn-group">
+                    <button className="btn btn-success btn-sm">Showing <i className="fa fa-cube"></i> {this.selectedSheetName}</button>
                     {
                       this.props.captured_report.map((item,index) => {
                         return(
@@ -158,7 +185,7 @@ class RegOpzDataGrid extends Component {
                             key={index}
                             target={index}
                             type="button"
-                            className="btn btn-primary"
+                            className="btn btn-warning btn-xs"
                             onClick={(event) => {
                               this.selectedSheet = event.target.getAttribute("target");
                               this.forceUpdate();

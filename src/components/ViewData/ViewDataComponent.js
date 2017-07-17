@@ -182,7 +182,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Refresh"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                           this.selectedItems = this.flatGrid.deSelectAll();
@@ -216,9 +216,9 @@ class ViewDataComponent extends Component {
                           this.forceUpdate();
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                     >
-                      <i className="fa fa-newspaper-o"></i>
+                      <i className="fa fa-plus"></i>
                     </button>
                 </div>
                 <div className="btn-group">
@@ -243,9 +243,22 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-copy"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Update"
+                      onClick={
+                        () => {console.log("Update call");}                        
+                      }
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                    >
+                      <i className="fa fa-pencil"></i>
                     </button>
                 </div>
                 <div className="btn-group">
@@ -264,7 +277,7 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-remove"></i>
                     </button>
@@ -280,7 +293,7 @@ class ViewDataComponent extends Component {
                             this.fetchDataToGrid();
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons">
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-fast-backward"></i>
                     </button>
                 </div>
@@ -297,7 +310,7 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-                     className="btn btn-circle btn-primary business_rules_ops_buttons"
+                     className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                      >
                       <i className="fa fa-chevron-left"></i>
                     </button>
@@ -342,7 +355,7 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-chevron-right"></i>
                     </button>
@@ -358,7 +371,7 @@ class ViewDataComponent extends Component {
                           this.fetchDataToGrid();
                         }
                       }
-                      className="btn btn-circle btn-primary business_rules_ops_buttons">
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
                       <i className="fa fa-fast-forward"></i>
                     </button>
                 </div>
@@ -379,7 +392,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Report Link"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-link"></i>
                     </button>
@@ -394,7 +407,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="History"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                     >
                       <i className="fa fa-history"></i>
                     </button>
@@ -404,7 +417,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Export CSV"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                             axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_ref=${this.export_csv_business_ref}&sql=${this.sql}`)
@@ -426,7 +439,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Deselect All"
-                      className="btn btn-circle btn-primary business_rules_ops_buttons"
+                      className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
                       onClick={
                         (event) => {
                           this.selectedItems = this.flatGrid.deSelectAll();
