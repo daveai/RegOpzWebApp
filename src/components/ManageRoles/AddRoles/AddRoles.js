@@ -6,7 +6,8 @@ import { bindActionCreators, dispatch } from 'redux';
 import {
     actionFetchOneRole,
     actionFetchComponents,
-    actionFetchPermissions
+    actionFetchPermissions,
+    actionUpdateRoles
 } from '../../../actions/RolesAction';
 import InfoModal from '../../InfoModal/InfoModal';
 import ModalAlert from '../../ModalAlert/ModalAlert';
@@ -17,7 +18,7 @@ class AddRolesComponent extends Component {
         super(props);
         this.state = {
             role: this.props.location.query['role'],
-            permissions: null,
+            permissions: {},
             selectedComponent: null
         };
         this.componentList = null;
@@ -107,6 +108,11 @@ class AddRolesComponent extends Component {
                         </form>
                         <div className="clearfix"></div>
                     </div>
+                    <InfoModal
+                    showDiscard={true}
+                    title={this.state.role}
+                    body={this.props.message}
+                    onClickDiscard={(e) => { this.handleCancel(e) }}/>
                 </div>
             </div>
         );
@@ -151,7 +157,6 @@ class AddRolesComponent extends Component {
                 </li>
                 {
                     this.permissionList.map((item, index) => {
-                        //console.log("inside permissionList", this.state.permissions[this.state.selectedComponent]);
                         return(
                             <li
                             className="list-group-item component-list-item"
@@ -196,23 +201,7 @@ class AddRolesComponent extends Component {
     }
 
     onComponentSelect(e) {
-        /*let component = e.target.name;
-        let permissions = this.state.permissions;
-        let permissionList = this.permissionList;
-        let isDefaultChecked = {};
-        if (permissionList != null) {
-            permissionList.forEach((perm) => {
-                if (permissions != null && component != null) {
-                    let item = permissions[component];
-                    if (typeof item != 'undefined') {
-                        isDefaultChecked[perm] = item[perm];
-                    }
-                }
-            })
-        }*/
-        this.setState({
-            selectedComponent: e.target.name
-        });
+        this.setState({ selectedComponent: e.target.name });
     }
 
     onPermissionSelect(e) {
@@ -235,6 +224,23 @@ class AddRolesComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        const role = this.state.role;
+        const form = JSON.parse(JSON.stringify(this.state.permissions));
+        var permissions = [];
+        if (!(Object.keys(form).length === 0 && form. constructor === Object)) {
+            for (var component in form) {
+                for (var permission in form[component]) {
+                    if (form[component][permission] === true) {
+                        var object = {
+                            'component': component,
+                            'permission': permission
+                        };
+                        permissions.push(object);
+                    }
+                }
+            }
+            this.props.submitForm({ role: role, permissions: permissions });
+        }
     }
 }
 
@@ -242,7 +248,8 @@ function mapStateToProps(state) {
     return {
         form: state.role_management.form,
         components: state.role_management.components,
-        permissions: state.role_management.permissions
+        permissions: state.role_management.permissions,
+        message: state.role_management.message
     };
 }
 
@@ -256,6 +263,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchPermissions: () => {
         dispatch(actionFetchPermissions());
+    },
+    submitForm: (data) => {
+        dispatch(actionUpdateRoles(data));
     }
   };
 };

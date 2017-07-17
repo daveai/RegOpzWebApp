@@ -56,3 +56,15 @@ export function actionFetchPermissions() {
         payload: request
     };
 }
+
+// TODO: Send role data to API
+export function actionUpdateRoles(data) {
+    var url = BASE_URL + "roles";
+    console.log("Sending roles to API.", data);
+    const request = axios.post(url, data);
+    console.log("Update roles request response:", request);
+    return {
+      type: UPDATE_ROLE_ACTION,
+      payload: request
+    };
+}
