@@ -19,7 +19,7 @@ export default function(state = {}, action) {
       return { ...state, components: action.payload.data };
     case FETCH_PERMISSION_ACTION:
       return { ...state, permissions: action.payload.data };
-    case UPDATE_ROLE_ACTION:
+    case UPDATE_ROLE_ACTION: case DELETE_ROLE_ACTION:
       return { ...state, message: action.payload.data };
     default:
       return state;

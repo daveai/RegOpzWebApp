@@ -7,7 +7,8 @@ import {
     actionFetchOneRole,
     actionFetchComponents,
     actionFetchPermissions,
-    actionUpdateRoles
+    actionUpdateRoles,
+    actionDeleteRoles
 } from '../../../actions/RolesAction';
 import InfoModal from '../../InfoModal/InfoModal';
 import ModalAlert from '../../ModalAlert/ModalAlert';
@@ -23,12 +24,19 @@ class AddRolesComponent extends Component {
         };
         this.componentList = null;
         this.permissionList = null;
+        this.infoModal = null;
+        this.modalAlert = null;
+        this.buttonClicked = null;
         this.isDefaultChecked = this.isDefaultChecked.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.onComponentSelect = this.onComponentSelect.bind(this);
         this.onPermissionSelect = this.onPermissionSelect.bind(this);
+        this.goPreviousPage = this.goPreviousPage.bind(this);
+        this.onClickOkay = this.onClickOkay.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.formSubmit = this.formSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -102,17 +110,30 @@ class AddRolesComponent extends Component {
                                 onClick={this.handleCancel}>
                                   Cancel
                                 </button>
-                                <button type="submit" className="btn btn-success">Submit</button>
+                                <button type="submit"
+                                className="btn btn-success"
+                                disabled={ !this.state.role }>
+                                  Submit
+                                </button>
+                                <button type="button"
+                                className="btn btn-danger"
+                                disabled={ !this.state.role }
+                                onClick={this.handleDelete}>
+                                  Delete
+                                </button>
                               </div>
                             </div>
                         </form>
                         <div className="clearfix"></div>
                     </div>
                     <InfoModal
-                    showDiscard={true}
-                    title={this.state.role}
-                    body={this.props.message}
-                    onClickDiscard={(e) => { this.handleCancel(e) }}/>
+                    title={ this.state.role }
+                    ref={ (infoModal) => { this.infoModal = infoModal }}
+                    onClickOkay={ this.goPreviousPage }/>
+                    <ModalAlert
+                    showDiscard={ true }
+                    ref={ (modalAlert) => { this.modalAlert = modalAlert }}
+                    onClickOkay= { this.onClickOkay }/>
                 </div>
             </div>
         );
@@ -169,7 +190,7 @@ class AddRolesComponent extends Component {
                                     name={ item.permission }
                                     value=""
                                     onChange={ this.onPermissionSelect }
-                                    defaultChecked={ false }/>
+                                    checked={ this.isDefaultChecked(item) }/>
                                   </span>
                                   <input type="text" className="form-control" value={ item.permission } readOnly/>
                                 </div>
@@ -217,13 +238,43 @@ class AddRolesComponent extends Component {
         this.setState(newState);
     }
 
-    handleCancel(e) {
+    goPreviousPage() {
         const encodedUrl = encodeURI('/dashboard/manage-roles');
         hashHistory.push(encodedUrl);
     }
 
+    onClickOkay(e) {
+        if (this.buttonClicked == 'Cancel') {
+            this.goPreviousPage();
+        } else if (this.buttonClicked == 'Delete') {
+            this.props.deleteRow(this.state.role);
+            console.log(this.props.message);
+            this.infoModal.open(this.props.message);
+        } else if (this.buttonClicked == 'Submit') {
+            this.formSubmit();
+            console.log("Here");
+            this.infoModal.open(this.props.message);
+        }
+    }
+
+    handleCancel(e) {
+        this.buttonClicked = "Cancel";
+        this.modalAlert.open("Are you sure to cancel all the changes?");
+    }
+
+    handleDelete(e) {
+        this.buttonClicked = "Delete";
+        this.modalAlert.open("Are you sure to delete this role?");
+    }
+
     handleSubmit(e) {
         e.preventDefault();
+        this.buttonClicked = "Submit";
+        this.modalAlert.open("Are you sure to submit this role?");
+    }
+
+    formSubmit() {
+        console.log("Not even here");
         const role = this.state.role;
         const form = JSON.parse(JSON.stringify(this.state.permissions));
         var permissions = [];
@@ -263,6 +314,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchPermissions: () => {
         dispatch(actionFetchPermissions());
+    },
+    deleteRow: (role) => {
+        dispatch(actionDeleteRoles(role));
     },
     submitForm: (data) => {
         dispatch(actionUpdateRoles(data));
