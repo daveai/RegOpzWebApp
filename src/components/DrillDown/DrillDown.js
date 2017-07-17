@@ -12,6 +12,7 @@ import {
   Link,
   hashHistory
 } from 'react-router';
+import { Label } from 'react-bootstrap';
 import './DrillDownStyle.css'
 class DrillDownComponent extends Component {
   constructor(props){
@@ -68,6 +69,7 @@ class DrillDownComponent extends Component {
                       <th>Aggregation Ref</th>
                       <th>Aggregation Function</th>
                       <th>Cell Business Rules</th>
+                      <th>InUse</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -112,6 +114,7 @@ class DrillDownComponent extends Component {
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
         </tr>
       )
     }
@@ -136,12 +139,25 @@ class DrillDownComponent extends Component {
             <Link to={`dashboard/maintain-report-rules/add-report-rules?request=${requestType}&index=${index}`}>{item.cell_calc_ref}</Link>
           </td>
           <td>{item.source_id}</td>
-          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
+          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref.toString().replace(/,/g,", ")}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
             <span style={{maxWidth: "300px", display: "block"}}>
-            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
+            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules.toString().replace(/,/g," ")}</a>
             </span>
+          </td>
+          <td>
+            {
+              ((in_use)=>{
+                if(in_use=='Y'){
+                  return(
+                    <Label bsStyle="success">{in_use}</Label>
+                  );
+                }else{
+                  return(<Label bsStyle="warning">{in_use}</Label>);
+                }
+              })(item.in_use)
+            }
           </td>
             {
               ((dml_allowed)=>{
@@ -155,7 +171,7 @@ class DrillDownComponent extends Component {
                   </td>
                   );
                 }else{
-                  <td>---</td>
+                  return(<td><Label>Change Not Allowed</Label></td>);
                 }
               })(item.dml_allowed)
             }
@@ -167,14 +183,27 @@ class DrillDownComponent extends Component {
         <tr>
           <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_calc_ref}</a></td>
           <td>{item.source_id}</td>
-          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref}</span></td>
+          <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref.toString().replace(/,/g,", ")}</span></td>
           <td>{item.aggregation_func}</td>
           <td>
             <span style={{maxWidth: "300px", display: "block"}}>
-            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules}</a>
+            <a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&rules=${item.cell_business_rules}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_business_rules.toString().replace(/,/g," ")}</a>
             </span>
           </td>
-          <td></td>
+          <td>
+            {
+              ((in_use)=>{
+                if(in_use=='Y'){
+                  return(
+                    <Label bsStyle="success">{in_use}</Label>
+                  );
+                }else{
+                  return(<Label bsStyle="warning">{in_use}</Label>);
+                }
+              })(item.in_use)
+            }
+          </td>
+          <td><Label>Not Allowed</Label></td>
         </tr>
       )
     }
@@ -206,13 +235,35 @@ class DrillDownComponent extends Component {
       if(item.dml_allowed!='N'){
           return(
             <div className="alert alert-success reg_cell_formula">
-              <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+              <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=update&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>&nbsp;
+              {
+                ((in_use)=>{
+                  if(in_use=='Y'){
+                    return(
+                      <Label bsStyle="success">In Use</Label>
+                    );
+                  }else{
+                    return(<Label bsStyle="warning">Not In Use</Label>);
+                  }
+                })(item.in_use)
+              }
             </div>
           );
       }else {
         return(
           <div className="alert alert-success reg_cell_formula">
-            <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=view&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>
+            <Link to={encodeURI(`/dashboard/maintain-report-rules/add-report-agg-rules?request=view&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}`)}>{item.comp_agg_ref}</Link>&nbsp;
+              {
+                ((in_use)=>{
+                  if(in_use=='Y'){
+                    return(
+                      <Label bsStyle="success">In Use</Label>
+                    );
+                  }else{
+                    return(<Label bsStyle="warning">Not In Use</Label>);
+                  }
+                })(item.in_use)
+              }
           </div>
         );
 

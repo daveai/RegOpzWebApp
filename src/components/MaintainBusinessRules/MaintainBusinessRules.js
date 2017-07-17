@@ -412,6 +412,7 @@ class MaintainBusinessRules extends Component {
                 <th>Report</th>
                 <th>Sheet</th>
                 <th>Cell</th>
+                <th>InUse</th>
                 <th>Rules</th>
               </tr>
             </thead>
@@ -426,6 +427,19 @@ class MaintainBusinessRules extends Component {
                      <td>{item.report_id}</td>
                      <td>{item.sheet_id}</td>
                      <td>{item.cell_id}</td>
+                     <td>
+                       {
+                         ((in_use)=>{
+                           if(in_use=='Y'){
+                             return(
+                               <Label bsStyle="success">{in_use}</Label>
+                             );
+                           }else{
+                             return(<Label bsStyle="warning">{in_use}</Label>);
+                           }
+                         })(item.in_use)
+                       }
+                     </td>
                      <td><p>{
                              ((rules,selectedRules)=>{
                                let rule_list =[];
