@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
+import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import {
   actionFetchRoles
@@ -13,6 +14,7 @@ class ManageRolesComponent extends Component {
   constructor(props) {
     super(props);
     this.dataSource = null;
+    this.state={checked:"checked"};
     this.addRoles = this.addRoles.bind(this);
   }
 
@@ -21,22 +23,19 @@ class ManageRolesComponent extends Component {
   }
 
   addRoles(e) {
-      const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles');
+    console.log("addroles roleId",e);
+      if(e){
+        const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles?role=roleId');
+      } else {
+        const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles');
+      }
+
       hashHistory.push(encodedUrl);
   }
 
   render() {
     return(
-      <div className="panel panel-default">
-        <div className="panel-body">
-          { this.renderPermissions() }
-        </div>
-        <div className="panel-footer">
-          <button type="button" className="btn btn-success" onClick={ this.addRoles }>
-            Add New Role
-          </button>
-        </div>
-      </div>
+          this.renderPermissions()
     );
   }
 
@@ -54,32 +53,71 @@ class ManageRolesComponent extends Component {
     }
 
     return(
-      <div className="container-fluid">
-      {
-        this.dataSource.map((item, index) => {
-          console.log(index, item);
-          return(
-            <div className="row data-holder" key={ index }>
-              <div className="col-md-3">
-                <Link to={`/dashboard/manage-roles/add-roles?role=${ item.role }`}>
-                  <h2>{ item.role }</h2>
-                </Link>
-              </div>
-              <div className="col-md-9 no-padding">
-                {
-                  item.permissions.map((perm, index) => {
-                    return(
-                      <Collapsible trigger={ perm.component } key={ index }>
-                        <span className="label label-success">{ perm.permission }</span>
-                      </Collapsible>
-                    );
-                  })
-                }
-              </div>
-            </div>
-            );
-          })
-        }
+        <div className="row">
+        {((dataSource)=>{
+          let role_list = [];
+          dataSource.map((item, index) => {
+                console.log(index, item);
+                role_list.push(
+                  <div key={index} className="col-md-4 col-sm-4 col-xs-12">
+                    <div className="x_panel_overflow x_panel tile fixed_height_320">
+                      <div className="x_title">
+                          <h2>{ item.role }
+                            <small>Role Details</small>
+                          </h2>
+                        <ul className="nav navbar-right panel_toolbox">
+                          <li>
+                            <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`}>
+                              <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
+                            </Link>
+                          </li>
+                        </ul>
+                        <div className="clearfix"></div>
+                      </div>
+                      <div className="x_content">
+                        <div className="dashboard-widget-content">
+                          <ul className="to_do">
+                            {
+                              item.components.map((comp, index) => {
+                                console.log("comp",comp);
+                                return(
+                                  <li key={index}>
+                                    <h4><i className="fa fa-support"></i>&nbsp;<Label bsStyle="primary">{comp.component}</Label></h4>
+                                      {
+                                        comp.permissions.map((perm, index) => {
+                                          let defaultChecked = null;
+                                          let permDisabled = null;
+                                          if (perm.permission_id){
+                                            defaultChecked = "checked";
+                                            permDisabled ="checked"
+                                          }
+                                          return(
+                                              <div>
+                                                <input key={index}
+                                                  type="checkbox"
+                                                  defaultChecked={defaultChecked}
+                                                  checked={permDisabled?this.state.checked:permDisabled}
+                                                  disabled={this.state.checked}
+                                                >
+                                                  &nbsp;{ perm.permission }&nbsp;
+                                                </input>
+                                              </div>
+                                          );
+                                        })
+                                      }
+                                  </li>
+                                );
+                              })
+                            }
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  );
+                })
+          return(role_list);
+        })(this.dataSource)}
       </div>
     );
   }

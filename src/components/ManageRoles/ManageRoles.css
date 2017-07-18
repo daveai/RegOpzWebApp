@@ -11,3 +11,7 @@
 .no-padding {
   padding: 0px;
 }
+
+.x_panel_overflow {
+  overflow: auto;
+}
