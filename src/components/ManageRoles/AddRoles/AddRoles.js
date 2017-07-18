@@ -23,12 +23,14 @@ class AddRolesComponent extends Component {
             selectedComponent: null
         };
         this.dataSource = null;
+        this.formData = [];
         this.componentList = null;
         this.permissionList = null;
         this.infoModal = null;
         this.modalAlert = null;
         this.buttonClicked = null;
         this.isDefaultChecked = this.isDefaultChecked.bind(this);
+        this.savePrevious = this.savePrevious.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.onComponentSelect = this.onComponentSelect.bind(this);
         this.onPermissionSelect = this.onPermissionSelect.bind(this);
@@ -46,6 +48,10 @@ class AddRolesComponent extends Component {
         }
         this.props.fetchComponents();
         this.props.fetchPermissions();
+    }
+
+    componentDidMount() {
+      document.title = "RegOpz Dashboard | Add Role";
     }
 
     render() {
@@ -205,11 +211,37 @@ class AddRolesComponent extends Component {
         return false;
     }
 
+    savePrevious() {
+        if (this.state.selectedComponent != null && this.state.permissions != null) {
+            let selectedComponent = this.state.selectedComponent;
+            let permissions = this.state.permissions;
+            let pushObj = {
+                'component': selectedComponent,
+                'permissions': permissions
+            };
+            if (this.dataSource == null) {
+                this.dataSource = { 'components': [ pushObj ]};
+            } else {
+                let selectedPermissionsIndex = this.dataSource.components.findIndex(
+                    (item) => {
+                        return item.component == selectedComponent;
+                    }
+                );
+                if (selectedPermissionsIndex == -1) {
+                    this.dataSource.components.push(pushObj);
+                } else {
+                    this.dataSource.components[selectedPermissionsIndex].permissions = permissions;
+                }
+            }
+        }
+    }
+
     onTextChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
     onComponentSelect(e) {
+        this.savePrevious();
         let selectedComponent = e.target.name;
         let permissions = null;
         if (this.dataSource != null) {
@@ -224,36 +256,48 @@ class AddRolesComponent extends Component {
     }
 
     onPermissionSelect(e) {
-        let newState = this.state;
-        let selectedComponent = newState.selectedComponent;
-        let component = newState.permissions[selectedComponent];
-        if (typeof component != 'undefined' && component != null) {
-            component[e.target.name] = !component[e.target.name];
-        } else {
-            newState.permissions[selectedComponent] = {};
-            newState.permissions[selectedComponent][e.target.name] = true;
+        let targetName = e.target.name;
+        let permissionObj = {
+            'permission': targetName,
+            'permission_id': 1
         }
-        this.setState(newState);
+        console.log("Clicked:", targetName, "on component", this.state.selectedComponent);
+        if (this.state.permissions == null) {
+            this.setState({ permissions: [ permissionObj ] });
+        } else {
+            let permissions = this.state.permissions;
+            let permissionIndex = permissions.findIndex(
+                (item) => {
+                    return item.permission == targetName;
+                }
+            );
+            if (permissionIndex == -1) {
+                permissions.push(permissionObj);
+            } else {
+                permissions[permissionIndex].permission_id = permissions[permissionIndex].permission_id ? null : 1;
+            }
+            this.setState({ permissions: permissions });
+        }
     }
 
     goPreviousPage() {
-        this.setState({ permissions: null, selectedComponent: null });
         const encodedUrl = encodeURI('/dashboard/manage-roles');
         hashHistory.push(encodedUrl);
     }
 
     onClickOkay(e) {
-        if (this.buttonClicked == 'Cancel') {
+        /*if (this.buttonClicked == 'Cancel') {
             this.goPreviousPage();
-        } else if (this.buttonClicked == 'Delete') {
+        } else */if (this.buttonClicked == 'Delete') {
             this.props.deleteRow(this.state.role);
             console.log(this.props.message);
-            this.infoModal.open(this.props.message);
+            // this.infoModal.open(this.props.message);
         } else if (this.buttonClicked == 'Submit') {
             this.formSubmit();
-            console.log("Here");
-            this.infoModal.open(this.props.message);
+            console.log(this.props.message);
+            // this.infoModal.open(this.props.message);
         }
+        this.goPreviousPage();
     }
 
     handleCancel(e) {
@@ -273,23 +317,11 @@ class AddRolesComponent extends Component {
     }
 
     formSubmit() {
-        console.log("Not even here");
-        const role = this.state.role;
-        const form = JSON.parse(JSON.stringify(this.state.permissions));
-        var permissions = [];
-        if (!(Object.keys(form).length === 0 && form. constructor === Object)) {
-            for (var component in form) {
-                for (var permission in form[component]) {
-                    if (form[component][permission] === true) {
-                        var object = {
-                            'component': component,
-                            'permission': permission
-                        };
-                        permissions.push(object);
-                    }
-                }
-            }
-            this.props.submitForm({ role: role, permissions: permissions });
+        if (this.dataSource != null) {
+            console.log("Submiting form data:", this.dataSource);
+            this.props.submitForm(this.dataSource)
+        } else {
+            console.log("Nothing to commit, no data found!");
         }
     }
 }
