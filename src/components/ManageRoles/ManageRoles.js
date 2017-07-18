@@ -14,23 +14,13 @@ class ManageRolesComponent extends Component {
   constructor(props) {
     super(props);
     this.dataSource = null;
-    this.state={checked:"checked"};
-    this.addRoles = this.addRoles.bind(this);
+    this.state = {
+        checked:"checked"
+    };
   }
 
   componentWillMount() {
     this.props.fetchPermission();
-  }
-
-  addRoles(e) {
-    console.log("addroles roleId",e);
-      if(e){
-        const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles?role=roleId');
-      } else {
-        const encodedUrl = encodeURI('/dashboard/manage-roles/add-roles');
-      }
-
-      hashHistory.push(encodedUrl);
   }
 
   render() {
@@ -54,70 +44,81 @@ class ManageRolesComponent extends Component {
 
     return(
         <div className="row">
-        {((dataSource)=>{
-          let role_list = [];
-          dataSource.map((item, index) => {
-                console.log(index, item);
-                role_list.push(
-                  <div key={index} className="col-md-4 col-sm-4 col-xs-12">
-                    <div className="x_panel_overflow x_panel tile fixed_height_320">
-                      <div className="x_title">
-                          <h2>{ item.role }
-                            <small>Role Details</small>
-                          </h2>
-                        <ul className="nav navbar-right panel_toolbox">
-                          <li>
-                            <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`}>
-                              <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
-                            </Link>
-                          </li>
-                        </ul>
-                        <div className="clearfix"></div>
+        {
+            ((dataSource) => {
+              let role_list = [
+                  <div className="col-md-4 col-sm-4 col-xs-12">
+                    <Link to="/dashboard/manage-roles/add-roles" className="x_panel tile fixed_height_320 x_panel_blank overflow_hidden">
+                      <div className="x_content x_content_plush">
+                        <h2>Add New Role</h2>
+                        <i className="fa fa-plus" rel="tooltip" title="Add New Role"></i>
                       </div>
-                      <div className="x_content">
-                        <div className="dashboard-widget-content">
-                          <ul className="to_do">
-                            {
-                              item.components.map((comp, index) => {
-                                console.log("comp",comp);
-                                return(
-                                  <li key={index}>
-                                    <h4><i className="fa fa-support"></i>&nbsp;<Label bsStyle="primary">{comp.component}</Label></h4>
-                                      {
-                                        comp.permissions.map((perm, index) => {
-                                          let defaultChecked = null;
-                                          let permDisabled = null;
-                                          if (perm.permission_id){
-                                            defaultChecked = "checked";
-                                            permDisabled ="checked"
+                    </Link>
+                  </div>
+              ];
+              dataSource.map((item, index) => {
+                    console.log(index, item);
+                    role_list.push(
+                      <div key={index} className="col-md-4 col-sm-4 col-xs-12">
+                        <div className="x_panel_overflow x_panel tile fixed_height_320">
+                          <div className="x_title">
+                              <h2>{ item.role }
+                                <small>Role Details</small>
+                              </h2>
+                            <ul className="nav navbar-right panel_toolbox">
+                              <li>
+                                <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`}>
+                                  <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
+                                </Link>
+                              </li>
+                            </ul>
+                            <div className="clearfix"></div>
+                          </div>
+                          <div className="x_content">
+                            <div className="dashboard-widget-content">
+                              <ul className="to_do">
+                                {
+                                  item.components.map((comp, index) => {
+                                    console.log("component", comp);
+                                    return(
+                                      <li key={index}>
+                                        <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
+                                          {
+                                            comp.permissions.map((perm, index) => {
+                                              let defaultChecked = null;
+                                              let permDisabled = null;
+                                              if (perm.permission_id) {
+                                                defaultChecked = "checked";
+                                                permDisabled ="checked"
+                                              }
+                                              return(
+                                                  <div>
+                                                    <input
+                                                      key={index}
+                                                      type="checkbox"
+                                                      defaultChecked={defaultChecked}
+                                                      disabled={this.state.checked}/>
+                                                  <span className="perm_label">
+                                                    { perm.permission }
+                                                  </span>
+                                                </div>
+                                              );
+                                            })
                                           }
-                                          return(
-                                              <div>
-                                                <input key={index}
-                                                  type="checkbox"
-                                                  defaultChecked={defaultChecked}
-                                                  checked={permDisabled?this.state.checked:permDisabled}
-                                                  disabled={this.state.checked}
-                                                >
-                                                  &nbsp;{ perm.permission }&nbsp;
-                                                </input>
-                                              </div>
-                                          );
-                                        })
-                                      }
-                                  </li>
-                                );
-                              })
-                            }
-                          </ul>
+                                      </li>
+                                    );
+                                  })
+                                }
+                              </ul>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  );
-                })
-          return(role_list);
-        })(this.dataSource)}
+                      );
+                    })
+              return(role_list);
+            })(this.dataSource)
+        }
       </div>
     );
   }

@@ -8,6 +8,10 @@
   margin: 2px;
 }
 
+.perm_label {
+    padding-left: 5px !important;
+}
+
 .no-padding {
   padding: 0px;
 }

@@ -117,7 +117,7 @@ class AddRolesComponent extends Component {
                                 </button>
                                 <button type="button"
                                 className="btn btn-danger"
-                                disabled={ !this.state.role }
+                                disabled={ !this.props.location.query['role'] }
                                 onClick={this.handleDelete}>
                                   Delete
                                 </button>
