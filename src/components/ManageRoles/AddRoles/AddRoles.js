@@ -19,9 +19,10 @@ class AddRolesComponent extends Component {
         super(props);
         this.state = {
             role: this.props.location.query['role'],
-            permissions: {},
+            permissions: null,
             selectedComponent: null
         };
+        this.dataSource = null;
         this.componentList = null;
         this.permissionList = null;
         this.infoModal = null;
@@ -45,29 +46,12 @@ class AddRolesComponent extends Component {
         }
         this.props.fetchComponents();
         this.props.fetchPermissions();
-        this.propsToSource(this.props.form);
-    }
-
-    componentDidMount() {
-        this.propsToSource(this.props.form);
-    }
-
-    propsToSource(data) {
-        if (typeof data != 'undefined') {
-            var permissionList = {};
-            data.forEach((item) => {
-                let component = item.component;
-                let permission = item.permission;
-                if (typeof permissionList[component] == 'undefined') {
-                    permissionList[component] = {};
-                }
-                permissionList[component][permission] = true;
-            })
-            this.setState({ permissions: permissionList });
-        }
     }
 
     render() {
+        if (this.props.location.query['role']) {
+            this.dataSource = this.props.form
+        }
         this.componentList = this.props.components;
         this.permissionList = this.props.permissions;
         console.log("Add Roles:", this.state);
@@ -190,7 +174,7 @@ class AddRolesComponent extends Component {
                                     name={ item.permission }
                                     value=""
                                     onChange={ this.onPermissionSelect }
-                                    checked={ this.isDefaultChecked(item) }/>
+                                    checked={ this.isDefaultChecked(item.permission) }/>
                                   </span>
                                   <input type="text" className="form-control" value={ item.permission } readOnly/>
                                 </div>
@@ -207,12 +191,16 @@ class AddRolesComponent extends Component {
         }
     }
 
-    isDefaultChecked(item) {
+    isDefaultChecked(permission) {
+        console.log("Checking for:", permission);
+        console.log("Selected Component:", this.state.selectedComponent);
         if (this.state.permissions != null) {
-            var selectedComponent = this.state.permissions[this.state.selectedComponent];
-            if (selectedComponent) {
-                return selectedComponent[item.permission];
-            }
+            let selectedPermission = this.state.permissions.filter(
+                (item) => {
+                    return item.permission == permission;
+                }
+            );
+            return selectedPermission.length != 0 && selectedPermission[0].permission_id;
         }
         return false;
     }
@@ -222,7 +210,17 @@ class AddRolesComponent extends Component {
     }
 
     onComponentSelect(e) {
-        this.setState({ selectedComponent: e.target.name });
+        let selectedComponent = e.target.name;
+        let permissions = null;
+        if (this.dataSource != null) {
+            let selectedPermissions = this.dataSource.components.filter(
+                (item) => {
+                    return item.component == selectedComponent;
+                }
+            );
+            permissions = selectedPermissions.length != 0 && selectedPermissions[0].permissions;
+        }
+        this.setState({ selectedComponent: selectedComponent, permissions: permissions });
     }
 
     onPermissionSelect(e) {
@@ -239,6 +237,7 @@ class AddRolesComponent extends Component {
     }
 
     goPreviousPage() {
+        this.setState({ permissions: null, selectedComponent: null });
         const encodedUrl = encodeURI('/dashboard/manage-roles');
         hashHistory.push(encodedUrl);
     }
