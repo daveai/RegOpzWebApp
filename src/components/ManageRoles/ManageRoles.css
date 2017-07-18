@@ -2,6 +2,10 @@
  * Stylesheet for Manage Roles Component
  */
 
+ .form-container {
+   min-height: 90vh;
+ }
+ 
 .data-holder {
   border: 1px solid;
   min-height: 110px;

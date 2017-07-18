@@ -2,6 +2,10 @@
  * Stylesheet for Add Roles Component
  */
 
+  .form-container {
+    min-height: 90vh;
+  }
+  
 .component-list {
     overflow-y: visible;
 }
