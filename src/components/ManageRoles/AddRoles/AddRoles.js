@@ -63,137 +63,184 @@ class AddRolesComponent extends Component {
         console.log("Add Roles:", this.state);
 
         return(
-            <div className="row">
-                <div className="col col-lg-12">
-                    <div className="x_title">
-                        <h2>Role Management <small>Add a new role</small></h2>
-                        <div className="clearfix"></div>
-                    </div>
-                    <div className="x_content">
-                        <form className="form-horizontal form-label-left" onSubmit={ this.handleSubmit }>
-                            <div className="form-group">
-                              <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="role-title">Role <span className="required">*</span></label>
-                              <div className="col-md-6 col-sm-6 col-xs-12">
-                                <input
-                                  name="role"
-                                  placeholder="Title"
-                                  value={ this.state.role }
-                                  type="text"
-                                  id="role-title"
-                                  className="form-control col-md-7 col-xs-12"
-                                  onChange={ this.onTextChange }
-                                />
-                              </div>
+          <div className="row form-container">
+              <div className="col col-lg-12">
+                  <div className="x_title">
+                      <h2>Role Management <small>Add a new role</small></h2>
+                      <div className="clearfix"></div>
+                  </div>
+                  <div className="x_content">
+                      <form className="form-horizontal form-label-left" onSubmit={ this.handleSubmit }>
+                          <div className="form-group">
+                            <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="role-title">Role <span className="required">*</span></label>
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                              <input
+                                name="role"
+                                placeholder="Title"
+                                value={ this.state.role }
+                                type="text"
+                                id="role-title"
+                                className="form-control col-md-7 col-xs-12"
+                                onChange={ this.onTextChange }
+                              />
                             </div>
-                            <div className="form-group">
-                              <div className="col-md-6 col-sm-6 col-xs-12 component-list">
-                                  { this.renderComponents() }
-                              </div>
-                              <div className="col-md-6 col-sm-6 col-xs-12">
-                                  { this.renderPermissions() }
-                              </div>
+                          </div>
+                          <div className="form-group">
+                            <div className="col-md-6 col-sm-6 col-xs-12 component-list">
+                                { this.renderComponents() }
                             </div>
-                            <div className="form-group">
-                              <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.handleCancel}>
-                                  Cancel
-                                </button>
-                                <button type="submit"
-                                className="btn btn-success"
-                                disabled={ !this.state.role }>
-                                  Submit
-                                </button>
-                                <button type="button"
-                                className="btn btn-danger"
-                                disabled={ !this.props.location.query['role'] }
-                                onClick={this.handleDelete}>
-                                  Delete
-                                </button>
-                              </div>
+                            <div className="col-md-6 col-sm-6 col-xs-12">
+                                { this.renderPermissions() }
                             </div>
-                        </form>
-                        <div className="clearfix"></div>
-                    </div>
-                    <InfoModal
-                    title={ this.state.role }
-                    ref={ (infoModal) => { this.infoModal = infoModal }}
-                    onClickOkay={ this.goPreviousPage }/>
-                    <ModalAlert
-                    showDiscard={ true }
-                    ref={ (modalAlert) => { this.modalAlert = modalAlert }}
-                    onClickOkay= { this.onClickOkay }/>
-                </div>
-            </div>
+                          </div>
+                          <div className="form-group">
+                            <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                              <button type="button"
+                              className="btn btn-primary"
+                              onClick={this.handleCancel}>
+                                Cancel
+                              </button>
+                              <button type="submit"
+                              className="btn btn-success"
+                              disabled={ !this.state.role }>
+                                Submit
+                              </button>
+                              <button type="button"
+                              className="btn btn-danger"
+                              disabled={ !this.props.location.query['role'] }
+                              onClick={this.handleDelete}>
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                      </form>
+                      <div className="clearfix"></div>
+                  </div>
+                  <InfoModal
+                  title={ this.state.role }
+                  ref={ (infoModal) => { this.infoModal = infoModal }}
+                  onClickOkay={ this.goPreviousPage }/>
+                  <ModalAlert
+                  showDiscard={ true }
+                  ref={ (modalAlert) => { this.modalAlert = modalAlert }}
+                  onClickOkay= { this.onClickOkay }/>
+              </div>
+          </div>
         );
     }
 
     renderComponents() {
         if (this.componentList != null) {
             return(
-                <ul className="list-group">
-                {
-                    this.componentList.map((item, index) => {
-                        return(
-                            <li
-                            className="list-group-item component-list-item"
-                            key={ index }>
-                                <button type="button"
-                                name={ item.component }
-                                className="btn btn-default component-btn"
-                                onClick={ this.onComponentSelect }>
-                                    { item.component }
-                                </button>
-                            </li>
-                        );
-                    })
-                }
+            <div className="x_panel_overflow x_panel tile fixed_height_320">
+              <div className="x_title">
+                <h2>Asigning Permissions
+                  <small> for { this.state.selectedComponent? this.state.selectedComponent:"component" }</small>
+                </h2>
+                <div className="clearfix"></div>
+              </div>
+              <div className="x_content">
+                <div className="dashboard-widget-content">
+                  <ul className="to_do">
+                  {
+                      this.componentList.map((item, index) => {
+                          return(
+                              <li
+                              className="list-group-item component-list-item"
+                              key={ index }>
+                                  <button type="button"
+                                  name={ item.component }
+                                  className="btn btn-primary component-btn"
+                                  onClick={ this.onComponentSelect }>
+                                      { item.component }
+                                  </button>
+                              </li>
+                          );
+                      })
+                  }
                 </ul>
-            );
-        } else {
-            return (
-                <h2>No component available!</h2>
-            );
+              </div>
+            </div>
+          </div>
+          );
+      } else {
+          return (
+            <div className="x_panel_overflow x_panel tile fixed_height_320">
+              <div className="x_title">
+                <h2>No Component Available
+                  <small>for permissions</small>
+                </h2>
+                <div className="clearfix"></div>
+              </div>
+              <div className="x_content">
+                <div className="dashboard-widget-content">
+                  <ul className="to_do">
+                    <p>Ooops, No component available</p>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
         }
     }
 
     renderPermissions() {
         if (this.permissionList != null && this.state.selectedComponent != null) {
-            return(
-                <ul className="list-group">
-                <li
-                className="list-group-item">
-                    { this.state.selectedComponent }
-                </li>
-                {
-                    this.permissionList.map((item, index) => {
-                        return(
-                            <li
-                            className="list-group-item component-list-item"
-                            key={ index }>
-                                <div className="input-group permission-box">
-                                  <span className="input-group-addon">
-                                    <input
-                                    type="checkbox"
-                                    id={ item.permission }
-                                    name={ item.permission }
-                                    value=""
-                                    onChange={ this.onPermissionSelect }
-                                    checked={ this.isDefaultChecked(item.permission) }/>
-                                  </span>
-                                  <input type="text" className="form-control" value={ item.permission } readOnly/>
-                                </div>
-                            </li>
-                        );
-                    })
-                }
-                </ul>
-            );
-        } else {
-            return (
-                <h2>No component selected!</h2>
-            );
+          return(
+            <div className="x_panel_overflow x_panel tile fixed_height_320">
+              <div className="x_title">
+                <h2>{ this.state.selectedComponent }
+                  <small>Available permissions</small>
+                </h2>
+                <div className="clearfix"></div>
+              </div>
+              <div className="x_content">
+                <div className="dashboard-widget-content">
+                  <ul className="to_do">
+                  {
+                      this.permissionList.map((item, index) => {
+                          return(
+                              <li
+                              key={ index }>
+                              <div>
+                                <input
+                                  type="checkbox"
+                                  id={ item.permission }
+                                  name={ item.permission }
+                                  value={ item.permission }
+                                  onChange={ this.onPermissionSelect }
+                                  checked={ this.isDefaultChecked(item.permission) }/>
+                                <span className="perm_label">
+                                  { item.permission }
+                                </span>
+                              </div>
+                              </li>
+                          );
+                      })
+                  }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
+      } else {
+          return (
+            <div className="x_panel_overflow x_panel tile fixed_height_320">
+              <div className="x_title">
+                <h2>No Component Selected
+                  <small>for permissions</small>
+                </h2>
+                <div className="clearfix"></div>
+              </div>
+              <div className="x_content">
+                <div className="dashboard-widget-content">
+                  <ul className="to_do">
+                    <p>Please selec a component to asign permissions</p>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
         }
     }
 

@@ -47,7 +47,7 @@ class ManageRolesComponent extends Component {
     }
 
     return(
-        <div className="row">
+        <div className="row form-container">
         {
             ((dataSource) => {
               let role_list = [
