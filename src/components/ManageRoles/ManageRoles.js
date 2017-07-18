@@ -23,6 +23,10 @@ class ManageRolesComponent extends Component {
     this.props.fetchPermission();
   }
 
+  componentDidMount() {
+    document.title = "RegOpz Dashboard | Manage Roles";
+  }
+
   render() {
     return(
           this.renderPermissions()
