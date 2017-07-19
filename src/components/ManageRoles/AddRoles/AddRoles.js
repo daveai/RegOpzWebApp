@@ -46,7 +46,6 @@ class AddRolesComponent extends Component {
         if (this.state.role != null) {
             this.props.fetchOne(this.state.role);
         }
-        this.props.fetchComponents();
         this.props.fetchPermissions();
     }
 
@@ -58,8 +57,14 @@ class AddRolesComponent extends Component {
         if (this.props.location.query['role']) {
             this.dataSource = this.props.form
         }
-        this.componentList = this.props.components;
-        this.permissionList = this.props.permissions;
+        if(this.props.permissions != null && typeof this.props.permissions != 'undefined'){
+          this.permissionList = this.props.permissions;
+          this.componentList = this.permissionList.map(
+            (item) => {
+              return { 'component': item.component };
+          });
+        }
+        console.log(this.permissionList, this.componentList);
         console.log("Add Roles:", this.state);
 
         return(
@@ -135,7 +140,7 @@ class AddRolesComponent extends Component {
             <div className="x_panel_overflow x_panel tile fixed_height_320">
               <div className="x_title">
                 <h2>Asigning Permissions
-                  <small> for { this.state.selectedComponent? this.state.selectedComponent:"component" }</small>
+                  <small> for { this.state.selectedComponent ? this.state.selectedComponent: "component" }</small>
                 </h2>
                 <div className="clearfix"></div>
               </div>
@@ -409,9 +414,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchOne: (role) => {
         dispatch(actionFetchOneRole(role));
-    },
-    fetchComponents: () => {
-        dispatch(actionFetchComponents());
     },
     fetchPermissions: () => {
         dispatch(actionFetchPermissions());
