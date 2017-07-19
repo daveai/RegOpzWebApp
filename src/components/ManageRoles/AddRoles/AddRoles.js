@@ -198,25 +198,37 @@ class AddRolesComponent extends Component {
                 <div className="dashboard-widget-content">
                   <ul className="to_do">
                   {
-                      this.permissionList.map((item, index) => {
-                          return(
-                              <li
-                              key={ index }>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  id={ item.permission }
-                                  name={ item.permission }
-                                  value={ item.permission }
-                                  onChange={ this.onPermissionSelect }
-                                  checked={ this.isDefaultChecked(item.permission) }/>
-                                <span className="perm_label">
-                                  { item.permission }
-                                </span>
-                              </div>
-                              </li>
+                      (() => {
+                          let permissionIndex = this.permissionList.findIndex(
+                              (item) => {
+                                  return item.component == this.state.selectedComponent;
+                              }
                           );
-                      })
+                          console.log("PermissionIndex inside permission list..",permissionIndex,this.permissionList[permissionIndex]);
+                          let permission_list =[];
+                          this.permissionList[permissionIndex].permissions.map((item, index) => {
+                              //console.log("permission",item);
+                              //console.log("check for state permissions", this.state.permissions);
+                              permission_list.push(
+                                  <li
+                                  key={ index }>
+                                  <div>
+                                    <input
+                                      type="checkbox"
+                                      id={ item.permission }
+                                      name={ item.permission }
+                                      value={ item.permission }
+                                      onChange={ this.onPermissionSelect }
+                                      checked={ this.isDefaultChecked(item.permission) }/>
+                                    <span className="perm_label">
+                                      { item.permission }
+                                    </span>
+                                  </div>
+                                  </li>
+                              );
+                          })
+                          return permission_list;
+                      })(this)
                   }
                   </ul>
                 </div>
@@ -235,7 +247,7 @@ class AddRolesComponent extends Component {
               <div className="x_content">
                 <div className="dashboard-widget-content">
                   <ul className="to_do">
-                    <p>Please selec a component to asign permissions</p>
+                    <p>Please select a component to assign permissions</p>
                   </ul>
                 </div>
               </div>
@@ -245,8 +257,9 @@ class AddRolesComponent extends Component {
     }
 
     isDefaultChecked(permission) {
-        console.log("Checking for:", permission);
-        console.log("Selected Component:", this.state.selectedComponent);
+        //console.log("Checking for:", permission);
+        //console.log("Selected Component:", this.state.selectedComponent);
+        //console.log("Value of permissions", this.state.permissions);
         if (this.state.permissions != null) {
             let selectedPermission = this.state.permissions.filter(
                 (item) => {
@@ -259,6 +272,7 @@ class AddRolesComponent extends Component {
     }
 
     savePrevious() {
+        //console.log("savePrevious check for permissions at the begining",this.state.permissions);
         if (this.state.selectedComponent != null && this.state.permissions != null) {
             let selectedComponent = this.state.selectedComponent;
             let permissions = this.state.permissions;
@@ -281,6 +295,7 @@ class AddRolesComponent extends Component {
                 }
             }
         }
+        //console.log("savePrevious check for permissions at the end",this.state.permissions)
     }
 
     onTextChange(e) {
@@ -291,13 +306,17 @@ class AddRolesComponent extends Component {
         this.savePrevious();
         let selectedComponent = e.target.name;
         let permissions = null;
+        //console.log("onComponentSelect...",selectedComponent);
         if (this.dataSource != null) {
             let selectedPermissions = this.dataSource.components.filter(
                 (item) => {
                     return item.component == selectedComponent;
                 }
             );
-            permissions = selectedPermissions.length != 0 && selectedPermissions[0].permissions;
+            console.log(selectedComponent, "selectedPermissions...", selectedPermissions);
+            if (selectedPermissions.length != 0) {
+              permissions = selectedPermissions[0].permissions;
+            }
         }
         this.setState({ selectedComponent: selectedComponent, permissions: permissions });
     }
@@ -308,7 +327,7 @@ class AddRolesComponent extends Component {
             'permission': targetName,
             'permission_id': 1
         }
-        console.log("Clicked:", targetName, "on component", this.state.selectedComponent);
+        console.log("Clicked:", targetName, "on component", this.state.selectedComponent,this.state.permissions);
         if (this.state.permissions == null) {
             this.setState({ permissions: [ permissionObj ] });
         } else {
@@ -365,8 +384,12 @@ class AddRolesComponent extends Component {
 
     formSubmit() {
         if (this.dataSource != null) {
-            console.log("Submiting form data:", this.dataSource);
-            this.props.submitForm(this.dataSource)
+            if (this.state.selectedComponent != null) {
+              this.savePrevious();
+            }
+            let formData = { ...this.dataSource, role: this.state.role} ;
+            console.log("Submiting form data:", formData);
+            this.props.submitForm(formData)
         } else {
             console.log("Nothing to commit, no data found!");
         }
