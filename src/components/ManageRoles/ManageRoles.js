@@ -17,10 +17,21 @@ class ManageRolesComponent extends Component {
     this.state = {
         checked:"checked"
     };
+    this.fetchFlag=true;
   }
 
   componentWillMount() {
     this.props.fetchPermission();
+  }
+
+  componentWillUpdate() {
+    if (this.fetchFlag){
+      this.props.fetchPermission();
+    }
+  }
+  
+  componentDidUpdate(){
+    this.fetchFlag=!this.fetchFlag;
   }
 
   componentDidMount() {

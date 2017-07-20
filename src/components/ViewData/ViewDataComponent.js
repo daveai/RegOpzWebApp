@@ -216,11 +216,7 @@ class ViewDataComponent extends Component {
                           this.forceUpdate();
                         }
                       }
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-plus"></i>
                     </button>
@@ -247,11 +243,7 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-copy"></i>
                     </button>
@@ -262,7 +254,7 @@ class ViewDataComponent extends Component {
                       data-placement="top"
                       title="Update"
                       onClick={
-                        () => {console.log("Update call");}                        
+                        () => {console.log("Update call");}
                       }
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
                     >
@@ -285,11 +277,7 @@ class ViewDataComponent extends Component {
                           }
                         }
                       }
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-remove"></i>
                     </button>
@@ -404,11 +392,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Report Link"
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                     >
                       <i className="fa fa-link"></i>
                     </button>
@@ -433,11 +417,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Export CSV"
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                       onClick={
                         (event) => {
                             axios.get(`${BASE_URL}view-data/report/export-csv?table_name=${this.sourceTableName}&business_ref=${this.export_csv_business_ref}&sql=${this.sql}`)
@@ -459,11 +439,7 @@ class ViewDataComponent extends Component {
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Deselect All"
-<<<<<<< f8be891fb4c141c011942147c8dbbc6940d13f94
-                      className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
-=======
                       className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
->>>>>>> Minor fix for styling of business rules button holder
                       onClick={
                         (event) => {
                           this.selectedItems = this.flatGrid.deSelectAll();
