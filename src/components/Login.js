@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 import { bindActionCreators, dispatch } from 'redux';
 import {
   actionLoginRequest,
@@ -96,7 +97,8 @@ class LoginComponent extends Component {
         };
         this.props.loginRequest(data);
         this.setState({ username: null, password: null, isLoading: false });
-        window.location.replace('/#/dashboard');
+        const encodedUrl = encodeURI('/dashboard');
+        hashHistory.push(encodedUrl);
     }
 }
 

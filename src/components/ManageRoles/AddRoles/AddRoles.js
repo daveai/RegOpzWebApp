@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
+import { Label, Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import {
@@ -39,6 +40,7 @@ class AddRolesComponent extends Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderSubmitRole = this.renderSubmitRole.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
     }
 
@@ -64,7 +66,7 @@ class AddRolesComponent extends Component {
               return { 'component': item.component };
           });
         }
-        console.log(this.permissionList, this.componentList);
+        console.log("Permissions:", this.permissionList, "Components:", this.componentList);
         console.log("Add Roles:", this.state);
 
         return(
@@ -212,8 +214,6 @@ class AddRolesComponent extends Component {
                           console.log("PermissionIndex inside permission list..",permissionIndex,this.permissionList[permissionIndex]);
                           let permission_list =[];
                           this.permissionList[permissionIndex].permissions.map((item, index) => {
-                              //console.log("permission",item);
-                              //console.log("check for state permissions", this.state.permissions);
                               permission_list.push(
                                   <li
                                   key={ index }>
@@ -262,22 +262,20 @@ class AddRolesComponent extends Component {
     }
 
     isDefaultChecked(permission) {
-        //console.log("Checking for:", permission);
-        //console.log("Selected Component:", this.state.selectedComponent);
-        //console.log("Value of permissions", this.state.permissions);
         if (this.state.permissions != null) {
-            let selectedPermission = this.state.permissions.filter(
+            let selectedPermission = this.state.permissions.find(
                 (item) => {
                     return item.permission == permission;
                 }
             );
-            return selectedPermission.length != 0 && selectedPermission[0].permission_id;
+            if (typeof selectedPermission !== 'undefined') {
+              return !!selectedPermission.permission_id;
+            }
         }
         return false;
     }
 
     savePrevious() {
-        //console.log("savePrevious check for permissions at the begining",this.state.permissions);
         if (this.state.selectedComponent != null && this.state.permissions != null) {
             let selectedComponent = this.state.selectedComponent;
             let permissions = this.state.permissions;
@@ -300,7 +298,6 @@ class AddRolesComponent extends Component {
                 }
             }
         }
-        //console.log("savePrevious check for permissions at the end",this.state.permissions)
     }
 
     onTextChange(e) {
@@ -311,7 +308,6 @@ class AddRolesComponent extends Component {
         this.savePrevious();
         let selectedComponent = e.target.name;
         let permissions = null;
-        //console.log("onComponentSelect...",selectedComponent);
         if (this.dataSource != null) {
             let selectedPermissions = this.dataSource.components.filter(
                 (item) => {
@@ -328,11 +324,30 @@ class AddRolesComponent extends Component {
 
     onPermissionSelect(e) {
         let targetName = e.target.name;
+        let selectedComponent = this.state.selectedComponent;
+        console.log("Clicked:", targetName, "on", selectedComponent);
+        let permissionId = null;
+        if (this.permissionList != null) {
+          let listElement = this.permissionList.find(
+            (item) => {
+              return item.component == selectedComponent;
+            }
+          );
+          if (typeof listElement !== 'undefined') {
+            let selectedPermission = listElement.permissions.find(
+              (item) => {
+                return item.permission == targetName;
+            });
+            console.log(selectedPermission);
+            if (typeof selectedPermission !== 'undefined') {
+              permissionId = selectedPermission.permission_id;
+            }
+          }
+        }
         let permissionObj = {
             'permission': targetName,
-            'permission_id': 1
+            'permission_id': permissionId
         }
-        console.log("Clicked:", targetName, "on component", this.state.selectedComponent,this.state.permissions);
         if (this.state.permissions == null) {
             this.setState({ permissions: [ permissionObj ] });
         } else {
@@ -357,18 +372,18 @@ class AddRolesComponent extends Component {
     }
 
     onClickOkay(e) {
-        /*if (this.buttonClicked == 'Cancel') {
+        if (this.buttonClicked == 'Cancel') {
             this.goPreviousPage();
-        } else */if (this.buttonClicked == 'Delete') {
+        } else if (this.buttonClicked == 'Delete') {
             this.props.deleteRow(this.state.role);
-            console.log(this.props.message);
-            // this.infoModal.open(this.props.message);
         } else if (this.buttonClicked == 'Submit') {
             this.formSubmit();
-            console.log(this.props.message);
-            // this.infoModal.open(this.props.message);
         }
-        this.goPreviousPage();
+        if (typeof this.props.message !== 'undefined') {
+          console.log(this.props.message);
+          //this.infoModal.open(this.props.message.msg);
+        }
+        this.goPreviousPage(); //Unless infoModal starts working!
     }
 
     handleCancel(e) {
@@ -384,7 +399,7 @@ class AddRolesComponent extends Component {
     handleSubmit(e) {
         e.preventDefault();
         this.buttonClicked = "Submit";
-        this.modalAlert.open("Are you sure to submit this role?");
+        this.modalAlert.open(this.renderSubmitRole());
     }
 
     formSubmit() {
@@ -397,6 +412,72 @@ class AddRolesComponent extends Component {
             this.props.submitForm(formData)
         } else {
             console.log("Nothing to commit, no data found!");
+        }
+    }
+    renderSubmitRole(){
+      if (this.dataSource != null) {
+          if (this.state.selectedComponent != null) {
+            this.savePrevious();
+          }
+          let formData = { ...this.dataSource, role: this.state.role} ;
+          return(
+            <div className="row">
+              <div className="col-md-10">
+                <h4>Do you want to submit changes for this role?</h4>
+              </div>
+              <div key={formData.role} >
+                <div className="x_panel_overflow x_panel tile fixed_height_320">
+                  <div className="x_title">
+                      <h2>{ formData.role }
+                        <small>Role Details</small>
+                      </h2>
+                    <div className="clearfix"></div>
+                  </div>
+                  <div className="x_content">
+                    <div className="dashboard-widget-content">
+                      <ul className="to_do">
+                        {
+                          formData.components.map((comp, index) => {
+                            console.log("component", comp);
+                            return(
+                              <li key={index}>
+                                <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
+                                  {
+                                    comp.permissions.map((perm, index) => {
+                                      let defaultChecked = null;
+                                      let permDisabled = null;
+                                      if (perm.permission_id) {
+                                        defaultChecked = "checked";
+                                        permDisabled ="checked"
+
+                                        return(
+                                            <div>
+                                              <input
+                                                key={index}
+                                                type="checkbox"
+                                                defaultChecked={defaultChecked}
+                                                disabled/>
+                                            <span className="perm_label">
+                                              { perm.permission }
+                                            </span>
+                                          </div>
+                                        );
+                                      }
+                                    })
+                                  }
+                              </li>
+                            );
+                          })
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        } else {
+            return("Nothing to commit, no data found!");
         }
     }
 }
