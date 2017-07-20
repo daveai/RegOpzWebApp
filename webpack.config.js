@@ -1,7 +1,6 @@
 const webpack = require('webpack'),
       path    = require('path'),
       env     = process.env,
-      _plugin = require('lodash-webpack-plugin'),
       PACKAGE = require('./package.json')
 
 var BUILD_DIR = path.resolve(__dirname, 'js')
@@ -64,10 +63,6 @@ module.exports = {
         dns: 'empty'
     },
     plugins: env.NODE_ENV !== 'developement' ? [
-        new _plugin({
-            'collections': true,
-            'paths': true
-        }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({

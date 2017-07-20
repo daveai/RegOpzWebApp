@@ -4,6 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
+import Breadcrumbs from 'react-breadcrumbs';
 import Collapsible from '../CollapsibleModified/Collapsible';
 import {
   actionFetchRoles
@@ -40,7 +41,14 @@ class ManageRolesComponent extends Component {
 
   render() {
     return(
-          this.renderPermissions()
+        <div>
+          <Breadcrumbs
+            routes={this.props.routes}
+            params={this.props.params}
+            wrapperClass="breadcrumb"
+          />
+          { this.renderPermissions() }
+        </div>
     );
   }
 
