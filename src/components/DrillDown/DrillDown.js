@@ -228,7 +228,17 @@ class DrillDownComponent extends Component {
               })(item.in_use)
             }
           </td>
-          <td><Label>Not Allowed</Label></td>
+          <td>
+            <button type="button"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="History"
+                  className="btn btn-primary btn-xs"
+                  onClick={()=>{console.log("History call")}}
+            >
+              <i className="fa fa-history"></i>
+            </button>
+          </td>
         </tr>
       )
     }
