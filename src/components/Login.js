@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
+import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import {
   actionLoginRequest,
