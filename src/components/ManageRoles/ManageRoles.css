@@ -1,0 +1,25 @@
+/*
+ * Stylesheet for Manage Roles Component
+ */
+
+ .form-container {
+   min-height: 90vh;
+ }
+ 
+.data-holder {
+  border: 1px solid;
+  min-height: 110px;
+  margin: 2px;
+}
+
+.perm_label {
+    padding-left: 5px !important;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.x_panel_overflow {
+  overflow: auto;
+}

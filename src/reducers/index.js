@@ -9,10 +9,13 @@ import MaintainReportRulesReducer from './MaintainReportRulesReducer';
 import MaintainSourcesReducer from './MaintainSourcesReducer';
 import VarianceAnalysisReducer from './VarianceAnalysisReducer';
 import CreateReportReducer from './CreateReportReducer';
+import UsersReducer from './UsersReducer';
 import LoginReducer from './LoginReducer';
 import DefChangeReducer from './DefChangeReducer';
+import RolesReducer from './RolesReducer';
 
 const rootReducer = combineReducers({
+  user_details: UsersReducer,
   business_rules: businessRulesReducer,
   report_linkage: ReportLinkageReducer,
   view_data_store: ViewDataReducer,
@@ -24,7 +27,8 @@ const rootReducer = combineReducers({
   variance_analysis_store: VarianceAnalysisReducer,
   create_report_store: CreateReportReducer,
   login_store: LoginReducer,
-  def_change_store: DefChangeReducer
+  def_change_store: DefChangeReducer,
+  role_management: RolesReducer
 });
 
 export default rootReducer;

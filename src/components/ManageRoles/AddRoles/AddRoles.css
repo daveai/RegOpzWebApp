@@ -1,0 +1,25 @@
+/*
+ * Stylesheet for Add Roles Component
+ */
+
+  .form-container {
+    min-height: 90vh;
+  }
+  
+.component-list {
+    overflow-y: visible;
+}
+
+.component-list-item {
+    padding: 0px;
+}
+
+.component-btn {
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+
+.permission-box {
+    margin: 0px;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 import { bindActionCreators, dispatch } from 'redux';
 import {
   actionLoginRequest,
@@ -35,10 +36,22 @@ class LoginComponent extends Component {
                             <form>
                                 <h1>RegOpz Login</h1>
                                 <div>
-                                    <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.onChange} required=""/>
+                                    <input type="text"
+                                    className="form-control"
+                                    placeholder="Username"
+                                    name="username"
+                                    value={ this.state.username }
+                                    onChange={ this.onChange }
+                                    required=""/>
                                 </div>
                                 <div>
-                                    <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.onChange} required=""/>
+                                    <input type="password"
+                                    className="form-control"
+                                    placeholder="Password"
+                                    name="password"
+                                    value={ this.state.password }
+                                    onChange={ this.onChange }
+                                    required=""/>
                                 </div>
                                 <div>
                                     <button className="btn btn-default submit" onClick={this.onSubmit} disabled={!(username && password) || isLoading}>Log in</button>
@@ -84,7 +97,8 @@ class LoginComponent extends Component {
         };
         this.props.loginRequest(data);
         this.setState({ username: null, password: null, isLoading: false });
-        window.location.replace('/#/dashboard');
+        const encodedUrl = encodeURI('/dashboard');
+        hashHistory.push(encodedUrl);
     }
 }
 
@@ -93,9 +107,7 @@ function mapStateToProps(state) {
   return {
     token: state.login_store.token,
     error: state.login_store.error
-    //name: state.name,
-    //permission: state.permission
-  }
+  };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -104,7 +116,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionLoginRequest(data));
     }
   };
-}
+};
 
 const VisibleLogin = connect(
   mapStateToProps,
