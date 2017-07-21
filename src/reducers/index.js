@@ -13,6 +13,7 @@ import UsersReducer from './UsersReducer';
 import LoginReducer from './LoginReducer';
 import DefChangeReducer from './DefChangeReducer';
 import RolesReducer from './RolesReducer';
+import {reducer as formReducer} from 'redux-form';
 
 const rootReducer = combineReducers({
   user_details: UsersReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   create_report_store: CreateReportReducer,
   login_store: LoginReducer,
   def_change_store: DefChangeReducer,
-  role_management: RolesReducer
+  role_management: RolesReducer,
+  form:formReducer
 });
 
 export default rootReducer;
