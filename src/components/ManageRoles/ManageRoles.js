@@ -16,9 +16,9 @@ class ManageRolesComponent extends Component {
     super(props);
     this.dataSource = null;
     this.state = {
-        checked:"checked"
+        checked: "checked"
     };
-    this.fetchFlag=true;
+    this.fetchFlag = true;
   }
 
   componentWillMount() {
@@ -32,7 +32,7 @@ class ManageRolesComponent extends Component {
   }
 
   componentDidUpdate(){
-    this.fetchFlag=!this.fetchFlag;
+    this.fetchFlag =! this.fetchFlag;
   }
 
   componentDidMount() {
