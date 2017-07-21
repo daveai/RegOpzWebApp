@@ -77,7 +77,8 @@ class ManageRolesComponent extends Component {
                       <div key={index} className="col-md-4 col-sm-4 col-xs-12">
                         <div className="x_panel_overflow x_panel tile fixed_height_320">
                           <div className="x_title">
-                              <h2>{ item.role }
+                              <h2>
+                                { item.role }
                                 <small>Role Details</small>
                               </h2>
                             <ul className="nav navbar-right panel_toolbox">
