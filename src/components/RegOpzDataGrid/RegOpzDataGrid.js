@@ -99,7 +99,7 @@ class RegOpzDataGrid extends Component {
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Export xlsx"
-                        className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                        className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
                         onClick={
                           (event) => {
                               const url = BASE_URL + `document/get-report-export-to-excel?`
@@ -126,7 +126,7 @@ class RegOpzDataGrid extends Component {
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Export Report Rules"
-                        className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                        className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
                         onClick={
                           (event) => {
                               const url = BASE_URL + `document/get-report-rule-export-to-excel?`
