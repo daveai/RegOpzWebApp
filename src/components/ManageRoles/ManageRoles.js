@@ -29,7 +29,7 @@ class ManageRolesComponent extends Component {
       this.props.fetchPermission();
     }
   }
-  
+
   componentDidUpdate(){
     this.fetchFlag=!this.fetchFlag;
   }
