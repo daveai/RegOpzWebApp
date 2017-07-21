@@ -411,10 +411,8 @@ class AddRolesComponent extends Component {
     }
 
     formSubmit() {
+        this.savePrevious();
         if (this.dataSource != null) {
-            if (this.state.selectedComponent != null) {
-              this.savePrevious();
-            }
             let formData = { ...this.dataSource, role: this.state.role} ;
             console.log("Submiting form data:", formData);
             this.props.submitForm(formData)
@@ -422,11 +420,10 @@ class AddRolesComponent extends Component {
             console.log("Nothing to commit, no data found!");
         }
     }
-    renderSubmitRole(){
+
+    renderSubmitRole() {
+      this.savePrevious();
       if (this.dataSource != null) {
-          if (this.state.selectedComponent != null) {
-            this.savePrevious();
-          }
           let formData = { ...this.dataSource, role: this.state.role} ;
           return(
             <div className="row">
@@ -459,7 +456,7 @@ class AddRolesComponent extends Component {
                                         permDisabled ="checked"
 
                                         return(
-                                            <div>
+                                            <div key={index}>
                                               <input
                                                 key={index}
                                                 type="checkbox"
