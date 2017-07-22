@@ -14,7 +14,7 @@ import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import reducers from './reducers';
 import { actionRelogin } from './actions/LoginAction';
-import Login from './components/Login';
+import Login from './components/Authenticate/Login';
 
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
