@@ -65,7 +65,7 @@ class Signup extends Component{
     return(
       <div className="row">
         <div className="col col-lg-12">
-
+          <div className='x_panel'>
           <div className="x_title">
             <h2>Signup <small>Add your signin detail</small></h2>
             <div className="clearfix"></div>
@@ -130,7 +130,7 @@ class Signup extends Component{
                         </div>
               </form>
           </div>
-
+        </div>
         </div>
       </div>
     );

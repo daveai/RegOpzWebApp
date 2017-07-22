@@ -55,6 +55,7 @@ class LoginComponent extends Component {
                                 </div>
                                 <div>
                                     <button className="btn btn-default submit" onClick={this.onSubmit} disabled={!(username && password) || isLoading}>Log in</button>
+                                    <button className="btn btn-default" onClick={this.onSignup}>Sign up</button>
                                 </div>
 
                                 <div className="clearfix"></div>
@@ -99,6 +100,11 @@ class LoginComponent extends Component {
         this.setState({ username: null, password: null, isLoading: false });
         const encodedUrl = encodeURI('/dashboard');
         hashHistory.push(encodedUrl);
+    }
+
+    onSignup(){
+      event.preventDefault();
+      hashHistory.push('/signup');
     }
 }
 
