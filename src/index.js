@@ -51,11 +51,18 @@ if (localStorage.RegOpzToken) {
 
 class Index extends Component {
     render() {
-        console.log('Render Function Called');
+        console.log('Render Function Called........');
         console.log(this.props);
-        if (!this.props.user)
+        if (!this.props.user){
             return (<Login {...this.props} />);
-        return (<div> {this.props.children} </div>)
+        }
+        else if(this.props.children){
+          return (<div> {this.props.children} </div>);
+        } else {
+          hashHistory.push('/dashboard');
+          return(<Dashboard {...this.props} />);
+        }
+
     }
 
     componentWillMount() {
@@ -64,6 +71,7 @@ class Index extends Component {
             store.dispatch(actionRelogin(webToken));
         }
     }
+
 }
 
 function mapStateToProps(state) {
