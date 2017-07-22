@@ -7,7 +7,7 @@ import {
   actionLoginRequest,
   actionIsLoggedIn,
   LOGIN_SUCCESS
-} from '../actions/LoginAction';
+} from '../../actions/LoginAction';
 
 class LoginComponent extends Component {
     constructor(props) {

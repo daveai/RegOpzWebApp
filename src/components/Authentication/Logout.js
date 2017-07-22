@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { actionLogout } from '../actions/LoginAction';
+import { actionLogout } from '../../actions/LoginAction';
 
 class LogOutComponent extends Component {
   render() {

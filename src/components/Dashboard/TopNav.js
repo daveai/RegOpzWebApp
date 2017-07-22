@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import LogOut from '../Authenticate/Logout';
+import LogOut from '../Authentication/Logout';
 
 export default class TopNav extends Component {
     render() {
