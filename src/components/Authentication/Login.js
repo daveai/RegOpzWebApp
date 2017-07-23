@@ -4,10 +4,10 @@ import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import {
-  actionLoginRequest,
-  actionIsLoggedIn,
-  LOGIN_SUCCESS
+  actionLoginRequest
 } from '../../actions/LoginAction';
+import Signup from './Signup';
+import ModalAlert from '../ModalAlert/ModalAlert';
 
 class LoginComponent extends Component {
     constructor(props) {
@@ -17,9 +17,10 @@ class LoginComponent extends Component {
             password: null,
             isLoading: false
         };
-
+        this.modalAlert = null;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onSignup = this.onSignup.bind(this);
     }
 
     render() {
@@ -42,7 +43,7 @@ class LoginComponent extends Component {
                                     name="username"
                                     value={ this.state.username }
                                     onChange={ this.onChange }
-                                    required=""/>
+                                    required="required"/>
                                 </div>
                                 <div>
                                     <input type="password"
@@ -51,11 +52,11 @@ class LoginComponent extends Component {
                                     name="password"
                                     value={ this.state.password }
                                     onChange={ this.onChange }
-                                    required=""/>
+                                    required="required"/>
                                 </div>
                                 <div>
-                                    <button className="btn btn-default submit" onClick={this.onSubmit} disabled={!(username && password) || isLoading}>Log in</button>
-                                    <button className="btn btn-default" onClick={this.onSignup}>Sign up</button>
+                                    <button className="btn btn-default submit" onClick={ this.onSubmit } disabled={!(username && password) || isLoading}>Log in</button>
+                                    <button className="btn btn-default" onClick={ this.onSignup }>Sign up</button>
                                 </div>
 
                                 <div className="clearfix"></div>
@@ -63,19 +64,20 @@ class LoginComponent extends Component {
                                 { error ? <div className="alert alert-danger">Invalid Credentials</div> : '' }
 
                                 <div className="separator">
-
                                     <div className="clearfix"></div>
                                     <br/>
-
-                                    <div>
+                                    <div className="copyright">
                                         <h1><i className="fa fa-paw"></i> RegOpz</h1>
-                                    <p>©2017 All Rights Reserved. RegOpz Pvt. Ltd.</p>
+                                        <p>©2017 All Rights Reserved. RegOpz Pvt. Ltd.</p>
                                     </div>
                                 </div>
                             </form>
                         </section>
                     </div>
                 </div>
+
+                <ModalAlert
+                ref={ (modalAlert) => { this.modalAlert = modalAlert }}/>
             </div>
         );
     }
@@ -98,13 +100,13 @@ class LoginComponent extends Component {
         };
         this.props.loginRequest(data);
         this.setState({ username: null, password: null, isLoading: false });
-        const encodedUrl = encodeURI('/dashboard');
-        hashHistory.push(encodedUrl);
+        hashHistory.push(encodeURI('/'));
     }
 
-    onSignup(){
+    onSignup(event) {
       event.preventDefault();
-      hashHistory.push('/signup');
+      this.modalAlert.open(<Signup/>);
+      //hashHistory.push('/signup');
     }
 }
 

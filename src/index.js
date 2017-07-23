@@ -54,13 +54,13 @@ class Index extends Component {
     render() {
         console.log('Render Function Called........');
         console.log(this.props);
-        if (!this.props.user){
+        if (!this.props.user) {
             return (<Login {...this.props} />);
-        }
-        else if(this.props.children){
-          return (<div> {this.props.children} </div>);
+        } else if (this.props.children) {
+          return (<div> { this.props.children } </div>);
         } else {
           hashHistory.push('/dashboard');
+          return (<Dashboard {...this.props} />)
       }
   }
 }

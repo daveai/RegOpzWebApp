@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { hashHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch } from 'redux';
+import { actionAddUser } from '../../actions/UsersAction';
+import ModalAlert from '../ModalAlert/ModalAlert';
 
 const renderField = ({ input, label, type, meta: { touched, error }}) => {
 
   return(
       <div className="form-group">
-            <label className="control-label col-md-3 col-sm-3 col-xs-12">
-              {label}
-            </label>
-            <div className="col-md-4 col-sm-4 col-xs-12">
-              <input {...input} placeholder={label} type={type} className="form-control col-md-4 col-xs-12"/>
-              {touched &&
-                ((error &&
-                  <div className="alert alert-danger">
-                    {error}
-                  </div>))}
-            </div>
-          </div>
-        );
+        <label className="control-label col-md-3 col-sm-3 col-xs-12">
+          {label}
+        </label>
+        <div className="col-md-4 col-sm-4 col-xs-12">
+          <input {...input} placeholder={label} type={type} className="form-control col-md-4 col-xs-12"/>
+          {
+            touched &&
+            ((error &&
+              <div className="alert alert-danger">
+                { error }
+              </div>))
+          }
+        </div>
+      </div>
+      );
 
 }
 
 const validate = (values) => {
    const errors = {};
+
    if (!values.name) {
      errors.name = "User name is required";
    } else if (values.name.length < 5 || values.name.length > 20 ) {
@@ -35,33 +43,42 @@ const validate = (values) => {
     errors.email = 'Invalid email address'
   }
 
-  if(!values.first_name){
-    errors.first_name="First name is required"
+  if (!values.first_name) {
+    errors.first_name = "First name is required"
   }
 
-  if(!values.last_name){
-    errors.last_name="Last name is required"
+  if (!values.last_name) {
+    errors.last_name = "Last name is required"
   }
 
-  if(values.password != values.passwordConfirm){
-    errors.password ="Password must match"
+  if (!values.password) {
+      errors.password = "Password should not be empty"
   }
 
+  if (!values.passwordConfirm || values.password !== values.passwordConfirm) {
+    errors.passwordConfirm = "Password must match"
+  }
 
-   return errors;
+  return errors;
 }
 
-class Signup extends Component{
-  constructor(props){
+class Signup extends Component {
+  constructor(props) {
     super(props);
+    this.modalAlert = null;
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  handleFormSubmit(data){
-    console.log(data);
+  componentDidMount() {
+      document.body.classList.add('signup');
+      document.title = "RegOpz Signup";
   }
 
-  render(){
-    const { handleSubmit, pristine, reset, submitting } = this.props;
+  render() {
+    const { handleSubmit, pristine, reset, submitting, errors } = this.props;
+    if (errors) {
+        return(<div>{ errors.msg }</div>);
+    }
     return(
       <div className="row">
         <div className="col col-lg-12">
@@ -72,73 +89,102 @@ class Signup extends Component{
           </div>
 
           <div className="x_content">
-              <form className="form-horizontal form-label-left" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))} >
-                      <Field
-                        name="name"
-                        type="text"
-                        component={renderField}
-                        label="Username"
-                      />
-                      <Field
-                          name="first_name"
-                          type="text"
-                          component={renderField}
-                          label="First name"
-                        />
+              <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) } >
+                  <Field
+                    name="name"
+                    type="text"
+                    component={renderField}
+                    label="Username"
+                  />
+                  <Field
+                      name="first_name"
+                      type="text"
+                      component={renderField}
+                      label="First name"
+                    />
 
-                        <Field
-                          name="last_name"
-                          type="text"
-                          component={renderField}
-                          label="Last name"
-                        />
+                    <Field
+                      name="last_name"
+                      type="text"
+                      component={renderField}
+                      label="Last name"
+                    />
 
-                        <Field
-                          name="contact_number"
-                          type="text"
-                          component={renderField}
-                          label="Contact number"
-                        />
+                    <Field
+                      name="contact_number"
+                      type="text"
+                      component={renderField}
+                      label="Contact number"
+                    />
 
-                        <Field
-                          name="email"
-                          type="text"
-                          component={renderField}
-                          label="Email"
-                        />
+                    <Field
+                      name="email"
+                      type="email"
+                      component={renderField}
+                      label="Email"
+                    />
 
 
-                        <Field
-                          name="password"
-                          type="password"
-                          component={renderField}
-                          label="Password"
-                        />
+                    <Field
+                      name="password"
+                      type="password"
+                      component={renderField}
+                      label="Password"
+                    />
 
-                        <Field
-                          name="passwordConfirm"
-                          type="password"
-                          component={renderField}
-                          label="Password Confirmation"
-                        />
+                    <Field
+                      name="passwordConfirm"
+                      type="password"
+                      component={renderField}
+                      label="Password Confirmation"
+                    />
 
-                        <div className="form-group">
-                          <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                            <button type="button" className="btn btn-primary" onClick={reset} disabled={pristine || submitting} >Reset</button>
-                            <button type="submit" className="btn btn-success" disabled={submitting}>Submit</button>
-                          </div>
-                        </div>
+                    <div className="form-group">
+                      <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                        <button type="button" className="btn btn-primary" onClick={ reset } disabled={ pristine || submitting }>Reset</button>
+                        <button type="submit" className="btn btn-success" disabled={ submitting }>Submit</button>
+                      </div>
+                   </div>
               </form>
+            </div>
+
+            <ModalAlert
+            showDiscard={ true }
+            ref={ (modalAlert) => { this.modalAlert = modalAlert }}
+            onClickOkay= { this.onClickOkay }/>
           </div>
-        </div>
         </div>
       </div>
     );
   }
+
+  handleFormSubmit(data) {
+    console.log(data);
+    this.props.signup(data);
+    hashHistory.push(encodeURI('/'));
+  }
 }
 
+function mapStateToProps(state) {
+    return {
+        errors: state.user_details.message
+    };
+}
 
-export default reduxForm(
-  {form:'signup',
-  validate:validate
-  })(Signup);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signup: (data) => {
+            dispatch(actionAddUser(data));
+        }
+    };
+}
+
+const VisibleSignUp = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Signup);
+
+export default reduxForm({
+    form: 'signup',
+    validate: validate
+})(VisibleSignUp);
