@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {Field, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
-const renderField=({ input,label,type,meta: { touched, error }})=>{
+const renderField = ({ input, label, type, meta: { touched, error }}) => {
 
   return(
       <div className="form-group">
@@ -21,12 +21,12 @@ const renderField=({ input,label,type,meta: { touched, error }})=>{
 
 }
 
-const validate=values=>{
+const validate = (values) => {
    const errors = {};
-   if(!values.name){
-     errors.name="User name is required";
-   }else if( values.name.length < 5 || values.name.length > 20 ){
-     errors.name="User name must be greater than 4 characters and less than 20 characters";
+   if (!values.name) {
+     errors.name = "User name is required";
+   } else if (values.name.length < 5 || values.name.length > 20 ) {
+     errors.name = "User name must be greater than 4 characters and less than 20 characters";
    }
 
    if (!values.email) {

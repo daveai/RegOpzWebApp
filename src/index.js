@@ -14,8 +14,8 @@ import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import reducers from './reducers';
 import { actionRelogin } from './actions/LoginAction';
-<<<<<<< 4c8aaff869fc05f00c2092ea4c2c16b69f5e9392
 import Login from './components/Authentication/Login';
+import Signup from './components/Authentication/Signup';
 
 import Dashboard from './components/Dashboard/Dashboard';
 import CaptureReportTemplate from './components/CaptureReportTemplate/CaptureReportTemplate';
@@ -41,23 +41,13 @@ import ManageDefChange from './components/ManageDefChange/ManageDefChange';
 import ManageRoles from './components/ManageRoles/ManageRoles';
 import AddRoles from './components/ManageRoles/AddRoles/AddRoles';
 import ManageUsers from './components/ManageUsers/ManageUsers';
-=======
-import Login from './components/Login';
-import Dashboard from './components/Home';
-import Signup from './components/Authentication/Signup';
->>>>>>> Add signup form,install redux-form,make the component refreshable
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 if (localStorage.RegOpzToken) {
-<<<<<<< 4c8aaff869fc05f00c2092ea4c2c16b69f5e9392
     let webToken = localStorage.RegOpzToken;
     store.dispatch(actionRelogin(webToken));
-=======
-  let webToken = localStorage.RegOpzToken;
-  store.dispatch(actionRelogin(webToken));
->>>>>>> Add signup form,install redux-form,make the component refreshable
 }
 
 class Index extends Component {
@@ -71,26 +61,8 @@ class Index extends Component {
           return (<div> {this.props.children} </div>);
         } else {
           hashHistory.push('/dashboard');
-          return(<Dashboard {...this.props} />);
-        }
-
-    }
-
-    componentWillMount() {
-<<<<<<< 4c8aaff869fc05f00c2092ea4c2c16b69f5e9392
-        if (localStorage.RegOpzToken) {
-            let webToken = localStorage.RegOpzToken;
-            store.dispatch(actionRelogin(webToken));
-        }
-    }
-
-=======
-      /*if (localStorage.RegOpzToken) {
-        let webToken = localStorage.RegOpzToken;
-        store.dispatch(actionRelogin(webToken));
-      }*/
+      }
   }
->>>>>>> Add signup form,install redux-form,make the component refreshable
 }
 
 function mapStateToProps(state) {
@@ -109,7 +81,6 @@ const VisibleIndex = connect(
 ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
-<<<<<<< 4c8aaff869fc05f00c2092ea4c2c16b69f5e9392
             <Route path="/" component={VisibleIndex} />
             <Route path="/" name="Home" component={VisibleIndex}>
               <Route path="dashboard" name="Dashboard" component={Dashboard} >
@@ -137,10 +108,6 @@ ReactDOM.render(
                   <Route path="manage-users" name="User Management" component={ManageUsers}/>
               </Route>
             </Route>
-=======
-            <Route path="/" component={VisibleIndex}/>
-            <Route path ="/signup" component={Signup}/ >
->>>>>>> Add signup form,install redux-form,make the component refreshable
         </Router>
     </Provider>
     , document.querySelector(".react_container"));
