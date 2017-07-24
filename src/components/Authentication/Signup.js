@@ -3,8 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
-import { actionAddUser } from '../../actions/UsersAction';
-import ModalAlert from '../ModalAlert/ModalAlert';
+import { actionAddUser, actionFetchUsers } from '../../actions/UsersAction';
 
 const renderField = ({ input, label, type, meta: { touched, error }}) => {
 
@@ -18,14 +17,25 @@ const renderField = ({ input, label, type, meta: { touched, error }}) => {
           {
             touched &&
             ((error &&
-              <div className="alert alert-danger">
+              <span className="alert alert-danger">
                 { error }
-              </div>))
+              </span>))
           }
         </div>
       </div>
       );
 
+}
+
+const asyncValidate = (values, dispatch) => {
+  return dispatch(actionFetchUsers(values.name)).then((action) => {
+    console.log("Inside asyncValidate, promise resolved");
+    let error = action.payload.data;
+    if (error) {
+      console.log("Inside asyncValidate", error);
+      throw { name: error.msg };
+    }
+  });
 }
 
 const validate = (values) => {
@@ -65,7 +75,6 @@ const validate = (values) => {
 class Signup extends Component {
   constructor(props) {
     super(props);
-    this.modalAlert = null;
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
@@ -75,9 +84,9 @@ class Signup extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, errors } = this.props;
-    if (errors) {
-        return(<div>{ errors.msg }</div>);
+    const { handleSubmit, pristine, reset, submitting, message } = this.props;
+    if (message) {
+        return(<div>{ message.msg }</div>);
     }
     return(
       <div className="row">
@@ -92,6 +101,7 @@ class Signup extends Component {
                     component={renderField}
                     label="Username"
                   />
+
                   <Field
                       name="first_name"
                       type="text"
@@ -143,11 +153,6 @@ class Signup extends Component {
                    </div>
               </form>
             </div>
-
-            <ModalAlert
-            showDiscard={ true }
-            ref={ (modalAlert) => { this.modalAlert = modalAlert }}
-            onClickOkay= { this.onClickOkay }/>
           </div>
         </div>
       </div>
@@ -163,7 +168,7 @@ class Signup extends Component {
 
 function mapStateToProps(state) {
     return {
-        errors: state.user_details.message
+        message: state.user_details.message
     };
 }
 
@@ -182,5 +187,7 @@ const VisibleSignUp = connect(
 
 export default reduxForm({
     form: 'signup',
-    validate: validate
+    validate,
+    asyncValidate,
+    asyncBlurFields: ['name']
 })(VisibleSignUp);
