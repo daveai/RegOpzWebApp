@@ -11,6 +11,7 @@ import {
     actionUpdateRoles,
     actionDeleteRoles
 } from '../../../actions/RolesAction';
+import Breadcrumbs from 'react-breadcrumbs';
 import InfoModal from '../../InfoModal/InfoModal';
 import ModalAlert from '../../ModalAlert/ModalAlert';
 require('./AddRoles.css');
@@ -70,69 +71,76 @@ class AddRolesComponent extends Component {
         console.log("Add Roles:", this.state);
 
         return(
-          <div className="row form-container">
-              <div className="col col-lg-12">
-                  <div className="x_title">
-                      <h2>Role Management <small>Add a new role</small></h2>
-                      <div className="clearfix"></div>
+            <div>
+              <Breadcrumbs
+                routes={this.props.routes}
+                params={this.props.params}
+                wrapperClass="breadcrumb"
+              />
+              <div className="row form-container">
+                  <div className="col col-lg-12">
+                      <div className="x_title">
+                          <h2>Role Management <small>Add a new role</small></h2>
+                          <div className="clearfix"></div>
+                      </div>
+                      <div className="x_content">
+                          <form className="form-horizontal form-label-left" onSubmit={ this.handleSubmit }>
+                              <div className="form-group">
+                                <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="role-title">Role <span className="required">*</span></label>
+                                <div className="col-md-6 col-sm-6 col-xs-12">
+                                  <input
+                                    name="role"
+                                    placeholder="Title"
+                                    value={ this.state.role }
+                                    type="text"
+                                    id="role-title"
+                                    className="form-control col-md-7 col-xs-12"
+                                    onChange={ this.onTextChange }
+                                  />
+                                </div>
+                              </div>
+                              <div className="form-group">
+                                <div className="col-md-6 col-sm-6 col-xs-12 component-list">
+                                    { this.renderComponents() }
+                                </div>
+                                <div className="col-md-6 col-sm-6 col-xs-12">
+                                    { this.renderPermissions() }
+                                </div>
+                              </div>
+                              <div className="form-group">
+                                <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                  <button type="button"
+                                  className="btn btn-primary"
+                                  onClick={this.handleCancel}>
+                                    Cancel
+                                  </button>
+                                  <button type="submit"
+                                  className="btn btn-success"
+                                  disabled={ !this.state.role }>
+                                    Submit
+                                  </button>
+                                  <button type="button"
+                                  className="btn btn-danger"
+                                  disabled={ !this.props.location.query['role'] }
+                                  onClick={this.handleDelete}>
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                          </form>
+                          <div className="clearfix"></div>
+                      </div>
+                      <InfoModal
+                      title={ this.state.role }
+                      ref={ (infoModal) => { this.infoModal = infoModal }}
+                      onClickOkay={ this.goPreviousPage }/>
+                      <ModalAlert
+                      showDiscard={ true }
+                      ref={ (modalAlert) => { this.modalAlert = modalAlert }}
+                      onClickOkay= { this.onClickOkay }/>
                   </div>
-                  <div className="x_content">
-                      <form className="form-horizontal form-label-left" onSubmit={ this.handleSubmit }>
-                          <div className="form-group">
-                            <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="role-title">Role <span className="required">*</span></label>
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                              <input
-                                name="role"
-                                placeholder="Title"
-                                value={ this.state.role }
-                                type="text"
-                                id="role-title"
-                                className="form-control col-md-7 col-xs-12"
-                                onChange={ this.onTextChange }
-                              />
-                            </div>
-                          </div>
-                          <div className="form-group">
-                            <div className="col-md-6 col-sm-6 col-xs-12 component-list">
-                                { this.renderComponents() }
-                            </div>
-                            <div className="col-md-6 col-sm-6 col-xs-12">
-                                { this.renderPermissions() }
-                            </div>
-                          </div>
-                          <div className="form-group">
-                            <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                              <button type="button"
-                              className="btn btn-primary"
-                              onClick={this.handleCancel}>
-                                Cancel
-                              </button>
-                              <button type="submit"
-                              className="btn btn-success"
-                              disabled={ !this.state.role }>
-                                Submit
-                              </button>
-                              <button type="button"
-                              className="btn btn-danger"
-                              disabled={ !this.props.location.query['role'] }
-                              onClick={this.handleDelete}>
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                      </form>
-                      <div className="clearfix"></div>
-                  </div>
-                  <InfoModal
-                  title={ this.state.role }
-                  ref={ (infoModal) => { this.infoModal = infoModal }}
-                  onClickOkay={ this.goPreviousPage }/>
-                  <ModalAlert
-                  showDiscard={ true }
-                  ref={ (modalAlert) => { this.modalAlert = modalAlert }}
-                  onClickOkay= { this.onClickOkay }/>
               </div>
-          </div>
+            </div>
         );
     }
 
@@ -403,10 +411,8 @@ class AddRolesComponent extends Component {
     }
 
     formSubmit() {
+        this.savePrevious();
         if (this.dataSource != null) {
-            if (this.state.selectedComponent != null) {
-              this.savePrevious();
-            }
             let formData = { ...this.dataSource, role: this.state.role} ;
             console.log("Submiting form data:", formData);
             this.props.submitForm(formData)
@@ -414,11 +420,10 @@ class AddRolesComponent extends Component {
             console.log("Nothing to commit, no data found!");
         }
     }
-    renderSubmitRole(){
+
+    renderSubmitRole() {
+      this.savePrevious();
       if (this.dataSource != null) {
-          if (this.state.selectedComponent != null) {
-            this.savePrevious();
-          }
           let formData = { ...this.dataSource, role: this.state.role} ;
           return(
             <div className="row">
@@ -451,7 +456,7 @@ class AddRolesComponent extends Component {
                                         permDisabled ="checked"
 
                                         return(
-                                            <div>
+                                            <div key={index}>
                                               <input
                                                 key={index}
                                                 type="checkbox"

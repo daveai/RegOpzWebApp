@@ -20,7 +20,7 @@
 
 .list_item_select{
   color: white;
-  background-color:#546784;
+  background-color:#546784 !important;
 }
 
 .panel_list_item_active:hover{

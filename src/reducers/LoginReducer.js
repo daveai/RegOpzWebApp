@@ -18,16 +18,16 @@ export default function(state = {}, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
       try {
-        const { name, role, permission } = helperLogin(action.payload.data);
+        const { userId, name, role, permission } = helperLogin(action.payload.data);
         localStorage.setItem('RegOpzToken', action.payload.data);
-        return { user: true, name: name, role: role, permission: permission, error: null };
+        return { user: userId, name: name, role: role, permission: permission, error: null };
       } catch (err) {
         return { error: err.message };
       }
     case LOGIN_CHECK:
       try {
-        const { name, role, permission } = helperLogin(action.payload);
-        return { user:true, name: name, role: role, permission: permission, error: null };
+        const { userId, name, role, permission } = helperLogin(action.payload);
+        return { user: userId, name: name, role: role, permission: permission, error: null };
       } catch (err) {
         return { error: err.message };
       }

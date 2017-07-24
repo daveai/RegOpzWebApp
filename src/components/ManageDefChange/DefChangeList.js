@@ -9,8 +9,8 @@ class DefChangeList extends Component{
 
   constructor(props){
     super(props);
-
-    this.fetchFlag=true;
+    this.state = { selectedIndex: null };
+    this.fetchFlag = true;
 
   }
 
@@ -21,7 +21,7 @@ class DefChangeList extends Component{
 
   componentWillReceiveProps(nextProps){
     console.log("DefChangeList componentWillReceiveProps......",this.fetchFlag);
-    if (this.fetchFlag){
+    if (this.fetchFlag) {
       this.props.fetchAuditList();
     }
   }
@@ -35,7 +35,7 @@ class DefChangeList extends Component{
 
 
   componentDidUpdate(){
-    this.fetchFlag=!this.fetchFlag;
+    this.fetchFlag =! this.fetchFlag;
   }
 
   render(){
@@ -46,15 +46,11 @@ class DefChangeList extends Component{
     console.log("Audit List........",audit_list);
     const msgList=audit_list.map((item,index)=>{
           //console.log(item,index);
-          return(<li className="list_item_active"
+          return(<li className={ this.state.selectedIndex == index ? "list_item_select" : "list_item_active" }
                       key={index}
                       onClick={(event)=>{
+                        this.setState({ selectedIndex: index })
                         this.props.onSelectListItem(item);
-                        $(".list_item_select").removeClass("list_item_select");
-                        //console.log(event.target);
-                        //console.log($(event.target).closest("li"));
-                        //$(event.target).closest("li").toggleClass("list_item_active");
-                        $(event.target).closest("li").find(".mail_list").addClass("list_item_select");
                       }
                     }>
                     <div className="mail_list">
