@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import { actionAddUser, actionFetchUsers } from '../../actions/UsersAction';
@@ -162,7 +161,6 @@ class Signup extends Component {
   handleFormSubmit(data) {
     console.log(data);
     this.props.signup(data);
-    hashHistory.push(encodeURI('/'));
   }
 }
 
