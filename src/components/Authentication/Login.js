@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { Modal } from 'react-bootstrap';
 import { bindActionCreators, dispatch } from 'redux';
 import {
   actionLoginRequest
 } from '../../actions/LoginAction';
 import Signup from './Signup';
-import ModalAlert from '../ModalAlert/ModalAlert';
 
 class LoginComponent extends Component {
     constructor(props) {
@@ -18,6 +18,7 @@ class LoginComponent extends Component {
             isLoading: false
         };
         this.modalAlert = null;
+        this.isModalOpen = false;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onSignup = this.onSignup.bind(this);
@@ -55,7 +56,7 @@ class LoginComponent extends Component {
                                     required="required"/>
                                 </div>
                                 <div>
-                                    <button className="btn btn-default submit" onClick={ this.onSubmit } disabled={!(username && password) || isLoading}>Log in</button>
+                                    <button className="btn btn-primary submit" onClick={ this.onSubmit } disabled={!(username && password) || isLoading}>Log in</button>
                                     <button className="btn btn-default" onClick={ this.onSignup }>Sign up</button>
                                 </div>
 
@@ -76,8 +77,21 @@ class LoginComponent extends Component {
                     </div>
                 </div>
 
-                <ModalAlert
-                ref={ (modalAlert) => { this.modalAlert = modalAlert }}/>
+                <Modal
+                  show={this.state.isModalOpen}
+                  container={this}
+                  onHide={(event) => {
+                      this.setState({isModalOpen:false});
+                    }}
+                >
+                  <Modal.Header closeButton >
+                    <h2>Signup <small>Add your signin detail</small></h2>
+                  </Modal.Header>
+
+                  <Modal.Body>
+                    <Signup/>
+                  </Modal.Body>
+                </Modal>
             </div>
         );
     }
@@ -105,7 +119,8 @@ class LoginComponent extends Component {
 
     onSignup(event) {
       event.preventDefault();
-      this.modalAlert.open(<Signup/>);
+      //this.modalAlert.open(<Signup/>);
+      this.setState({isModalOpen:true})
       //hashHistory.push('/signup');
     }
 }

@@ -13,7 +13,7 @@ const renderField = ({ input, label, type, meta: { touched, error }}) => {
         <label className="control-label col-md-3 col-sm-3 col-xs-12">
           {label}
         </label>
-        <div className="col-md-4 col-sm-4 col-xs-12">
+        <div className="col-md-9 col-sm-9 col-xs-12">
           <input {...input} placeholder={label} type={type} className="form-control col-md-4 col-xs-12"/>
           {
             touched &&
@@ -83,10 +83,6 @@ class Signup extends Component {
       <div className="row">
         <div className="col col-lg-12">
           <div className='x_panel'>
-          <div className="x_title">
-            <h2>Signup <small>Add your signin detail</small></h2>
-            <div className="clearfix"></div>
-          </div>
 
           <div className="x_content">
               <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) } >
