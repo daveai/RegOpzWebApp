@@ -65,9 +65,16 @@ class ReportTreeInfoComponent extends Component {
                 <td>{item.report_create_status}</td>
                 <td>{item.report_created_by}</td>
                 <td>
-                  <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
                   <button
-                    className="btn btn-default"
+                    className="btn btn-primary btn-xs"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Operation Log History"
+                  >
+                    <span className="fa fa-history" aria-hidden="true"></span>
+                  </button>
+                  <button
+                    className="btn btn-success btn-xs"
                     onClick={
                       (event) => {
                         let report_info = {
@@ -83,7 +90,7 @@ class ReportTreeInfoComponent extends Component {
                     data-placement="top"
                     title="Generate Report"
                   >
-                    <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                    <span className="fa fa-rocket" aria-hidden="true"></span>
                   </button>
                 </td>
               </tr>

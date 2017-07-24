@@ -16,9 +16,9 @@ const renderField = ({ input, label, type, meta: { touched, error }}) => {
           {
             touched &&
             ((error &&
-              <span className="alert alert-danger">
+              <div className="alert alert-danger">
                 { error }
-              </span>))
+              </div>))
           }
         </div>
       </div>
@@ -36,6 +36,7 @@ const asyncValidate = (values, dispatch) => {
     }
   });
 }
+const normaliseContactNumber = value => value && value.replace(/[^\d]/g, '')
 
 const validate = (values) => {
    const errors = {};
@@ -120,6 +121,7 @@ class Signup extends Component {
                       type="text"
                       component={renderField}
                       label="Contact number"
+                      normalize={normaliseContactNumber}
                     />
 
                     <Field

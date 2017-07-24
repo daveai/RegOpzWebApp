@@ -66,9 +66,16 @@ class SourceTreeInfoComponent extends Component {
                   <td>{item.file_load_status}</td>
                   <td>{item.data_loaded_by}</td>
                   <td>
-                    <button className="btn btn-default"><span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
                     <button
-                      className="btn btn-default"
+                      className="btn btn-primary btn-xs"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Operation Log History"
+                    >
+                      <span className="fa fa-history" aria-hidden="true"></span>
+                    </button>
+                    <button
+                      className="btn btn-success btn-xs"
                       onClick={
                         (event) => {
                           let source_info = {
@@ -83,7 +90,7 @@ class SourceTreeInfoComponent extends Component {
                       data-placement="top"
                       title="Apply Rules"
                     >
-                      <span className="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                      <span className="fa fa-flash" aria-hidden="true"></span>
                     </button>
                   </td>
                 </tr>
