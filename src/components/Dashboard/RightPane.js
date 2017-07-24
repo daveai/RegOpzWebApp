@@ -1,41 +1,67 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import CountTile from './../Widgets/CountTile';
 export default class RightPane extends Component {
-  render(){
-    return(
+  render() {
+    return (
 
-        <div className="row tile_count">
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-user"></i> Number of reports</span>
-              <div className="count">2500</div>
-            <span className="count_bottom"><i className="green">4% </i> From last Week</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-clock-o"></i> Average Time</span>
-              <div className="count">123.50</div>
-            <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>3% </i> From last Week</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-user"></i> Data Feeds</span>
-              <div className="count green">2,500</div>
-            <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-user"></i> Number of Errors</span>
-              <div className="count">4,567</div>
-            <span className="count_bottom"><i className="red"><i className="fa fa-sort-desc"></i>12% </i> From last Week</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-user"></i> Adjustments</span>
-              <div className="count">2,315</div>
-            <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                <span className="count_top"><i className="fa fa-user"></i> Business Rules</span>
-              <div className="count">7,325</div>
-            <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-        </div>
+      <div className="row tile_count">
+        <CountTile
+          iconName="user"
+          titleText="Number of reports"
+          countValue="2500"
+          changeColor="green"
+          sortOrder="asc"
+          changePercentage="4"
+          descText="From Last Week"
+        />
+        <CountTile
+          iconName="clock-o"
+          titleText="Average Time"
+          countValue="123.50"
+          changeColor="green"
+          sortOrder="asc"
+          changePercentage="34"
+          descText="From Last Week"
+        />
+        <CountTile
+          iconName="user"
+          titleText="Data Feeds"
+          countValue="2,500"
+          countColor="green"
+          changeColor="green"
+          sortOrder="asc"
+          changePercentage="34"
+          descText="From Last Week"
+        />
+        <CountTile
+          iconName="user"
+          titleText="Number of Errors"
+          countValue="4,567"
+          changeColor="red"
+          sortOrder="desc"
+          changePercentage="12"
+          descText="From Last Week"
+        />
+        <CountTile
+          iconName="user"
+          titleText="Adjustments"
+          countValue="2,315"
+          changeColor="green"
+          sortOrder="asc"
+          changePercentage="34"
+          descText="From Last Week"
+        />
+        <CountTile
+          iconName="user"
+          titleText="Business Rules"
+          countValue="7,325"
+          changeColor="green"
+          sortOrder="asc"
+          changePercentage="34"
+          descText="From Last Week"
+        />
+      </div>
     )
   }
 }
