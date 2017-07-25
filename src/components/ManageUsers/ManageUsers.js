@@ -92,7 +92,7 @@ class ManageUsersComponent extends Component {
                                                 return(
                                                     <li key={index}>
                                                         <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{obj.title}</Label></h4>
-                                                        <div>{ obj.value }</div>
+                                                        <div className="info_value">{ obj.value }</div>
                                                     </li>
                                                 );
                                             })
