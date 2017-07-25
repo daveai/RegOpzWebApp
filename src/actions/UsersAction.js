@@ -40,11 +40,26 @@ export function actionFetchUsers(user) {
 
 // TODO: Update User Details
 export function actionUpdateUser(data) {
-    console.log("Data recieved at Update User", data);
-    const request = axios.put(url, data);
-    console.log("Update users request response: ", request);
-    return {
-      type: UPDATE_USER_ACTION,
-      payload: request
-    };
+    if (typeof data !== 'undefined') {
+        console.log("Data recieved at Update User", data);
+        const request = axios.put(url, data);
+        console.log("Update users request response: ", request);
+        return {
+            type: UPDATE_USER_ACTION,
+            payload: request
+        };
+    }
+}
+
+// TODO: Delete User Details
+export function actionDeleteUser(user) {
+    if (typeof user !== 'undefined') {
+        console.log("Data recieved at Delete User", user);
+        const request = axios.delete(url + `/${user}`);
+        console.log("Delete users request response: ", request);
+        return {
+            type: DELETE_USER_ACTION,
+            payload: request
+        };
+    }
 }

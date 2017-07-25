@@ -77,7 +77,7 @@ class ManageUsersComponent extends Component {
                                     </h2>
                                   <ul className="nav navbar-right panel_toolbox">
                                     <li>
-                                      <Link key={item.username} to={`/dashboard/manage-users/edit-user?user=${item.username}`}>
+                                      <Link key={index} to={`/dashboard/manage-users/edit-user?userId=${index}`}>
                                         <i className="fa fa-wrench" rel="tooltip" title="Edit User"></i>
                                       </Link>
                                     </li>

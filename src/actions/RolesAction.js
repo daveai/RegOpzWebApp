@@ -41,21 +41,22 @@ export function actionFetchPermissions() {
 
 // TODO: Send role data to API
 export function actionUpdateRoles(data) {
-    console.log("Sending roles to API.", data);
-    const request = axios.post(url, data);
-    console.log("Update roles request response:", request);
-    return {
-        type: UPDATE_ROLE_ACTION,
-        payload: request
-    };
+    if (typeof data !== 'undefined') {
+        console.log("Sending roles to API.", data);
+        const request = axios.post(url, data);
+        console.log("Update roles request response:", request);
+        return {
+            type: UPDATE_ROLE_ACTION,
+            payload: request
+        };
+    }
 }
 
 // TODO: Delete role data
 export function actionDeleteRoles(role) {
     if (typeof role !== 'undefined') {
-        url += `/${role}`;
         console.log("Deleting roles to API.", role);
-        const request = axios.delete(url);
+        const request = axios.delete(url + `/${role}`);
         console.log("Delete roles request response:", request);
         return {
             type: DELETE_ROLE_ACTION,

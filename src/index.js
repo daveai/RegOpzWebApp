@@ -41,8 +41,10 @@ import ManageDefChange from './components/ManageDefChange/ManageDefChange';
 import ManageRoles from './components/ManageRoles/ManageRoles';
 import AddRoles from './components/ManageRoles/AddRoles/AddRoles';
 import ManageUsers from './components/ManageUsers/ManageUsers';
+import EditUsers from './components/ManageUsers/ModifyUser/ModifyUser';
 import Profile from './components/Profile/Profile';
 import authenticate from './components/Authentication/authenticate';
+
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -110,6 +112,7 @@ ReactDOM.render(
                     <Route path="manage-roles" name="Role Management" component={ManageRoles} />
                     <Route path="manage-roles/add-roles" name="Add Role" component={AddRoles} />
                     <Route path="manage-users" name="User Management" component={ManageUsers} />
+                    <Route path="manage-users/edit-user" name="Edit User" component={EditUsers}/>
                 </Route>
             </Route>
         </Router>
