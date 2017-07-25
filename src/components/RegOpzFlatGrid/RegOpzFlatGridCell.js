@@ -33,7 +33,8 @@ export default class RegOpzFlatGridCell extends Component {
         )
     }
     handleCellDoubleClick(event) {
-      if(this.props.data['dml_allowed']=='Y'){
+      console.log("Inside handleCellDoubleClick of RegOpzFlatGridCell.....",this.props.readOnly);
+      if(this.props.data['dml_allowed']=='Y'&& !this.props.readOnly){
         this.editingValue = this.state.value;
         console.log("The editing data (data,identifier,id)", this.props.data[this.props.identifier], this.props.identifier,this.props.data['id']);
         this.inputElem = document.createElement("input");
@@ -74,7 +75,7 @@ export default class RegOpzFlatGridCell extends Component {
         $(event.target).remove();
     }
     handleAlertOkayClick(){
-      if(this.props.data['dml_allowed']=='Y'){
+      if(this.props.data['dml_allowed']=='Y' && !this.props.readOnly){
         this.props.onUpdateRow(this.props.data);
       }
     }

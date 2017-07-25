@@ -86,6 +86,7 @@ export default class RegOpzFlatGridRow extends Component {
                                             data={item}
                                             identifier={citem}
                                             onUpdateRow={this.props.onUpdateRow}
+                                            readOnly={this.props.readOnly}
                                          />
                                         )
                                     }.bind(this))

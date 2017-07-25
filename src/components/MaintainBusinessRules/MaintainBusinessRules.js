@@ -85,6 +85,8 @@ class MaintainBusinessRules extends Component {
     this.operationName = "";
     this.auditInfo = {};
     this.updateInfo = null;
+    this.viewOnly=_.find(this.props.privileges,{permission:"View Business Rules"});
+    this.writeOnly=_.find(this.props.privileges,{permission:"Edit Business Rules"});
 
     this.handleToggle = this.handleToggle.bind(this);
     this.displaySelectedColumns = this.displaySelectedColumns.bind(this);
@@ -320,6 +322,7 @@ class MaintainBusinessRules extends Component {
                       .catch(function (error) {
                         console.log(error);
                       });
+
                   }
                 }
               >

@@ -49,7 +49,7 @@ class AddBusinessRule extends Component {
           comment:null
         }
     };
-    this.state.readOnly = this.state.requestType=="update"?"readonly":"";
+    this.state.readOnly = this.state.requestType=="update"?true:false;
     this.handleRuleRefDelete = this.handleRuleRefDelete.bind(this);
     this.handleRuleRefAddition = this.handleRuleRefAddition.bind(this);
     this.handleRuleRefDrag = this.handleRuleRefDrag.bind(this);

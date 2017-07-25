@@ -36,6 +36,7 @@ export default class RegOpzFlatGrid extends Component {
     }
 
     render() {
+      console.log("Inside Render RegOpzFlatGrid....",this.props);
         return(
             <div className="flat_grid_container">
                 <RegOpzFlatGridHeader columns={this.cols} onSort={this.props.onSort} onFilter={this.props.onFilter} />
@@ -49,6 +50,7 @@ export default class RegOpzFlatGrid extends Component {
                     ref={(flatGridRows) => {
                       this.flatGridRows = flatGridRows;
                     }}
+                    readOnly={this.props.readOnly}
                />
             </div>
         )
