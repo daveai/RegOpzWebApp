@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
+import moment from 'moment';
 import RegOpzDataGridHeader from './RegOpzDataGridHeader';
 import RegOpzDataGridSideMarker from './RegOpzGridSideMarker';
 import RegOpzDataGridHorizontalLines from './RegOpzDataGridHorizontalLines';
@@ -11,6 +13,7 @@ import {
   actionFetchReportData,
   actionDrillDown
 } from '../../actions/CaptureReportAction';
+import {actionFetchAuditList} from '../../actions/DefChangeAction';
 import { hashHistory, routerContext } from 'react-router';
 import Breadcrumbs from 'react-breadcrumbs';
 import {BASE_URL} from '../../Constant/constant';
@@ -20,6 +23,9 @@ require('./RegOpzDataGrid.css');
 class RegOpzDataGrid extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isModalOpen:false
+    };
     this.numberofCols = 52;
     this.numberofRows = 1000;
     this.data = [];
@@ -31,6 +37,8 @@ class RegOpzDataGrid extends Component {
     this.selectedSheetName = null;
     this.gridHight = 0;
     this.gridWidth = 0;
+    this.rulesIdAsSubQuery = "";
+    this.linkageData = null;
   }
 
   componentWillMount() {
@@ -67,6 +75,9 @@ class RegOpzDataGrid extends Component {
           }
       }.bind(this));
       console.log('grid hight',this.gridHight);
+      if( typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
+        this.linkageData = this.props.audit_list;
+      }
       return(
         <div className="reg_gridHolder">
           <div>
@@ -152,21 +163,7 @@ class RegOpzDataGrid extends Component {
                         data-placement="top"
                         title="Report Rules History"
                         className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
-                        onClick={
-                          (event) => {
-                              const url = BASE_URL + `document/get-report-rule-export-to-excel?`
-                                        + `report_id=${this.report_id}`;
-                              axios.get(url)
-                              .then(function(response){
-                                console.log("export xlsx",response);
-                                window.location.href = BASE_URL + "../../static/" + response.data.file_name;
-
-                              })
-                              .catch(function (error) {
-                                console.log(error);
-                              });
-                          }
-                        }
+                        onClick={ this.showHistory.bind(this)}
                       >
                         <i className="fa fa-history"></i>
                       </button>
@@ -237,6 +234,27 @@ class RegOpzDataGrid extends Component {
               />
           </div>
         </div>
+        <Modal
+          show={this.state.isModalOpen}
+          container={this}
+          onHide={(event) => {
+              this.setState({isModalOpen:false});
+            }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Report Rule Change History for <h6>{this.report_id}</h6></Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            { this.renderChangeHistory(this.linkageData) }
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button onClick={(event) => {
+                this.setState({isModalOpen:false})
+              }}>Ok</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
       )
     } else {
@@ -264,11 +282,87 @@ class RegOpzDataGrid extends Component {
       )
     }
   }
+
+  renderChangeHistory(linkageData){
+    if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
+      return(
+        <div>
+          <h4>No audit change report found!</h4>
+        </div>
+      )
+    else {
+      return(
+        <div className="dashboard-widget-content">
+          <ul className="list-unstyled timeline widget">
+          {
+            linkageData.map(function(item,index){
+              return(
+                <li>
+                  <div className="block">
+                    <div className="block_content">
+                      <h2 className="title"></h2>
+                        <Media>
+                          <Media.Left>
+                            <h3>{moment(item.date_of_change?item.date_of_change:"20170624T203000").format('DD')}</h3>
+                            <h6>{moment(item.date_of_change?item.date_of_change:"20170624").format('MMM')},
+                            <small>{moment(item.date_of_change?item.date_of_change:"20170624").format('YYYY')}</small></h6>
+                          </Media.Left>
+                          <Media.Body>
+                            <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
+                            <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
+                            <p>{item.maker_comment}</p>
+                              <Media>
+                                <Media.Left>
+                                  {
+                                    ((status)=>{
+                                      if(status=="PENDING"){
+                                        return(<Label bsStyle="primary">{status}</Label>)
+                                      } else if (status=="REJECTED"){
+                                        return(<Label bsStyle="warning">{status}</Label>)
+                                      } else if(status=="APPROVED"){
+                                        return(<Label bsStyle="success">{status}</Label>)
+                                      } else {
+                                        return(<Label>{status}</Label>)
+                                      }
+                                    }
+                                  )(item.status)}
+                                </Media.Left>
+                                <Media.Body>
+                                  <Media.Heading>Verification details</Media.Heading>
+                                    {
+                                      ((status)=>{
+                                        if(status!="PENDING"){
+                                          return(<h6>by {item.checker} on <small>{item.date_of_change}</small></h6>)
+                                        }
+                                      }
+                                    )(item.status)}
+                                  <p>{item.checker_comment}</p>
+                                </Media.Body>
+                              </Media>
+                          </Media.Body>
+                        </Media>
+                      </div>
+                  </div>
+                </li>
+              )
+            })
+          }
+        </ul>
+        </div>
+      )
+    }
+  }
+  showHistory(event){
+    this.rulesIdAsSubQuery = `select id from report_calc_def where report_id= '${this.report_id}'`;
+    this.props.fetchAuditList(this.rulesIdAsSubQuery,"report_calc_def");
+    this.setState({isModalOpen:true})
+  }
 }
 
 function mapStateToProps(state) {
   return {
-    captured_report:state.captured_report
+    captured_report:state.captured_report,
+    audit_list:state.def_change_store.audit_list
   }
 }
 
@@ -279,6 +373,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     drillDown:(report_id, sheet_id, cell_id) => {
       dispatch(actionDrillDown(report_id, sheet_id, cell_id));
+    },
+    fetchAuditList:(idList,tableName)=>{
+      dispatch(actionFetchAuditList(idList,tableName));
     }
   }
 }
