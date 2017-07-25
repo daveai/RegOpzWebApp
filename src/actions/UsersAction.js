@@ -8,9 +8,11 @@ export let FETCH_USER_ACTION  = 'FETCH_USER_ACTION';
 export let UPDATE_USER_ACTION = 'UPDATE_USER_ACTION';
 export let DELETE_USER_ACTION = 'DELETE_USER_ACTION';
 
+// Target URL
+var url = BASE_URL + "users";
+
 // TODO: Send user detail to API
 export function actionAddUser(data) {
-    var url = BASE_URL + "users";
     console.log("Data recieved at Add User", data);
     const request = axios.post(url, data);
     console.log("Add users request response: ", request);
@@ -22,7 +24,6 @@ export function actionAddUser(data) {
 
 // TODO: Fetch User Details from API
 export function actionFetchUsers(user) {
-  var url = BASE_URL + "users";
   let actionType = FETCH_USER_ACTION;
   if (typeof user !== 'undefined') {
     url += `/${user}`;
@@ -35,4 +36,15 @@ export function actionFetchUsers(user) {
     type: actionType,
     payload: request
   };
+}
+
+// TODO: Update User Details
+export function actionUpdateUser(data) {
+    console.log("Data recieved at Update User", data);
+    const request = axios.put(url, data);
+    console.log("Update users request response: ", request);
+    return {
+      type: UPDATE_USER_ACTION,
+      payload: request
+    };
 }
