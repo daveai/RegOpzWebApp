@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
 import Breadcrumbs from 'react-breadcrumbs';
-import Collapsible from '../CollapsibleModified/Collapsible';
 import {
   actionFetchRoles
 } from '../../actions/RolesAction';
@@ -14,10 +13,10 @@ require('./ManageRoles.css');
 class ManageRolesComponent extends Component {
   constructor(props) {
     super(props);
-    this.dataSource = null;
     this.state = {
         checked: "checked"
     };
+    this.dataSource = null;
     this.fetchFlag = true;
   }
 

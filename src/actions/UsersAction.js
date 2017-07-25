@@ -21,10 +21,10 @@ export function actionAddUser(data) {
 }
 
 // TODO: Fetch User Details from API
-export function actionFetchUsers(user = null) {
+export function actionFetchUsers(user) {
   var url = BASE_URL + "users";
   let actionType = FETCH_USER_ACTION;
-  if (user) {
+  if (typeof user !== 'undefined') {
     url += `/${user}`;
     actionType = CHECK_USER_ACTION;
   }
