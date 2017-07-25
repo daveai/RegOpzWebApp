@@ -95,7 +95,7 @@ class ManageUsersComponent extends Component {
                         <ul className="list-unstyled">
                             {
                                 item.info.map((obj, index) => {
-                                    // Use separate global function with switch-case 
+                                    // Use separate global function with switch-case
                                     let iconClass = "fa"
                                     let iconName = obj.title
                                     if (obj.title == "Contact Number") {
