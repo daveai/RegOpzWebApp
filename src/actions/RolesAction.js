@@ -13,7 +13,7 @@ var url = BASE_URL + "roles";
 
 // TODO: Fetch Role Details from API
 export function actionFetchRoles(role) {
-    actionType = FETCH_ROLE_ACTION;
+    var actionType = FETCH_ROLE_ACTION;
     if (typeof role !== 'undefined') {
         url += `/${role}`;
         actionType = FETCH_ONE_ROLE_ACTION;
