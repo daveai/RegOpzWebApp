@@ -55,7 +55,7 @@ class DefChangeList extends Component{
                     }>
                     <div className="mail_list">
                       <h3>{item.change_type}
-                      <small>on {item.table_name} of record id {item.id}</small>
+                      <small>on {item.table_name} of record id {item.id} [{item.change_reference.toString().substring(0,20)}...]</small>
                       </h3>
                       {((item)=>{
                           if (item.change_type=="UPDATE"){

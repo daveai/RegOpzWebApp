@@ -444,7 +444,11 @@ class DrillDownComponent extends Component {
                             <small>{moment(item.date_of_change?item.date_of_change:"20170624").format('YYYY')}</small></h6>
                           </Media.Left>
                           <Media.Body>
-                            <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
+                            <Media.Heading>Buisness Rule Change for id: {item.id}
+                              <h5>
+                                <small>{item.change_reference}</small>
+                              </h5>
+                            </Media.Heading>
                             <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
                             <p>{item.maker_comment}</p>
                               <div><h5>Change Summary</h5>
@@ -464,11 +468,11 @@ class DrillDownComponent extends Component {
                                                    );
                                           });
                                           return(
-                                            <table className="table table-hover">
+                                            <table className="table table-hover table-content-wrap">
                                               <thead>
                                                 <tr>
                                                   <th>#</th>
-                                                  <th>Column Name</th>
+                                                  <th>Column</th>
                                                   <th>New Value</th>
                                                   <th>Old Value</th>
                                                 </tr>

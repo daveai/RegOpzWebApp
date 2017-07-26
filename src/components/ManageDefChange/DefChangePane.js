@@ -76,7 +76,7 @@ class DefChangePane extends Component{
        <div>
          <h3>{this.item.change_type}
            <small> on <span className="badge">{this.item.table_name}</span> of record id :
-             <span className="badge"> {this.item.id}</span>.
+             <span className="badge"> id: {this.item.id} </span> [{this.item.change_reference}].
              Change initiated by <span className="badge">{this.item.maker}</span> on {this.item.date_of_change}.
            </small>
          </h3>

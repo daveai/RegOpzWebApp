@@ -534,7 +534,8 @@ class AddBusinessRule extends Component {
     let audit_info={
       id:this.state.form.id,
       table_name:data.table_name,
-      change_type:data.change_type
+      change_type:data.change_type,
+      change_reference:`Rule: ${this.state.form.business_rule} of Source: ${this.state.form.source_id}`,
     };
     Object.assign(audit_info,this.state.audit_form);
 
