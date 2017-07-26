@@ -15,12 +15,14 @@ import {
   Link,
   hashHistory
 } from 'react-router';
+import AuditModal from '../AuditModal/AuditModal';
 import './DrillDownStyle.css';
 class DrillDownComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isModalOpen:false
+      isModalOpen:false,
+      showAuditModal:false
     };
     this.report_id = this.props.location.query['report_id'];
     this.sheet = this.props.location.query['sheet'];
@@ -29,6 +31,7 @@ class DrillDownComponent extends Component {
     this.drillDownResult = null;
     this.nextPropsCount = 0;
     this.linkageData = null;
+    this.auditInfo={};
   }
   componentWillMount(){
     this.props.drillDown(this.report_id,this.sheet,this.cell);
@@ -112,6 +115,9 @@ class DrillDownComponent extends Component {
               }}>Ok</Button>
           </Modal.Footer>
         </Modal>
+        <AuditModal showModal={this.state.showAuditModal}
+          onClickOkay={this.handleOkayClick.bind(this)}
+        />
       </div>
     );
   }
@@ -411,7 +417,20 @@ class DrillDownComponent extends Component {
   handleDelete(item,index){
     console.log('Inside delete',item)
     this.nextPropsCount = 0;
-    this.props.deleteRuleData(item.id,'report_calc_def',index);
+    console.log('Inside delete...state:',this.state);
+
+    //set audit info
+    this.auditInfo={
+      id:item.id,
+      table_name:'report_calc_def',
+      index:index,
+      change_type:'DELETE',
+      change_reference:`Rule: ${item.cell_calc_ref} of : ${item.report_id}->${item.sheet_id}->${item.cell_id} [ Source: ${item.source_id} ]`,
+    }
+    //console.log('Inside delete....auditInfo',this.auditInfo);
+    this.setState({showAuditModal:true});
+    //this.forceUpdate();
+    //this.props.deleteRuleData(item.id,'report_calc_def',index);
     //this.props.drillDown(this.report_id,this.sheet,this.cell);
   }
   handleAddRule(event){
@@ -419,6 +438,15 @@ class DrillDownComponent extends Component {
     hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add`
       +`&report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
   }
+
+
+  handleOkayClick(auditInfo){
+    Object.assign(this.auditInfo,auditInfo);
+    console.log("handleAuditInfo.....:",this.auditInfo);
+    this.props.deleteRuleData(this.auditInfo.id,this.auditInfo.table_name,this.auditInfo.index,this.auditInfo);
+
+  }
+
   renderChangeHistory(linkageData){
     if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
       return(
@@ -557,8 +585,8 @@ const mapDispatchToProps = (dispatch) => {
     drillDown:(report_id,sheet,cell) => {
       dispatch(actionDrillDown(report_id,sheet,cell));
     },
-    deleteRuleData:(id,table_name,at) => {
-      dispatch(actionDeleteRuleData(id,table_name,at));
+    deleteRuleData:(id,table_name,at,audit_info) => {
+      dispatch(actionDeleteRuleData(id,table_name,at,audit_info));
     },
     fetchAuditList:(idList,tableName)=>{
       dispatch(actionFetchAuditList(idList,tableName));
