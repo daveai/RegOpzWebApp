@@ -814,7 +814,7 @@ class MaintainBusinessRules extends Component {
          table_name:data["table_name"],
          id:null,
          change_type:this.operationName,
-         change_reference:`Duplicate of Rule: ${this.selectedRow["business_rule"]} of Source: ${this.selectedRow["source_id"]}`,
+         change_reference:`Duplicate of Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
