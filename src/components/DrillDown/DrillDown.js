@@ -461,7 +461,7 @@ class DrillDownComponent extends Component {
                                               return (
                                                      <tr>
                                                         <th scope="row">{uindex + 1}</th>
-                                                        <td><h6><Label bsStyle="warning">{uitem.field_name}</Label></h6></td>
+                                                        <td><Label bsStyle="warning">{uitem.field_name}</Label></td>
                                                         <td>{uitem.new_val}</td>
                                                         <td>{uitem.old_val}</td>
                                                      </tr>
