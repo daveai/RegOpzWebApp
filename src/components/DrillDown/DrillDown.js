@@ -1,28 +1,34 @@
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
-import {connect} from 'react-redux'
-import {bindActionCreators, dispatch} from 'redux'
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
+import moment from 'moment';
+import {connect} from 'react-redux';
+import {bindActionCreators, dispatch} from 'redux';
 import {
   actionDrillDown
-} from '../../actions/CaptureReportAction'
+} from '../../actions/CaptureReportAction';
 import {
   actionDeleteRuleData
-} from '../../actions/MaintainReportRuleAction'
+} from '../../actions/MaintainReportRuleAction';
+import {actionFetchAuditList} from '../../actions/DefChangeAction';
 import {
   Link,
   hashHistory
 } from 'react-router';
-import { Label } from 'react-bootstrap';
-import './DrillDownStyle.css'
+import './DrillDownStyle.css';
 class DrillDownComponent extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      isModalOpen:false
+    };
     this.report_id = this.props.location.query['report_id'];
     this.sheet = this.props.location.query['sheet'];
     this.cell = this.props.location.query['cell'];
     this.reporting_date = this.props.location.query['reporting_date'];
     this.drillDownResult = null;
     this.nextPropsCount = 0;
+    this.linkageData = null;
   }
   componentWillMount(){
     this.props.drillDown(this.report_id,this.sheet,this.cell);
@@ -38,6 +44,11 @@ class DrillDownComponent extends Component {
   render(){
     console.log('drill down result',this.props.drill_down_result)
     this.drillDownResult = this.props.drill_down_result;
+    if( typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
+      this.linkageData = this.props.audit_list;
+    } else {
+      this.linkageData = null;
+    }
     if(typeof(this.drillDownResult)=='undefined' || this.drillDownResult == null){
       return(
         <h1>Loading...</h1>
@@ -80,6 +91,27 @@ class DrillDownComponent extends Component {
           </div>
         </div>
         {this.showAddRuleButton()}
+        <Modal
+          show={this.state.isModalOpen}
+          container={this}
+          onHide={(event) => {
+              this.setState({isModalOpen:false});
+            }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Report Rule Change History for <h6>{this.report_id}</h6></Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            { this.renderChangeHistory(this.linkageData) }
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button onClick={(event) => {
+                this.setState({isModalOpen:false})
+              }}>Ok</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
@@ -164,36 +196,47 @@ class DrillDownComponent extends Component {
                 if(dml_allowed=='Y'){
                   return(
                   <td>
-                    <button type="button"
+                    <button id={item.id}
+                            type="button"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="History"
                             className="btn btn-primary btn-xs"
-                            onClick={()=>{console.log("History call")}}
+                            onClick={(event)=>{
+                                console.log("History call",event.target.id);
+                                this.showHistory(event,"report_calc_def");
+                              }
+                            }
                     >
-                      <i className="fa fa-history"></i>
+                      <i id={item.id} className="fa fa-history"></i>
                     </button>
-                    <button type="button"
+                    <button id={item.id}
+                            type="button"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Delete"
                             className="btn btn-warning btn-xs"
                             onClick={()=>{this.handleDelete(item,index)}}
                     >
-                      <i className="fa fa-remove"></i>
+                      <i id={item.id} className="fa fa-remove"></i>
                     </button>
                   </td>
                   );
                 }else{
                   return(<td>
-                            <button type="button"
+                            <button id={item.id}
+                                  type="button"
                                   data-toggle="tooltip"
                                   data-placement="top"
                                   title="History"
                                   className="btn btn-primary btn-xs"
-                                  onClick={()=>{console.log("History call")}}
+                                  onClick={(event)=>{
+                                      console.log("History call");
+                                      this.showHistory(event,"report_calc_def");
+                                    }
+                                  }
                             >
-                              <i className="fa fa-history"></i>
+                              <i id={item.id} className="fa fa-history"></i>
                             </button>
                           </td>
                       );
@@ -230,13 +273,18 @@ class DrillDownComponent extends Component {
           </td>
           <td>
             <button type="button"
+                  id={item.id}
                   data-toggle="tooltip"
                   data-placement="top"
                   title="History"
                   className="btn btn-primary btn-xs"
-                  onClick={()=>{console.log("History call")}}
+                  onClick={(event)=>{
+                      console.log("History call");
+                      this.showHistory(event,"report_calc_def");
+                    }
+                  }
             >
-              <i className="fa fa-history"></i>
+              <i id={item.id} className="fa fa-history"></i>
             </button>
           </td>
         </tr>
@@ -285,13 +333,18 @@ class DrillDownComponent extends Component {
               }
               <span>   </span>
               <button type="button"
+                    id={item.id}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="History"
                     className="btn btn-primary btn-xs"
-                    onClick={()=>{console.log("History call")}}
+                    onClick={(event)=>{
+                        console.log("History call");
+                        this.showHistory(event,"report_comp_agg_def");
+                      }
+                    }
               >
-                <i className="fa fa-history"></i>
+                <i id={item.id} className="fa fa-history"></i>
               </button>
             </div>
           );
@@ -313,13 +366,18 @@ class DrillDownComponent extends Component {
               }
               <span>   </span>
               <button type="button"
+                    id={item.id}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="History"
                     className="btn btn-primary btn-xs"
-                    onClick={()=>{console.log("History call")}}
+                    onClick={(event)=>{
+                        console.log("History call");
+                        this.showHistory(event,"report_comp_agg_def");
+                      }
+                    }
               >
-                <i className="fa fa-history"></i>
+                <i id={item.id} className="fa fa-history"></i>
               </button>
           </div>
         );
@@ -361,12 +419,133 @@ class DrillDownComponent extends Component {
     hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add`
       +`&report_id=${this.report_id}&sheet=${this.sheet}&cell=${this.cell}`)
   }
+  renderChangeHistory(linkageData){
+    if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
+      return(
+        <div>
+          <h4>No audit change report found!</h4>
+        </div>
+      )
+    else {
+      return(
+        <div className="dashboard-widget-content">
+          <ul className="list-unstyled timeline widget">
+          {
+            linkageData.map(function(item,index){
+              return(
+                <li>
+                  <div className="block">
+                    <div className="block_content">
+                      <h2 className="title"></h2>
+                        <Media>
+                          <Media.Left>
+                            <h3>{moment(item.date_of_change?item.date_of_change:"20170624T203000").format('DD')}</h3>
+                            <h6>{moment(item.date_of_change?item.date_of_change:"20170624").format('MMM')},
+                            <small>{moment(item.date_of_change?item.date_of_change:"20170624").format('YYYY')}</small></h6>
+                          </Media.Left>
+                          <Media.Body>
+                            <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
+                            <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
+                            <p>{item.maker_comment}</p>
+                              <div><h5>Change Summary</h5>
+
+                                  {((item)=>{
+                                      if (item.change_type=="UPDATE"){
+                                          console.log("Update Info........",item.update_info);
+                                          const update_list=item.update_info.map((uitem,uindex)=>{
+                                              console.log("Uitem.....",uitem);
+                                              return (
+                                                     <tr>
+                                                        <th scope="row">{uindex + 1}</th>
+                                                        <td><h6><Label bsStyle="warning">{uitem.field_name}</Label></h6></td>
+                                                        <td>{uitem.new_val}</td>
+                                                        <td>{uitem.old_val}</td>
+                                                     </tr>
+                                                   );
+                                          });
+                                          return(
+                                            <table className="table table-hover">
+                                              <thead>
+                                                <tr>
+                                                  <th>#</th>
+                                                  <th>Column Name</th>
+                                                  <th>New Value</th>
+                                                  <th>Old Value</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {update_list}
+                                              </tbody>
+                                            </table>
+                                          );
+                                      } else {
+                                        return (<table className="table table-hover table-content-wrap">
+                                                  <thead>
+                                                    <tr>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                      <tr><td>This is a {item.change_type} request</td></tr>
+                                                  </tbody>
+                                                </table>
+                                            )
+                                      }
+                                  })(item)}
+
+                              </div>
+                              <Media>
+                                <Media.Left>
+                                  {
+                                    ((status)=>{
+                                      if(status=="PENDING"){
+                                        return(<Label bsStyle="primary">{status}</Label>)
+                                      } else if (status=="REJECTED"){
+                                        return(<Label bsStyle="warning">{status}</Label>)
+                                      } else if(status=="APPROVED"){
+                                        return(<Label bsStyle="success">{status}</Label>)
+                                      } else {
+                                        return(<Label>{status}</Label>)
+                                      }
+                                    }
+                                  )(item.status)}
+                                </Media.Left>
+                                <Media.Body>
+                                  <Media.Heading>Verification details</Media.Heading>
+                                    {
+                                      ((status)=>{
+                                        if(status!="PENDING"){
+                                          return(<h6>by {item.checker} on <small>{item.date_of_change}</small></h6>)
+                                        }
+                                      }
+                                    )(item.status)}
+                                  <p>{item.checker_comment}</p>
+                                </Media.Body>
+                              </Media>
+                          </Media.Body>
+                        </Media>
+                      </div>
+                  </div>
+                </li>
+              )
+            })
+          }
+        </ul>
+        </div>
+      )
+    }
+  }
+  showHistory(event,table_name){
+    this.rulesIdAsSubQuery = `select id from ${table_name} where report_id= '${this.report_id}' and id='${event.target.id}'`;
+    this.props.fetchAuditList(this.rulesIdAsSubQuery,table_name);
+    this.setState({isModalOpen:true})
+  }
 }
 
 function mapStateToProps(state){
   console.log("On map state", state);
   return{
-    drill_down_result:state.captured_report.drill_down_result
+    drill_down_result:state.captured_report.drill_down_result,
+    audit_list:state.def_change_store.audit_list
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -376,6 +555,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteRuleData:(id,table_name,at) => {
       dispatch(actionDeleteRuleData(id,table_name,at));
+    },
+    fetchAuditList:(idList,tableName)=>{
+      dispatch(actionFetchAuditList(idList,tableName));
     }
   }
 }

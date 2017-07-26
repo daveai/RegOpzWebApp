@@ -492,6 +492,53 @@ class MaintainBusinessRules extends Component {
                               <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
                               <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
                               <p>{item.maker_comment}</p>
+                                <div><h5>Change Summary</h5>
+
+                                    {((item)=>{
+                                        if (item.change_type=="UPDATE"){
+                                            console.log("Update Info........",item.update_info);
+                                            const update_list=item.update_info.map((uitem,uindex)=>{
+                                                console.log("Uitem.....",uitem);
+                                                return (
+                                                       <tr>
+                                                          <th scope="row">{uindex + 1}</th>
+                                                          <td><h6><Label bsStyle="warning">{uitem.field_name}</Label></h6></td>
+                                                          <td>{uitem.new_val}</td>
+                                                          <td>{uitem.old_val}</td>
+                                                       </tr>
+                                                     );
+                                            });
+                                            return(
+                                              <table className="table table-hover">
+                                                <thead>
+                                                  <tr>
+                                                    <th>#</th>
+                                                    <th>Column Name</th>
+                                                    <th>New Value</th>
+                                                    <th>Old Value</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  {update_list}
+                                                </tbody>
+                                              </table>
+                                            );
+                                        } else {
+                                          return (<table className="table table-hover table-content-wrap">
+                                                    <thead>
+                                                      <tr>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr><td>This is a {item.change_type} request</td></tr>
+                                                    </tbody>
+                                                  </table>
+                                              )
+                                        }
+                                    })(item)}
+
+                                </div>
+                                <div className="clearfix" />
                                 <Media>
                                   <Media.Left>
                                     {

@@ -126,3 +126,7 @@
 .breadcrumb {
   margin-bottom: 2px;
 }
+
+.table-content-wrap {
+  word-break: break-all;
+}
