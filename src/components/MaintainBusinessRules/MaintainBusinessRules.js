@@ -405,7 +405,7 @@ class MaintainBusinessRules extends Component {
         )
       else {
         return(
-          <table className="table table-hover">
+          <table className="table table-hover table-content-wrap">
             <thead>
               <tr>
                 <th>#</th>
@@ -489,7 +489,7 @@ class MaintainBusinessRules extends Component {
                               <small>{moment(item.date_of_change?item.date_of_change:"20170624").format('YYYY')}</small></h6>
                             </Media.Left>
                             <Media.Body>
-                              <Media.Heading>Buisness Rule Change for {item.id}</Media.Heading>
+                              <Media.Heading>Buisness Rule Change for id: {item.id} <small>[{item.change_reference}]</small></Media.Heading>
                               <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
                               <p>{item.maker_comment}</p>
                                 <div><h5>Change Summary</h5>
@@ -509,11 +509,11 @@ class MaintainBusinessRules extends Component {
                                                      );
                                             });
                                             return(
-                                              <table className="table table-hover">
+                                              <table className="table table-hover table-content-wrap">
                                                 <thead>
                                                   <tr>
                                                     <th>#</th>
-                                                    <th>Column Name</th>
+                                                    <th>Column</th>
                                                     <th>New Value</th>
                                                     <th>Old Value</th>
                                                   </tr>
@@ -783,6 +783,7 @@ class MaintainBusinessRules extends Component {
          table_name:data["table_name"],
          id:this.selectedRowItem["id"],
          change_type:this.operationName,
+         change_reference:`Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
@@ -798,6 +799,7 @@ class MaintainBusinessRules extends Component {
          table_name:data["table_name"],
          id:this.selectedRowItem["id"],
          change_type:this.operationName,
+         change_reference:`Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
@@ -812,6 +814,7 @@ class MaintainBusinessRules extends Component {
          table_name:data["table_name"],
          id:null,
          change_type:this.operationName,
+         change_reference:`Duplicate of Rule: ${this.selectedRow["business_rule"]} of Source: ${this.selectedRow["source_id"]}`,
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;

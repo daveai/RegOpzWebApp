@@ -269,6 +269,7 @@ class AddReportAggRules extends Component {
     let audit_info={
       table_name:data["table_name"],
       change_type:data["change_type"],
+      change_reference:`Aggregation Rule of : ${this.state.form.report_id}->${this.state.form.sheet_id}->${this.state.form.cell_id}`,
     };
 
     Object.assign(audit_info,this.state.audit_form);

@@ -59,7 +59,7 @@ class AddReportRules extends Component {
 
     this.searchAnywhere = this.searchAnywhere.bind(this);
   }
-  
+
   componentWillMount() {
     this.props.fetchSources();
     if(typeof this.state.ruleIndex != 'undefined') {
@@ -82,7 +82,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
-  
+
   handleValidTillDateChange(date){
     let form = this.state.form;
     form.valid_to = date;
@@ -90,7 +90,7 @@ class AddReportRules extends Component {
     this.setState({form:form});
 
   }
-  
+
   handleDelete(i) {
       let rulesTags = this.state.rulesTags;
       rulesTags.splice(i, 1);
@@ -439,7 +439,7 @@ class AddReportRules extends Component {
                         className="view_data_date_picker_input form-control"
                     />
                   </div>
-                </div>                
+                </div>
 
                 <div className="form-group">
                   <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="Comment">Comment <span className="required">*</span></label>
@@ -496,7 +496,7 @@ class AddReportRules extends Component {
     console.log('inside cancel');
     hashHistory.push(`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`)
   }
-  
+
   handleSubmit(event){
     console.log('inside submit',this.state.form);
     event.preventDefault();
@@ -511,7 +511,8 @@ class AddReportRules extends Component {
     let audit_info={
       id:this.state.form.id,
       table_name:data.table_name,
-      change_type:data.change_type
+      change_type:data.change_type,
+      change_reference:`Rule: ${this.state.form.cell_calc_ref} of : ${this.state.form.report_id}->${this.state.form.sheet_id}->${this.state.form.cell_id} [ Source: ${this.state.form.source_id} ]`,
     };
     Object.assign(audit_info,this.state.audit_form);
 
