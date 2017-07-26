@@ -332,7 +332,7 @@ class RegOpzDataGrid extends Component {
                                                    );
                                           });
                                           return(
-                                            <table className="table table-hover">
+                                            <table className="table table-hover table-content-wrap">
                                               <thead>
                                                 <tr>
                                                   <th>#</th>
