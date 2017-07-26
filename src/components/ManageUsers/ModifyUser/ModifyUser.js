@@ -12,9 +12,9 @@ import {
     actionDeleteUser
 } from '../../../actions/UsersAction';
 
-const renderField = ({ input, label, id, defaultValue, type, meta: { touched, error }}) => (
+const renderField = ({ input, label, defaultValue, type, meta: { touched, error }}) => (
     <div className="form-group">
-        <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={id}>
+        <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
             {label}
             <span className="required">*</span>
         </label>
@@ -23,7 +23,7 @@ const renderField = ({ input, label, id, defaultValue, type, meta: { touched, er
               placeholder={label}
               defaultValue={defaultValue}
               type={type}
-              id={id}
+              id={label}
               className="form-control col-md-4 col-xs-12"/>
             {
                 touched &&
@@ -39,18 +39,8 @@ const renderField = ({ input, label, id, defaultValue, type, meta: { touched, er
 class ModifyUser extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            form: {
-                first_name: null,
-                last_name: null,
-                email: null
-            }
-        }
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
-        this.renderForm = this.renderForm.bind(this);
-        this.renderFields = this.renderFields.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -82,13 +72,12 @@ class ModifyUser extends Component {
     }
 
     renderForm() {
-        //const { handleSubmit, pristine, reset, submitting, message } = this.props;
+        const { handleSubmit, pristine, reset, submitting, message } = this.props;
         if (this.dataSource == null) {
             return(<h1>Loading...</h1>);
         } else if (typeof this.dataSource == 'undefined') {
             return (<h1>Data not found...</h1>);
         }
-        //{ this.renderFields(this.dataSource.info) }
         return(
             <div className="row form-container">
                 <div className="col col-lg-12">
@@ -97,61 +86,8 @@ class ModifyUser extends Component {
                         <div className="clearfix"></div>
                     </div>
                     <div className="x_content">
-                        <form className="form-horizontal form-label-left" onSubmit={ this.handleFormSubmit }>
-                            <div className="form-group">
-                                <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="first_name">
-                                    First Name
-                                    <span className="required">*</span>
-                                </label>
-                                <div className="col-md-9 col-sm-9 col-xs-12">
-                                    <input
-                                      name="first_name"
-                                      type="text"
-                                      label="First Name"
-                                      value={ this.state.form.first_name }
-                                      defaultValue={ this.filterSource(this.dataSource.info, "First Name") }
-                                      onChange={ this.onTextChange }
-                                      id="first_name"
-                                      className="form-control col-md-4 col-xs-12"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="last_name">
-                                    Last Name
-                                    <span className="required">*</span>
-                                </label>
-                                <div className="col-md-9 col-sm-9 col-xs-12">
-                                    <input
-                                      name="last_name"
-                                      type="text"
-                                      label="Last Name"
-                                      value={ this.state.form.last_name }
-                                      defaultValue={ this.filterSource(this.dataSource.info, "Last Name") }
-                                      onChange={ this.onTextChange }
-                                      id="last_name"
-                                      className="form-control col-md-4 col-xs-12"
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="email">
-                                    Email
-                                    <span className="required">*</span>
-                                </label>
-                                <div className="col-md-9 col-sm-9 col-xs-12">
-                                    <input
-                                      name="email"
-                                      type="text"
-                                      label="Email"
-                                      value={ this.state.form.email }
-                                      defaultValue={ this.filterSource(this.dataSource.info, "Email") }
-                                      onChange={ this.onTextChange }
-                                      id="email"
-                                      className="form-control col-md-4 col-xs-12"
-                                    />
-                                </div>
-                            </div>
+                        <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) }>
+                            { this.renderFields(this.dataSource.info) }
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                 <button type="button" className="btn btn-default" onClick={ this.handleCancel }>Cancel</button>
@@ -167,31 +103,24 @@ class ModifyUser extends Component {
         );
     }
 
+
+
     renderFields(inputList) {
+        let fieldArray = []
         inputList.map((item, index) => {
             console.log("Inside renderFields", index, item);
-            return(
+            fieldArray.push(
                 <Field
                   key={index}
-                  name={ item.title.trim() }
+                  name={ item.title }
                   type="text"
                   component={renderField}
                   label={ item.title }
-                  id={ item.title.trim() }
+                  defaultValue={ item.value }
                 />
             );
         });
-    }
-
-    filterSource(array, label) {
-        let temp = array.find((item) => item.title === label);
-        if (temp) {
-            return temp.value;
-        }
-    }
-
-    onTextChange(event) {
-        this.setState({ form: { ...this.state.form, [event.target.name]: event.target.value }})
+        return fieldArray;
     }
 
     handleFormSubmit(data) {
@@ -235,9 +164,6 @@ const VisibleModifyUser = connect(
     mapDispatchToProps
 )(ModifyUser);
 
-export default VisibleModifyUser;
-/*
 export default reduxForm({
     form: 'edit-user'
 })(VisibleModifyUser);
-*/
