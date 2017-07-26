@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import RightPane from './RightPane';
+
 export default class DashboardIndex extends Component {
     render() {
         return (
             <div>
-                <RightPane/>
+                <RightPane />
                 <div className="row">
                     <div className="col-md-4 col-sm-4 col-xs-12">
                         <div className="x_panel">

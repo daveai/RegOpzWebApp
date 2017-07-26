@@ -27,7 +27,7 @@ class BarChartWidget extends Component {
                         {this.props.countValue}
                     </div>
                     <div className="count_bottom">
-                        <ResponsiveContainer height={this.props.height} width={this.props.width}>
+                        <ResponsiveContainer height={this.props.height} width="100%">
                             <BarChart data={this.props.data}>
                                 <XAxis dataKey="name" />
                                 <YAxis />
@@ -44,6 +44,7 @@ class BarChartWidget extends Component {
                                     <Legend />
                                 }
                                 <Bar
+                                    onClick={this.props.handleClick}
                                     name={this.props.legend}
                                     dataKey="value"
                                     fill={this.props.barColor}

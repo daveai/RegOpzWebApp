@@ -68,9 +68,10 @@ class ProgressPie extends Component {
                         {this.props.countValue}
                     </div>
                     <div className="count_bottom">
-                        <ResponsiveContainer height={this.props.height} width={this.props.width}>
+                        <ResponsiveContainer height={this.props.height} width="100%">
                             <PieChart>
                                 <Pie
+                                    onClick={this.props.handleClick}
                                     name={this.props.legend}
                                     data={this.state.data}
                                     cx="50%"
