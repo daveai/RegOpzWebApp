@@ -25,3 +25,7 @@
   border: none;
   color: #5A738E;
 }
+
+.table-content-wrap {
+  word-break: break-all;
+}
