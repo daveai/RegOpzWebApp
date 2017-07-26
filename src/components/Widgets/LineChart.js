@@ -27,7 +27,7 @@ class LineChartWidget extends Component {
                         {this.props.countValue}
                     </div>
                     <div className="count_bottom">
-                        <ResponsiveContainer height={this.props.height} width={this.props.width}>
+                        <ResponsiveContainer height={this.props.height} width="100%">
                             <LineChart data={this.props.data}>
                                 <XAxis dataKey="name" />
                                 <YAxis />
@@ -47,6 +47,7 @@ class LineChartWidget extends Component {
                                     this.props.keys.map(element => {
                                         return (
                                             <Line
+                                                onClick={this.props.handleClick}
                                                 name={element.legend}
                                                 dataKey={element.key}
                                             />
