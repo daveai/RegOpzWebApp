@@ -9,17 +9,18 @@ export let UPDATE_ROLE_ACTION = 'UPDATE_ROLE_ACTION';
 export let DELETE_ROLE_ACTION = 'DELETE_ROLE_ACTION';
 
 // Target URL
-var url = BASE_URL + "roles";
+const url = BASE_URL + "roles";
 
 // TODO: Fetch Role Details from API
 export function actionFetchRoles(role) {
-    var actionType = FETCH_ROLE_ACTION;
+    let curl = url;
+    let actionType = FETCH_ROLE_ACTION;
     if (typeof role !== 'undefined') {
-        url += `/${role}`;
+        curl += `/${role}`;
         actionType = FETCH_ONE_ROLE_ACTION;
     }
     console.log("Fetching roles from API.");
-    const request = axios.get(url);
+    const request = axios.get(curl);
     console.log("Fetch roles request response:", request);
     return {
         type: actionType,
@@ -29,7 +30,7 @@ export function actionFetchRoles(role) {
 
 // TODO: Get the list of Permissions available
 export function actionFetchPermissions() {
-    var purl = BASE_URL + "permissions";
+    let purl = BASE_URL + "permissions";
     console.log("Fetching permissions from API.");
     const request = axios.get(purl);
     console.log("Fetch permissions request response:", request);

@@ -13,27 +13,28 @@ require('./ManageUsers.css');
 
 class ManageUsersComponent extends Component {
   constructor(props) {
-    super(props);
-    this.dataSource = null;
-    this.fetchFlag = true;
+      super(props);
+      this.dataSource = null;
+      this.fetchFlag = true;
   }
 
   componentWillMount() {
-    this.props.fetchUsers();
+      this.props.fetchUsers();
   }
 
   componentWillUpdate() {
-    if (this.fetchFlag){
-      this.props.fetchUsers();
+    if (this.fetchFlag) {
+        this.dataSource = null;
+        this.props.fetchUsers();
     }
   }
 
   componentDidUpdate(){
-    this.fetchFlag =! this.fetchFlag;
+      this.fetchFlag = !this.fetchFlag;
   }
 
   componentDidMount() {
-    document.title = "RegOpz Dashboard | Manage Users";
+      document.title = "RegOpz Dashboard | Manage Users";
   }
 
   render() {
@@ -44,12 +45,12 @@ class ManageUsersComponent extends Component {
               params={this.props.params}
               wrapperClass="breadcrumb"
             />
-            { this.renderUsers() }
+            { this.renderDisplay() }
           </div>
       );
   }
 
-  renderUsers() {
+  renderDisplay() {
       this.dataSource = this.props.userDetails;
 
       if(this.dataSource == null) {
@@ -67,80 +68,71 @@ class ManageUsersComponent extends Component {
               <div className="x_panel">
                 <div className="x_content">
                   <div className="row">
-                    {
-                        ((dataSource) => {
-                            let user_list = [];
-                            dataSource.map((item, index) => {
-                                console.log(index, "From ManageUsers", item);
-                                user_list.push(
-                                    <div key={index} className="col-md-6 col-sm-6 col-xs-12 profile_details">
-                                      <div className="well profile_view">
-                                        <div className="col-sm-12">
-                                            <h4 className="brief">
-                                              <i>User Details</i>
-                                            </h4>
-                                            <div className="left col-xs-7">
-                                              <h2>
-                                                { item.name }
-                                              </h2>
-                                              <ul className="list-unstyled">
-                                                  {
-                                                      item.info.map((obj, index) => {
-                                                          let iconClass = "fa"
-                                                          let iconName = obj.title
-                                                          if (obj.title == "Contact Number") {
-                                                            iconClass = "fa fa-phone"
-                                                            iconName = "Phone #"
-                                                          }
-                                                          if (obj.title == "Email") {
-                                                            iconClass = "fa fa-paper-plane"
-                                                          }
-                                                          if (obj.title == "Role") {
-                                                            iconClass = "fa fa-user"
-                                                          }
-                                                          return(
-                                                              <li key={index}>
-                                                                  <i className={iconClass}></i> <strong>{iconName}:</strong> { obj.value }
-                                                              </li>
-                                                          );
-                                                      })
-                                                  }
-                                              </ul>
-                                            </div>
-                                            <div className="right col-xs-5 text-center">
-                                              <img src="images/user.png" alt="" className="img-circle img-responsive" />
-                                            </div>
-                                          </div>
-                                          <div className="col-xs-12 bottom text-center">
-                                            <div className="col-xs-12 col-sm-6 emphasis"></div>
-                                            <div className="col-xs-12 col-sm-6 emphasis">
-                                              <button type="button"
-                                                id={item.username}
-                                                className="btn btn-primary btn-xs"
-                                                onClick={
-                                                  (event)=>{
-                                                    //console.log("event",event.target)
-                                                    hashHistory.push(`/dashboard/manage-users/edit-user?userId=${event.target.id}`)
-                                                  }
-                                                }
-                                              >
-                                                View Profile
-                                              </button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                );
-                            });
-                            return(user_list);
-                        })(this.dataSource)
-                    }
+                    { this.renderUsers(this.dataSource)  }
                   </div>
                 </div>
               </div>
             </div>
           </div>
       );
+  }
+
+  renderUsers(dataSource) {
+      let user_list = [];
+      dataSource.map((item, index) => {
+          console.log(index, "From ManageUsers", item);
+          user_list.push(
+              <div key={index} className="col-md-6 col-sm-6 col-xs-12 profile_details">
+                <div className="well profile_view">
+                  <div className="col-sm-12">
+                      <h4 className="brief">
+                        <i>User Details</i>
+                      </h4>
+                      <div className="left col-xs-7">
+                        <h2>
+                          { item.name }
+                        </h2>
+                        <ul className="list-unstyled">
+                            {
+                                item.info.map((obj, index) => {
+                                    let iconClass = "fa"
+                                    let iconName = obj.title
+                                    if (obj.title == "Contact Number") {
+                                      iconClass = "fa fa-phone"
+                                      iconName = "Phone #"
+                                    }
+                                    if (obj.title == "Email") {
+                                      iconClass = "fa fa-paper-plane"
+                                    }
+                                    if (obj.title == "Role") {
+                                      iconClass = "fa fa-user"
+                                    }
+                                    return(
+                                        <li key={index}>
+                                            <i className={iconClass}></i> <strong>{iconName}:</strong> { obj.value }
+                                        </li>
+                                    );
+                                })
+                            }
+                        </ul>
+                      </div>
+                      <div className="right col-xs-5 text-center">
+                        <img src="images/user.png" alt="" className="img-circle img-responsive" />
+                      </div>
+                    </div>
+                    <div className="col-xs-12 bottom text-center">
+                      <div className="col-xs-12 col-sm-6 emphasis"></div>
+                      <div className="col-xs-12 col-sm-6 emphasis">
+                        <Link className="btn btn-primary btn-xs" to={`/dashboard/manage-users/edit-user?userId=${item.username}`}>
+                            View Profile
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          );
+      });
+      return(user_list);
   }
 
 }

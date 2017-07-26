@@ -51,6 +51,7 @@ class ModifyUser extends Component {
         this.renderForm = this.renderForm.bind(this);
         this.renderFields = this.renderFields.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
@@ -58,7 +59,7 @@ class ModifyUser extends Component {
         if (typeof this.userIndex !== 'undefined' && this.userIndex != null) {
             this.props.fetchUser(this.userIndex);
         } else {
-            hashHistory.push('/dashboard');
+            hashHistory.push(encodeURI('/dashboard'));
         }
     }
 
@@ -152,7 +153,7 @@ class ModifyUser extends Component {
                             </div>
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button" className="btn btn-default">Cancel</button>
+                                <button type="button" className="btn btn-default" onClick={ this.handleCancel }>Cancel</button>
                                 <button type="submit" className="btn btn-success">Submit</button>
                                 <button type="button" className="btn btn-danger">Delete</button>
                               </div>
@@ -192,6 +193,10 @@ class ModifyUser extends Component {
 
     handleFormSubmit(data) {
         console.log('Submitted!', data);
+    }
+
+    handleCancel(event) {
+        hashHistory.push(encodeURI('/dashboard/manage-users'));
     }
 }
 
