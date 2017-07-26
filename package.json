@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": "git+https://github.com/RegOpz/RegOpzWebApp.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --hot --port 8080 --host 0.0.0.0",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --hot --inline --port 8080 --host 0.0.0.0",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },

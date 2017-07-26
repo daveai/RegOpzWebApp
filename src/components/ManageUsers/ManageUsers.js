@@ -88,14 +88,14 @@ class ManageUsersComponent extends Component {
                                                       item.info.map((obj, index) => {
                                                           let iconClass = "fa"
                                                           let iconName = obj.title
-                                                          if (obj.title == "Contact Number"){
+                                                          if (obj.title == "Contact Number") {
                                                             iconClass = "fa fa-phone"
                                                             iconName = "Phone #"
                                                           }
-                                                          if (obj.title == "Email"){
+                                                          if (obj.title == "Email") {
                                                             iconClass = "fa fa-paper-plane"
                                                           }
-                                                          if (obj.title == "Role"){
+                                                          if (obj.title == "Role") {
                                                             iconClass = "fa fa-user"
                                                           }
                                                           return(
@@ -115,7 +115,7 @@ class ManageUsersComponent extends Component {
                                             <div className="col-xs-12 col-sm-6 emphasis"></div>
                                             <div className="col-xs-12 col-sm-6 emphasis">
                                               <button type="button"
-                                                id={index}
+                                                id={item.username}
                                                 className="btn btn-primary btn-xs"
                                                 onClick={
                                                   (event)=>{
