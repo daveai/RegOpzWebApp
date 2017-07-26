@@ -52,6 +52,7 @@ class ModifyUser extends Component {
         this.renderFields = this.renderFields.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
@@ -155,7 +156,7 @@ class ModifyUser extends Component {
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                 <button type="button" className="btn btn-default" onClick={ this.handleCancel }>Cancel</button>
                                 <button type="submit" className="btn btn-success">Submit</button>
-                                <button type="button" className="btn btn-danger">Delete</button>
+                                <button type="button" className="btn btn-danger" onClick= { this.handleDelete }>Delete</button>
                               </div>
                            </div>
                         </form>
@@ -184,7 +185,9 @@ class ModifyUser extends Component {
 
     filterSource(array, label) {
         let temp = array.find((item) => item.title === label);
-        return temp.value;
+        if (temp) {
+            return temp.value;
+        }
     }
 
     onTextChange(event) {
@@ -192,32 +195,44 @@ class ModifyUser extends Component {
     }
 
     handleFormSubmit(data) {
-        console.log('Submitted!', data);
+        console.log('User Details Submitted!', data);
+        this.props.submitUser(data);
     }
 
     handleCancel(event) {
         hashHistory.push(encodeURI('/dashboard/manage-users'));
     }
+
+    handleDelete(event) {
+        this.props.deleteUser(this.userIndex);
+        this.handleCancel();
+    }
 }
 
 function mapStateToProps(state) {
-  console.log("On map state of Manage Users:", state);
-  return {
-    userDetails: state.user_details.error
-  };
+    console.log("On map state of Manage Users:", state);
+    return {
+        userDetails: state.user_details.error
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchUser: (data) => {
-      dispatch(actionFetchUsers(data));
-    }
-  };
+    return {
+        fetchUser: (data) => {
+            dispatch(actionFetchUsers(data));
+        },
+        submitUser: (data) => {
+            dispatch(actionUpdateUsers(data));
+        },
+        deleteUser: (data) => {
+            dispatch(actionDeleteUser(data));
+        }
+    };
 };
 
 const VisibleModifyUser = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ModifyUser);
 
 export default VisibleModifyUser;
