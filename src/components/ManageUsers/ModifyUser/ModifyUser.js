@@ -41,6 +41,7 @@ class ModifyUser extends Component {
         super(props);
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
+        this.initialValues = {};
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -52,6 +53,11 @@ class ModifyUser extends Component {
         } else {
             hashHistory.push(encodeURI('/dashboard'));
         }
+    }
+
+    componentWillUpdate(){
+      console.log("inside componentWillUpdate",this.initialValues)
+      this.props.initialize(this.initialValues);
     }
 
     render() {
@@ -106,7 +112,8 @@ class ModifyUser extends Component {
 
 
     renderFields(inputList) {
-        let fieldArray = []
+        let fieldArray = [];
+        this.initialValues = {};
         inputList.map((item, index) => {
             console.log("Inside renderFields", index, item);
             fieldArray.push(
@@ -119,6 +126,7 @@ class ModifyUser extends Component {
                   defaultValue={ item.value }
                 />
             );
+            this.initialValues[`${item.title}`] = item.value;
         });
         return fieldArray;
     }
