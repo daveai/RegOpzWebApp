@@ -405,7 +405,7 @@ class MaintainBusinessRules extends Component {
         )
       else {
         return(
-          <table className="table table-hover table-content-wrap">
+          <table className="table table-hover">
             <thead>
               <tr>
                 <th>#</th>
