@@ -8,11 +8,11 @@ import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
 import Breadcrumbs from 'react-breadcrumbs';
 import {
     actionFetchUsers,
-    actionUpdateUsers,
+    actionUpdateUser,
     actionDeleteUser
 } from '../../../actions/UsersAction';
 
-const renderField = ({ input, label, defaultValue, type, meta: { touched, error }}) => (
+const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
     <div className="form-group">
         <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
             {label}
@@ -21,20 +21,26 @@ const renderField = ({ input, label, defaultValue, type, meta: { touched, error 
         <div className="col-md-9 col-sm-9 col-xs-12">
             <input {...input}
               placeholder={label}
-              defaultValue={defaultValue}
               type={type}
               id={label}
+              readOnly={ readOnly }
               className="form-control col-md-4 col-xs-12"/>
             {
                 touched &&
                 ((error &&
-                    <div className="alert alert-danger">
-                        { error }
-                    </div>))
+                <div className="alert alert-danger">
+                    { error }
+                </div>))
             }
         </div>
     </div>
 );
+
+const validate = (values) => {
+    const errors = {};
+    
+    return errors;
+}
 
 class ModifyUser extends Component {
     constructor(props) {
@@ -42,6 +48,7 @@ class ModifyUser extends Component {
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
         this.initialValues = {};
+        this.userStatus = "Delete";
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -55,9 +62,10 @@ class ModifyUser extends Component {
         }
     }
 
-    componentWillUpdate(){
-      console.log("inside componentWillUpdate",this.initialValues)
+    componentDidMount(){
+      console.log("Inside componentWillUpdate", this.initialValues)
       this.props.initialize(this.initialValues);
+      document.title = "RegOpz Dashboard | Edit User";
     }
 
     render() {
@@ -78,7 +86,7 @@ class ModifyUser extends Component {
     }
 
     renderForm() {
-        const { handleSubmit, pristine, reset, submitting, message } = this.props;
+        const { handleSubmit, anyTouched, pristine, submitting } = this.props;
         if (this.dataSource == null) {
             return(<h1>Loading...</h1>);
         } else if (typeof this.dataSource == 'undefined') {
@@ -96,9 +104,15 @@ class ModifyUser extends Component {
                             { this.renderFields(this.dataSource.info) }
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button" className="btn btn-default" onClick={ this.handleCancel }>Cancel</button>
-                                <button type="submit" className="btn btn-success">Submit</button>
-                                <button type="button" className="btn btn-danger" onClick= { this.handleDelete }>Delete</button>
+                                <button type="button" className="btn btn-default" onClick={ this.handleCancel } disabled={ submitting }>
+                                    Cancel
+                                </button>
+                                <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
+                                    Submit
+                                </button>
+                                <button type="button" className="btn btn-danger" onClick={ this.handleDelete } disabled={ anyTouched || submitting }>
+                                    { this.userStatus }
+                                </button>
                               </div>
                            </div>
                         </form>
@@ -109,13 +123,14 @@ class ModifyUser extends Component {
         );
     }
 
-
-
     renderFields(inputList) {
         let fieldArray = [];
         this.initialValues = {};
         inputList.map((item, index) => {
             console.log("Inside renderFields", index, item);
+            if (item.title == "Status" && item.value != "Active") {
+                this.userStatus = "Activate";
+            }
             fieldArray.push(
                 <Field
                   key={index}
@@ -123,7 +138,7 @@ class ModifyUser extends Component {
                   type="text"
                   component={renderField}
                   label={ item.title }
-                  defaultValue={ item.value }
+                  readOnly={ item.title == "Status" }
                 />
             );
             this.initialValues[`${item.title}`] = item.value;
@@ -159,7 +174,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(actionFetchUsers(data));
         },
         submitUser: (data) => {
-            dispatch(actionUpdateUsers(data));
+            dispatch(actionUpdateUser(data));
         },
         deleteUser: (data) => {
             dispatch(actionDeleteUser(data));
@@ -173,5 +188,6 @@ const VisibleModifyUser = connect(
 )(ModifyUser);
 
 export default reduxForm({
-    form: 'edit-user'
+    form: 'edit-user',
+    validate
 })(VisibleModifyUser);
