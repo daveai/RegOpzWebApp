@@ -27,15 +27,17 @@ const renderField = ({ input, label, type, meta: { touched, error }}) => {
 }
 
 const asyncValidate = (values, dispatch) => {
-  return dispatch(actionFetchUsers(values.name)).then((action) => {
-    console.log("Inside asyncValidate, promise resolved");
-    let error = action.payload.data;
-    if (error) {
-      console.log("Inside asyncValidate", error);
-      throw { name: error.msg };
-    }
-  });
+  return dispatch(actionFetchUsers(values.name))
+    .then((action) => {
+        console.log("Inside asyncValidate, promise resolved");
+        let error = action.payload.data;
+        if (Object.getOwnPropertyNames(error).length > 0) {
+            console.log("Inside asyncValidate", error);
+            throw { name: error.msg };
+        }
+      });
 }
+
 const normaliseContactNumber = value => value && value.replace(/[^\d]/g, '')
 
 const validate = (values) => {
@@ -101,7 +103,6 @@ class Signup extends Component {
                     component={renderField}
                     label="Username"
                   />
-
                   <Field
                       name="first_name"
                       type="text"
@@ -149,7 +150,7 @@ class Signup extends Component {
                     <div className="form-group">
                       <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                         <button type="button" className="btn btn-primary" onClick={ reset } disabled={ pristine || submitting }>Reset</button>
-                        <button type="submit" className="btn btn-success" disabled={ submitting }>Submit</button>
+                        <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>Submit</button>
                       </div>
                    </div>
               </form>
@@ -161,7 +162,7 @@ class Signup extends Component {
   }
 
   handleFormSubmit(data) {
-    console.log(data);
+    console.log("inside handleFormSubmit",data);
     this.props.signup(data);
   }
 }
