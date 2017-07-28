@@ -11,6 +11,9 @@ import {
     actionUpdateUser,
     actionDeleteUser
 } from '../../../actions/UsersAction';
+import {
+  actionFetchRoles
+} from '../../../actions/RolesAction';
 
 const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
     <div className="form-group">
@@ -36,9 +39,53 @@ const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) 
     </div>
 );
 
+const renderSelect = ({ input, label, options, defaultRole, meta: { touched, error }}) => (
+    <div className="form-group">
+        <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
+            {label}
+            <span className="required">*</span>
+        </label>
+        <div className="col-md-9 col-sm-9 col-xs-12">
+            <select {...input}
+              id={label}
+              className="form-control col-md-4 col-xs-12">
+            {
+                ((options, defaultRole) => {
+                    let optionList = [];
+                    options.map((item, index) => {
+                        optionList.push(
+                            <option key={index} value={item.role} selected={ item.role == defaultRole }>
+                                { item.role }
+                            </option>
+                        );
+                    });
+                    return optionList;
+                })(options, defaultRole)
+            }
+            </select>
+            {
+                touched &&
+                ((error &&
+                <div className="alert alert-danger">
+                    { error }
+                </div>))
+            }
+        </div>
+    </div>
+);
+
 const validate = (values) => {
     const errors = {};
-    
+    console.log("Inside validate", values);
+/*
+    Object.keys(values).forEach((item, index) => {
+        console.log(item, values[item]);
+        if (!values[item]) {
+            errors[item] = `${item} cannot be empty.`;
+        }
+    });
+*/
+    errors.Role = "Invalid";
     return errors;
 }
 
@@ -57,6 +104,7 @@ class ModifyUser extends Component {
     componentWillMount() {
         if (typeof this.userIndex !== 'undefined' && this.userIndex != null) {
             this.props.fetchUser(this.userIndex);
+            this.props.fetchRoles();
         } else {
             hashHistory.push(encodeURI('/dashboard'));
         }
@@ -86,7 +134,7 @@ class ModifyUser extends Component {
     }
 
     renderForm() {
-        const { handleSubmit, anyTouched, pristine, submitting } = this.props;
+        const { handleSubmit, pristine, dirty, submitting } = this.props;
         if (this.dataSource == null) {
             return(<h1>Loading...</h1>);
         } else if (typeof this.dataSource == 'undefined') {
@@ -110,7 +158,7 @@ class ModifyUser extends Component {
                                 <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
                                     Submit
                                 </button>
-                                <button type="button" className="btn btn-danger" onClick={ this.handleDelete } disabled={ anyTouched || submitting }>
+                                <button type="button" className="btn btn-danger" onClick={ this.handleDelete } disabled={ dirty || submitting }>
                                     { this.userStatus }
                                 </button>
                               </div>
@@ -132,6 +180,8 @@ class ModifyUser extends Component {
                 this.userStatus = "Activate";
             }
             fieldArray.push(
+                item.title == "Role" ?
+                this.renderSelectOption(item.value) :
                 <Field
                   key={index}
                   name={ item.title }
@@ -144,6 +194,33 @@ class ModifyUser extends Component {
             this.initialValues[`${item.title}`] = item.value;
         });
         return fieldArray;
+    }
+
+    renderSelectOption(defaultRole) {
+        let roleList = this.props.roleList;
+        if (typeof roleList === 'undefined' || roleList == null) {
+            return(
+                <Field
+                  key="role"
+                  name="Role"
+                  type="text"
+                  component={renderField}
+                  label="Role"
+                  readOnly={ true }
+                />
+            );
+        }
+        return(
+            <Field
+              key="role"
+              name="Role"
+              type="text"
+              label="Role"
+              component={renderSelect}
+              options={roleList}
+              defaultRole={defaultRole}
+            />
+        );
     }
 
     handleFormSubmit(data) {
@@ -164,7 +241,8 @@ class ModifyUser extends Component {
 function mapStateToProps(state) {
     console.log("On map state of Manage Users:", state);
     return {
-        userDetails: state.user_details.error
+        userDetails: state.user_details.error,
+        roleList: state.role_management.data
     };
 }
 
@@ -172,6 +250,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchUser: (data) => {
             dispatch(actionFetchUsers(data));
+        },
+        fetchRoles: () => {
+            dispatch(actionFetchRoles());
         },
         submitUser: (data) => {
             dispatch(actionUpdateUser(data));
