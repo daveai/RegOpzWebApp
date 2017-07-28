@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
 import Breadcrumbs from 'react-breadcrumbs';
 import {
@@ -14,6 +14,9 @@ import {
 import {
     actionFetchRoles
 } from '../../../actions/RolesAction';
+require('./ModifyUser.css');
+
+const selector = formValueSelector('edit-user');
 
 const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
     <div className="form-group">
@@ -144,7 +147,7 @@ class ModifyUser extends Component {
     }
 
     renderForm() {
-        const { handleSubmit, pristine, dirty, submitting } = this.props;
+        const { handleSubmit, pristine, dirty, submitting, roleList, selectedRole } = this.props;
         if (this.dataSource == null) {
             return(<h1>Loading...</h1>);
         } else if (typeof this.dataSource == 'undefined') {
@@ -159,7 +162,19 @@ class ModifyUser extends Component {
                     </div>
                     <div className="x_content">
                         <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) }>
-                            { this.renderFields(this.dataSource.info) }
+                            { this.renderFields(this.dataSource.info, roleList) }
+                            <div className="col-md-7 col-sm-9 col-xs-12 col-md-offset-2 perm-container">
+                                {
+                                    ((roleList, selectedRole) => {
+                                        if (roleList && selectedRole) {
+                                            let permission = roleList.find((item, index) => item.role == selectedRole);
+                                            return this.renderPermissions(permission);
+                                        } else {
+                                            return(<h2>No role provided...</h2>);
+                                        }
+                                    })(roleList, selectedRole)
+                                }
+                            </div>
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                 <button type="button" className="btn btn-default" onClick={ this.handleCancel } disabled={ submitting }>
@@ -181,7 +196,7 @@ class ModifyUser extends Component {
         );
     }
 
-    renderFields(inputList) {
+    renderFields(inputList, roleList) {
         let fieldArray = [];
         this.initialValues = {};
         inputList.map((item, index) => {
@@ -191,7 +206,7 @@ class ModifyUser extends Component {
             }
             fieldArray.push(
                 item.title == "Role" ?
-                this.renderSelectOption(item.value) :
+                this.renderSelectOption(roleList, item.value) :
                 <Field
                   key={index}
                   name={ item.title }
@@ -207,8 +222,7 @@ class ModifyUser extends Component {
         return fieldArray;
     }
 
-    renderSelectOption(defaultRole) {
-        let roleList = this.props.roleList;
+    renderSelectOption(roleList, defaultRole) {
         if (typeof roleList === 'undefined' || roleList == null) {
             return(
                 <Field
@@ -234,6 +248,66 @@ class ModifyUser extends Component {
         );
     }
 
+    renderPermissions(item) {
+        if (typeof item !== 'undefined' && item != null) {
+            return(
+                <div className="x_panel_overflow x_panel tile fixed_height_320">
+                  <div className="x_title role_label">
+                      <h2>{ item.role }
+                        <small>Role Details</small>
+                      </h2>
+                    <ul className="nav navbar-right panel_toolbox">
+                      <li>
+                        <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`} target="_blank">
+                          <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
+                        </Link>
+                      </li>
+                    </ul>
+                    <div className="clearfix"></div>
+                  </div>
+                  <div className="x_content">
+                    <div className="dashboard-widget-content">
+                      <ul className="to_do">
+                        {
+                          item.components.map((comp, index) => {
+                            //console.log("component", comp);
+                            return(
+                              <li key={index}>
+                                <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
+                                  {
+                                    comp.permissions.map((perm, index) => {
+                                      let defaultChecked = null;
+                                      let permDisabled = null;
+                                      if (perm.permission_id) {
+                                        defaultChecked = "checked";
+                                        permDisabled ="checked"
+                                      }
+                                      return(
+                                          <div>
+                                            <input
+                                              key={index}
+                                              type="checkbox"
+                                              defaultChecked={defaultChecked}
+                                              disabled={true}/>
+                                          <span className="perm_label">
+                                            { perm.permission }
+                                          </span>
+                                        </div>
+                                      );
+                                    })
+                                  }
+                              </li>
+                            );
+                          })
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+            );
+        }
+    }
+
     handleFormSubmit(data) {
         console.log('User Details Submitted!', data);
         this.props.submitUser(data);
@@ -254,7 +328,8 @@ function mapStateToProps(state) {
     console.log("On map state of Manage Users:", state);
     return {
         userDetails: state.user_details.error,
-        roleList: state.role_management.data
+        roleList: state.role_management.data,
+        selectedRole: selector(state, 'Role')
     };
 }
 

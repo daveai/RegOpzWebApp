@@ -5,7 +5,7 @@ import { Label, Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import {
-    actionFetchRole,
+    actionFetchRoles,
     actionFetchComponents,
     actionFetchPermissions,
     actionUpdateRoles,
@@ -499,7 +499,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchOne: (role) => {
-        dispatch(actionFetchRole(role));
+        dispatch(actionFetchRoles(role));
     },
     fetchPermissions: () => {
         dispatch(actionFetchPermissions());
