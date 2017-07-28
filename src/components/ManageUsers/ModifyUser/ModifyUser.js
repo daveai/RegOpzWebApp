@@ -74,6 +74,8 @@ const renderSelect = ({ input, label, options, defaultRole, meta: { touched, err
     </div>
 );
 
+const normaliseContactNumber = value => value && value.replace(/[^\d]/g, '');
+
 const validate = (values) => {
     const errors = {};
     console.log("Inside validate", values);
@@ -120,7 +122,7 @@ class ModifyUser extends Component {
         if (typeof this.props.userDetails !== 'undefined' && this.props.userDetails != null) {
             this.dataSource = this.props.userDetails[0];
         }
-        console.log("Inside Modify User Render:", this.state, this.dataSource);
+        console.log("Inside Modify User Render:", this.dataSource);
         return(
             <div>
               <Breadcrumbs
@@ -188,6 +190,7 @@ class ModifyUser extends Component {
                   type="text"
                   component={renderField}
                   label={ item.title }
+                  normalize={ item.title == "Contact Number" ? normaliseContactNumber : null}
                   readOnly={ item.title == "Status" }
                 />
             );
