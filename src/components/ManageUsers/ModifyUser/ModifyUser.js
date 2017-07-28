@@ -12,7 +12,7 @@ import {
     actionDeleteUser
 } from '../../../actions/UsersAction';
 import {
-  actionFetchRoles
+    actionFetchRoles
 } from '../../../actions/RolesAction';
 
 const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
@@ -39,7 +39,7 @@ const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) 
     </div>
 );
 
-const renderSelect = ({ input, label, options, defaultRole, meta: { touched, error }}) => (
+const renderSelect = ({ input, label, options, defaultOption, meta: { touched, error }}) => (
     <div className="form-group">
         <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
             {label}
@@ -48,19 +48,20 @@ const renderSelect = ({ input, label, options, defaultRole, meta: { touched, err
         <div className="col-md-9 col-sm-9 col-xs-12">
             <select {...input}
               id={label}
+              defaultValue={ defaultOption }
               className="form-control col-md-4 col-xs-12">
             {
-                ((options, defaultRole) => {
+                ((options) => {
                     let optionList = [];
                     options.map((item, index) => {
                         optionList.push(
-                            <option key={index} value={item.role} selected={ item.role == defaultRole }>
+                            <option key={index} value={item.role}>
                                 { item.role }
                             </option>
                         );
                     });
                     return optionList;
-                })(options, defaultRole)
+                })(options)
             }
             </select>
             {
@@ -79,15 +80,22 @@ const normaliseContactNumber = value => value && value.replace(/[^\d]/g, '');
 const validate = (values) => {
     const errors = {};
     console.log("Inside validate", values);
-/*
+
     Object.keys(values).forEach((item, index) => {
-        console.log(item, values[item]);
         if (!values[item]) {
             errors[item] = `${item} cannot be empty.`;
         }
     });
-*/
-    errors.Role = "Invalid";
+
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.Email)) {
+        errors.Email = "Invalid email address.";
+    }
+
+    if (isNaN(Number(values["Contact Number"]))) {
+        errors["Contact Number"] = "Must be a number.";
+    }
+
+    console.log("End of validate", errors);
     return errors;
 }
 
@@ -177,7 +185,7 @@ class ModifyUser extends Component {
         let fieldArray = [];
         this.initialValues = {};
         inputList.map((item, index) => {
-            console.log("Inside renderFields", index, item);
+            //console.log("Inside renderFields", index, item);
             if (item.title == "Status" && item.value != "Active") {
                 this.userStatus = "Activate";
             }
@@ -221,7 +229,7 @@ class ModifyUser extends Component {
               label="Role"
               component={renderSelect}
               options={roleList}
-              defaultRole={defaultRole}
+              defaultOption={defaultRole}
             />
         );
     }
@@ -229,6 +237,7 @@ class ModifyUser extends Component {
     handleFormSubmit(data) {
         console.log('User Details Submitted!', data);
         this.props.submitUser(data);
+        this.handleCancel();
     }
 
     handleCancel(event) {
