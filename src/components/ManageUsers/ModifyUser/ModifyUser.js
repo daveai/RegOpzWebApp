@@ -107,14 +107,17 @@ class ModifyUser extends Component {
         super(props);
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
-        this.initialValues = {};
+        this.initialValues = {"name":""};
         this.userStatus = "Delete";
+        this.buttonDeleteActivateClass = "btn btn-danger";
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.initialiseCount=0;
     }
 
     componentWillMount() {
+        console.log("Inside componentWillMount", this.initialValues,this.initialiseCount)
         if (typeof this.userIndex !== 'undefined' && this.userIndex != null) {
             this.props.fetchUser(this.userIndex);
             this.props.fetchRoles();
@@ -123,8 +126,17 @@ class ModifyUser extends Component {
         }
     }
 
+    componentWillUpdate(){
+      console.log("Inside componentWillUpdate", this.initialValues,this.initialiseCount)
+      if(this.initialiseCount==1){
+        this.props.initialize(this.initialValues);
+        this.initialiseCount++;
+      }
+    }
+
+
     componentDidMount(){
-      console.log("Inside componentWillUpdate", this.initialValues)
+      console.log("Inside componentDidMount", this.initialValues)
       this.props.initialize(this.initialValues);
       document.title = "RegOpz Dashboard | Edit User";
     }
@@ -163,7 +175,7 @@ class ModifyUser extends Component {
                     <div className="x_content">
                         <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) }>
                             { this.renderFields(this.dataSource.info, roleList) }
-                            <div className="col-md-7 col-sm-9 col-xs-12 col-md-offset-2 perm-container">
+                            <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                 {
                                     ((roleList, selectedRole) => {
                                         if (roleList && selectedRole) {
@@ -175,15 +187,16 @@ class ModifyUser extends Component {
                                     })(roleList, selectedRole)
                                 }
                             </div>
+                            <div className="clearfix"></div>
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button" className="btn btn-default" onClick={ this.handleCancel } disabled={ submitting }>
+                                <button type="button" className="btn btn-primary" onClick={ this.handleCancel } disabled={ submitting }>
                                     Cancel
                                 </button>
                                 <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
                                     Submit
                                 </button>
-                                <button type="button" className="btn btn-danger" onClick={ this.handleDelete } disabled={ dirty || submitting }>
+                                <button type="button" className={ this.buttonDeleteActivateClass } onClick={ this.handleDelete } disabled={ dirty || submitting }>
                                     { this.userStatus }
                                 </button>
                               </div>
@@ -198,11 +211,18 @@ class ModifyUser extends Component {
 
     renderFields(inputList, roleList) {
         let fieldArray = [];
-        this.initialValues = {};
+        let localValues = {};
+        console.log("inputList",inputList)
         inputList.map((item, index) => {
             //console.log("Inside renderFields", index, item);
-            if (item.title == "Status" && item.value != "Active") {
-                this.userStatus = "Activate";
+            if (item.title == "Status") {
+                if ( item.value != "Active") {
+                  this.userStatus = "Activate";
+                  this.buttonDeleteActivateClass = "btn btn-warning";
+                } else {
+                  this.userStatus = "Delete";
+                  this.buttonDeleteActivateClass = "btn btn-danger";
+                }
             }
             fieldArray.push(
                 item.title == "Role" ?
@@ -214,11 +234,20 @@ class ModifyUser extends Component {
                   component={renderField}
                   label={ item.title }
                   normalize={ item.title == "Contact Number" ? normaliseContactNumber : null}
-                  readOnly={ item.title == "Status" }
+                  readOnly={ item.title == "Status" || item.title == "name" }
                 />
             );
-            this.initialValues[`${item.title}`] = item.value;
+            localValues[`${item.title}`] = item.value;
         });
+        if(localValues.name != this.initialValues.name){
+          //Since its a new user details reset the initialiseCount to 1 so that it populates fields with
+          //required attributes.
+          this.initialiseCount=1;
+        } else {
+          //Exiting user, so no need to repopulate the initial values, just increase the count
+          this.initialiseCount++;
+        }
+        this.initialValues = localValues;
         return fieldArray;
     }
 
@@ -258,7 +287,7 @@ class ModifyUser extends Component {
                       </h2>
                     <ul className="nav navbar-right panel_toolbox">
                       <li>
-                        <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`} target="_blank">
+                        <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`}>
                           <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
                         </Link>
                       </li>
@@ -319,7 +348,12 @@ class ModifyUser extends Component {
     }
 
     handleDelete(event) {
-        this.props.deleteUser(this.userIndex);
+        if ( this.userStatus == "Activate"){
+          console.log("Inside activate user");
+        } else {
+          console.log("Inside delete user");
+          this.props.deleteUser(this.userIndex);
+        }
         this.handleCancel();
     }
 }
