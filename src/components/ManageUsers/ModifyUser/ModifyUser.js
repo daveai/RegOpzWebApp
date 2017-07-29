@@ -107,13 +107,13 @@ class ModifyUser extends Component {
         super(props);
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
-        this.initialValues = {"name":""};
+        this.initialValues = {};
         this.userStatus = "Delete";
         this.buttonDeleteActivateClass = "btn btn-danger";
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.initialiseCount=0;
+        this.refreshValues = false;
     }
 
     componentWillMount() {
@@ -128,9 +128,9 @@ class ModifyUser extends Component {
 
     componentWillUpdate() {
       console.log("Inside componentWillUpdate", this.initialValues,this.initialiseCount)
-      if (this.initialiseCount == 1) {
+      if (this.refreshValues) {
         this.props.initialize(this.initialValues);
-        this.initialiseCount++;
+        this.refreshValues = ! this.refreshValues;
       }
     }
 
@@ -212,9 +212,7 @@ class ModifyUser extends Component {
     renderFields(inputList, roleList) {
         let fieldArray = [];
         let localValues = {};
-        console.log("inputList",inputList)
         inputList.map((item, index) => {
-            //console.log("Inside renderFields", index, item);
             if (item.title == "Status") {
                 if (item.value != "Active") {
                   this.userStatus = "Activate";
@@ -237,15 +235,10 @@ class ModifyUser extends Component {
                   readOnly={ item.title == "Status" || item.title == "User Name" }
                 />
             );
-            localValues[`${item.title}`] = item.value;
+            localValues[item.title] = item.value;
         });
-        if(localValues.name != this.initialValues.name){
-          //Since its a new user details reset the initialiseCount to 1 so that it populates fields with
-          //required attributes.
-          this.initialiseCount=1;
-        } else {
-          //Exiting user, so no need to repopulate the initial values, just increase the count
-          this.initialiseCount++;
+        if (localValues["User Name"] !== this.initialValues["User Name"]) {
+            this.refreshValues = true;
         }
         this.initialValues = localValues;
         return fieldArray;
@@ -299,7 +292,6 @@ class ModifyUser extends Component {
                       <ul className="to_do">
                         {
                           item.components.map((comp, index) => {
-                            //console.log("component", comp);
                             return(
                               <li key={index}>
                                 <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
