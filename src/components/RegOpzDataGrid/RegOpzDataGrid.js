@@ -313,7 +313,9 @@ class RegOpzDataGrid extends Component {
                                 <small>{item.change_reference}</small>
                               </h5>
                             </Media.Heading>
-                            <h6><Badge>{item.change_type}</Badge> by {item.maker} on <small>{item.date_of_change}</small></h6>
+                            <h6>
+                              <Badge>{item.change_type}</Badge> by {item.maker} on {moment(item.date_of_change).format('ll')} {moment(item.date_of_change).format('LTS')}
+                            </h6>
                             <p>{item.maker_comment}</p>
                               <div><h5>Change Summary</h5>
 
@@ -382,7 +384,11 @@ class RegOpzDataGrid extends Component {
                                     {
                                       ((status)=>{
                                         if(status!="PENDING"){
-                                          return(<h6>by {item.checker} on <small>{item.date_of_change}</small></h6>)
+                                          return(
+                                            <h6>
+                                              by {item.checker} on {moment(item.date_of_checking).format('ll')} {moment(item.date_of_checking).format('LTS')}
+                                            </h6>
+                                          )
                                         }
                                       }
                                     )(item.status)}
