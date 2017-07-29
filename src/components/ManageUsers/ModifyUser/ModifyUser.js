@@ -126,9 +126,9 @@ class ModifyUser extends Component {
         }
     }
 
-    componentWillUpdate(){
+    componentWillUpdate() {
       console.log("Inside componentWillUpdate", this.initialValues,this.initialiseCount)
-      if(this.initialiseCount==1){
+      if (this.initialiseCount == 1) {
         this.props.initialize(this.initialValues);
         this.initialiseCount++;
       }
@@ -216,7 +216,7 @@ class ModifyUser extends Component {
         inputList.map((item, index) => {
             //console.log("Inside renderFields", index, item);
             if (item.title == "Status") {
-                if ( item.value != "Active") {
+                if (item.value != "Active") {
                   this.userStatus = "Activate";
                   this.buttonDeleteActivateClass = "btn btn-warning";
                 } else {
@@ -234,7 +234,7 @@ class ModifyUser extends Component {
                   component={renderField}
                   label={ item.title }
                   normalize={ item.title == "Contact Number" ? normaliseContactNumber : null}
-                  readOnly={ item.title == "Status" || item.title == "name" }
+                  readOnly={ item.title == "Status" || item.title == "User Name" }
                 />
             );
             localValues[`${item.title}`] = item.value;
