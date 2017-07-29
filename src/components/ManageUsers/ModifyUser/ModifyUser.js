@@ -304,9 +304,8 @@ class ModifyUser extends Component {
                                         permDisabled ="checked"
                                       }
                                       return(
-                                          <div>
+                                          <div key={index}>
                                             <input
-                                              key={index}
                                               type="checkbox"
                                               defaultChecked={defaultChecked}
                                               disabled={true}/>
