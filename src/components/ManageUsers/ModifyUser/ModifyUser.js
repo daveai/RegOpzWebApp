@@ -339,12 +339,7 @@ class ModifyUser extends Component {
     }
 
     handleDelete(event) {
-        if ( this.userStatus == "Activate"){
-          console.log("Inside activate user");
-        } else {
-          console.log("Inside delete user");
-          this.props.deleteUser(this.userIndex);
-        }
+        this.props.deleteUser(this.userIndex);
         this.handleCancel();
     }
 }
