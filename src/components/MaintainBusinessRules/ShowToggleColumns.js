@@ -142,7 +142,13 @@ class ShowToggleColumns extends Component {
                             return (
                                 <span
                                     key={element.index}
-                                    style={{ float: 'left', padding: '7px', display: 'block' }}>
+                                    style={{
+                                        float: 'left',
+                                        padding: '3px',
+                                        margin: '7px',
+                                        display: 'block',
+                                        border: '1px solid black'
+                                    }}>
                                     <input
                                         style={{ margin: '7px' }}
                                         type="checkbox"
@@ -150,8 +156,14 @@ class ShowToggleColumns extends Component {
                                             this.handleCheckBoxChange(event, index)
                                         }}
                                         checked={element.checked}
+                                        id={element.name}
                                     />
-                                    {element.name}
+                                    <label
+                                        htmlFor={element.name}
+                                        style={{ paddingRight: '3px' }}
+                                    >
+                                        {element.name}
+                                    </label>
                                 </span>
                             );
                         })
