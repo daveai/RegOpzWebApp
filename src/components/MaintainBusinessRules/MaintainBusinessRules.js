@@ -86,6 +86,7 @@ class MaintainBusinessRules extends Component {
     this.updateInfo = null;
 
     this.handleToggle = this.handleToggle.bind(this);
+    this.displaySelectedColumns = this.displaySelectedColumns.bind(this);
   }
 
   componentWillMount() {
@@ -95,6 +96,20 @@ class MaintainBusinessRules extends Component {
   handleToggle() {
     let toggleValue = this.state.showToggleColumns;
     this.setState({ showToggleColumns: !toggleValue });
+  }
+
+  displaySelectedColumns(columns) {
+    var selectedColumns = [];
+    for (let i = 0; i < columns.length; i++)
+      if (columns[i].checked)
+        selectedColumns.push(columns[i].name);
+
+    // this.cols = selectedColumns;
+    // console.log(selectedColumns);
+    // console.log(this.cols);
+    // this.setState({ showToggleColumns: false });
+
+    // The commented part is apparently not working need to look into it 
   }
 
   render() {
@@ -340,10 +355,7 @@ class MaintainBusinessRules extends Component {
             this.state.showToggleColumns ?
               <ShowToggleColumns
                 columns={this.cols}
-                saveSelection={(columns) => {
-                  console.log(columns);
-                  // TODO: Implement this function
-                }}
+                saveSelection={this.displaySelectedColumns}
               /> :
               <RegOpzFlatGrid
                 columns={this.cols}
