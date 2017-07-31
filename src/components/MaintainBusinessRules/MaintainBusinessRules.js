@@ -85,8 +85,8 @@ class MaintainBusinessRules extends Component {
     this.operationName = "";
     this.auditInfo = {};
     this.updateInfo = null;
-    this.viewOnly=_.find(this.props.privileges,{permission:"View Business Rules"});
-    this.writeOnly=_.find(this.props.privileges,{permission:"Edit Business Rules"});
+    this.viewOnly=_.find(this.props.privileges,{permission:"View Business Rules"})?true:false;
+    this.writeOnly=_.find(this.props.privileges,{permission:"Edit Business Rules"})?true:false;
 
     this.handleToggle = this.handleToggle.bind(this);
     this.displaySelectedColumns = this.displaySelectedColumns.bind(this);
@@ -131,203 +131,247 @@ class MaintainBusinessRules extends Component {
         this.linkageData = this.props.audit_list;
       }
       console.log("Linkage data ", this.linkageData);
-      return (
-        <div className="maintain_business_rules_container">
-          <Breadcrumbs
-            routes={this.props.routes}
-            params={this.props.params}
-            wrapperClass="breadcrumb"
-          />
-          <h1>Maintain Business Rules</h1>
-          <div className="ops_icons">
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Refresh"
-                className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
-                onClick={
-                  (event) => {
-                    this.selectedRows = this.flatGrid.deSelectAll();
-                    this.selectedRowItem = null;
-                    this.selectedRow = null;
-                    //this.currentPage = 0;
-                    this.props.fetchBusinesRules(this.currentPage);
-                    $("button[title='Delete']").prop('disabled', false);
-                    $("button[title='Update']").prop('disabled', false);
-                    $("button[title='Duplicate']").prop('disabled', false);
-                  }
-                }
-              >
-                <i className="fa fa-refresh"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Insert"
-                onClick={
-                  this.handleInsertClick.bind(this)
-                }
-                className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-plus"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Duplicate"
-                onClick={
-                  this.handleDuplicateClick.bind(this)
-                }
-                className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-copy"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Update"
-                onClick={
-                  this.handleUpdateClick.bind(this)
-                }
-                className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-pencil"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Delete"
-                onClick={
-                  this.handleDeleteClick.bind(this)
-                }
-                className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-remove"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button data-toggle="tooltip" data-placement="top" title="First" onClick={(event) => {
-                this.currentPage = 0;
-                this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                this.forceUpdate();
-              }}
-                className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
-                <i className="fa fa-fast-backward"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button data-toggle="tooltip" data-placement="top" title="Prev" onClick={(event) => {
-                if (this.currentPage > 0) {
-                  this.currentPage--;
-                  this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                  this.forceUpdate();
-                }
-
-              }}
-                className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
-                <i className="fa fa-chevron-left"></i>
-              </button>
-            </div>
-            <div className="btn-group reg_flat_grid_page_input">
-              <input
-                onChange={
-                  (event) => {
-                    this.currentPage = event.target.value;
-                    this.forceUpdate();
-                  }
-                }
-                onKeyPress={
-                  (event) => {
-                    if (event.key == "Enter") {
-                      if (this.isInt(event.target.value)) {
-                        if (event.target.value > this.pages) {
-                          this.modalInstance.open("Page does not exists");
-                        } else {
+        return (
+          <div className="maintain_business_rules_container">
+            <Breadcrumbs
+              routes={this.props.routes}
+              params={this.props.params}
+              wrapperClass="breadcrumb"
+            />
+            <h1>Maintain Business Rules</h1>
+            <div className="ops_icons">
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Refresh"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                      onClick={
+                        (event) => {
+                          this.selectedRows = this.flatGrid.deSelectAll();
+                          this.selectedRowItem = null;
+                          this.selectedRow = null;
+                          //this.currentPage = 0;
                           this.props.fetchBusinesRules(this.currentPage);
+                          $("button[title='Delete']").prop('disabled',false);
+                          $("button[title='Update']").prop('disabled',false);
+                          $("button[title='Duplicate']").prop('disabled',false);
                         }
-                      } else {
-                        this.modalInstance.open("Please Enter a valid integer value");
                       }
-                    }
-                  }
-                }
-                type="text"
-                value={this.currentPage}
-                className="form-control" />
-            </div>
-            <div className="btn-group">
-              <button data-toggle="tooltip" data-placement="top" title="Next" onClick={(event) => {
-                if (this.currentPage < this.pages - 1) {
-                  this.currentPage++;
-                  this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                  this.forceUpdate();
-                }
-              }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
-                <i className="fa fa-chevron-right"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button data-toggle="tooltip" data-placement="top" title="End" onClick={(event) => {
-                this.currentPage = this.pages - 1;
-                this.props.fetchBusinesRules(this.currentPage, this.orderBy);
-                this.forceUpdate();
-              }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
-                <i className="fa fa-fast-forward"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                onClick={this.showLinkage.bind(this)}
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Report Link"
-                className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-link"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                onClick={this.showHistory.bind(this)}
-                data-toggle="tooltip"
-                data-placement="top"
-                title="History"
-                className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
-              >
-                <i className="fa fa-history"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Export CSV"
-                className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
-                onClick={
-                  (event) => {
-                    axios.get(`${BASE_URL}business-rule/export_to_csv`)
-                      .then(function (response) {
-                        console.log("export csv", response);
-                        window.location.href = BASE_URL + "../../static/" + response.data.file_name;
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
+                    >
+                      <i className="fa fa-refresh"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Insert"
+                      onClick={
+                        this.handleInsertClick.bind(this)
+                      }
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+                      disabled={!this.writeOnly}
+                    >
+                      <i className="fa fa-plus"></i>
+                    </button>
+                </div>
 
-                  }
-                }
-              >
-                <i className="fa fa-table"></i>
-              </button>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Duplicate"
+                      onClick={
+                        this.handleDuplicateClick.bind(this)
+                      }
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+                      disabled={!this.writeOnly}
+                    >
+                      <i className="fa fa-copy"></i>
+                    </button>
+                </div>
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Update"
+                      onClick={
+                        this.handleUpdateClick.bind(this)
+                      }
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                      disabled={!this.writeOnly}
+                    >
+                      <i className="fa fa-pencil"></i>
+                    </button>
+                </div>
+
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Delete"
+                      onClick={
+                        this.handleDeleteClick.bind(this)
+                      }
+                      className="btn btn-circle btn-warning business_rules_ops_buttons btn-xs"
+                      disabled={!this.writeOnly}
+                    >
+                      <i className="fa fa-remove"></i>
+                    </button>
+                </div>
+
+
+                <div className="btn-group">
+                    <button data-toggle="tooltip" data-placement="top" title="First" onClick={(event) => {
+                      this.currentPage = 0;
+                      this.props.fetchBusinesRules(this.currentPage, this.orderBy);
+                      this.forceUpdate();
+                    }}
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
+                      <i className="fa fa-fast-backward"></i>
+                    </button>
+                </div>
+
+                <div className="btn-group">
+                    <button data-toggle="tooltip" data-placement="top" title="Prev" onClick={(event) => {
+                      if(this.currentPage > 0){
+                        this.currentPage--;
+                        this.props.fetchBusinesRules(this.currentPage, this.orderBy);
+                        this.forceUpdate();
+                      }
+
+                    }}
+                     className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
+                      <i className="fa fa-chevron-left"></i>
+                    </button>
+                </div>
+
+
+                <div className="btn-group reg_flat_grid_page_input">
+                    <input
+                      onChange={
+                        (event) => {
+                          this.currentPage = event.target.value;
+                          this.forceUpdate();
+                        }
+                      }
+                      onKeyPress={
+                        (event) => {
+                          if(event.key == "Enter"){
+                            if(this.isInt(event.target.value)){
+                              if(event.target.value > this.pages){
+                                this.modalInstance.open("Page does not exists");
+                              } else {
+                                this.props.fetchBusinesRules(this.currentPage);
+                              }
+                            } else {
+                              this.modalInstance.open("Please Enter a valid integer value");
+                            }
+                          }
+                        }
+                      }
+                      type="text"
+                      value={this.currentPage}
+                      className="form-control" />
+                </div>
+
+                <div className="btn-group">
+                    <button data-toggle="tooltip" data-placement="top" title="Next" onClick={(event) => {
+                      if(this.currentPage < this.pages - 1){
+                        this.currentPage++;
+                        this.props.fetchBusinesRules(this.currentPage, this.orderBy);
+                        this.forceUpdate();
+                      }
+                    }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
+                      <i className="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+
+
+                <div className="btn-group">
+                    <button data-toggle="tooltip" data-placement="top" title="End" onClick={(event) => {
+                      this.currentPage = this.pages - 1;
+                      this.props.fetchBusinesRules(this.currentPage, this.orderBy);
+                      this.forceUpdate();
+                    }} className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs">
+                      <i className="fa fa-fast-forward"></i>
+                    </button>
+                </div>
+
+
+                <div className="btn-group">
+                    <button
+                      onClick={this.showLinkage.bind(this)}
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Report Link"
+                      className="btn btn-circle btn-info business_rules_ops_buttons btn-xs"
+                      disabled={!this.viewOnly}
+                    >
+                      <i className="fa fa-link"></i>
+                    </button>
+                </div>
+
+
+                <div className="btn-group">
+                    <button
+                      onClick={this.showHistory.bind(this)}
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="History"
+                      className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
+                      disabled={!this.viewOnly}
+                    >
+                      <i className="fa fa-history"></i>
+                    </button>
+                </div>
+
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Export CSV"
+                      className="btn btn-circle btn-success business_rules_ops_buttons btn-xs"
+                      disabled={!this.viewOnly}
+                      onClick={
+                        (event) => {
+                            axios.get(`${BASE_URL}business-rule/export_to_csv`)
+                            .then(function(response){
+                              console.log("export csv",response);
+                              window.location.href = BASE_URL + "../../static/" + response.data.file_name;
+                            })
+                            .catch(function (error) {
+                              console.log(error);
+                            });
+                        }
+                      }
+                    >
+                      <i className="fa fa-table"></i>
+                    </button>
+                </div>
+
+                <div className="btn-group">
+                    <button
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Deselect All"
+                      className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
+                      disabled={!this.viewOnly}
+                      onClick={
+                        (event) => {
+                          this.selectedRows = this.flatGrid.deSelectAll();
+                          this.selectedRowItem = null;
+                          this.selectedRow = null;
+                          $("button[title='Delete']").prop('disabled',false);
+                          $("button[title='Update']").prop('disabled',false);
+                          $("button[title='Duplicate']").prop('disabled',false);
+                        }
+                      }
+                    >
+                      <i className="fa fa-window-maximize"></i>
+                    </button>
+                </div>
             </div>
             <div className="btn-group">
               <button
@@ -360,7 +404,6 @@ class MaintainBusinessRules extends Component {
                 <i className="fa fa-th-large"></i>
               </button>
             </div>
-          </div>
           {
             this.state.showToggleColumns ?
               <ShowToggleColumns
