@@ -110,14 +110,15 @@ class ModifyUser extends Component {
         this.initialValues = {};
         this.userStatus = "Delete";
         this.buttonDeleteActivateClass = "btn btn-danger";
+        this.shouldUpdate = true;
+        this.renderFields = this.renderFields.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.refreshValues = false;
     }
 
     componentWillMount() {
-        console.log("Inside componentWillMount", this.initialValues,this.initialiseCount)
+        console.log("Inside componentWillMount", this.initialValues, this.shouldUpdate)
         if (typeof this.userIndex !== 'undefined' && this.userIndex != null) {
             this.props.fetchUser(this.userIndex);
             this.props.fetchRoles();
@@ -127,18 +128,21 @@ class ModifyUser extends Component {
     }
 
     componentWillUpdate() {
-      console.log("Inside componentWillUpdate", this.initialValues,this.initialiseCount)
-      if (this.refreshValues) {
-        this.props.initialize(this.initialValues);
-        this.refreshValues = ! this.refreshValues;
-      }
+        console.log("Inside componentWillUpdate", this.initialValues, this.shouldUpdate)
+        if (this.shouldUpdate) {
+            this.props.initialize(this.initialValues);
+        }
+    }
+
+    componentDidUpdate() {
+        console.log("Inside componentDidUpdate", this.initialValues);
+        this.shouldUpdate = ! this.shouldUpdate;
     }
 
 
     componentDidMount(){
-      console.log("Inside componentDidMount", this.initialValues)
-      this.props.initialize(this.initialValues);
-      document.title = "RegOpz Dashboard | Edit User";
+          console.log("Inside componentDidMount", this.initialValues, this.shouldUpdate)
+          document.title = "RegOpz Dashboard | Edit User";
     }
 
     render() {
@@ -159,10 +163,11 @@ class ModifyUser extends Component {
     }
 
     renderForm() {
+        const { dataSource, userStatus, renderFields, renderPermissions, handleFormSubmit, handleCancel, handleDelete, buttonDeleteActivateClass } = this;
         const { handleSubmit, pristine, dirty, submitting, roleList, selectedRole } = this.props;
-        if (this.dataSource == null) {
+        if (dataSource == null) {
             return(<h1>Loading...</h1>);
-        } else if (typeof this.dataSource == 'undefined') {
+        } else if (typeof dataSource == 'undefined') {
             return (<h1>Data not found...</h1>);
         }
         return(
@@ -173,31 +178,30 @@ class ModifyUser extends Component {
                         <div className="clearfix"></div>
                     </div>
                     <div className="x_content">
-                        <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(this.handleFormSubmit) }>
-                            { this.renderFields(this.dataSource.info, roleList) }
+                        <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(handleFormSubmit) }>
+                            { renderFields(dataSource.info, roleList) }
                             <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
                                 {
                                     ((roleList, selectedRole) => {
                                         if (roleList && selectedRole) {
                                             let permission = roleList.find((item, index) => item.role == selectedRole);
-                                            return this.renderPermissions(permission);
+                                            return renderPermissions(permission);
                                         } else {
                                             return(<h2>No role provided...</h2>);
                                         }
                                     })(roleList, selectedRole)
                                 }
                             </div>
-                            <div className="clearfix"></div>
                             <div className="form-group">
                               <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button" className="btn btn-primary" onClick={ this.handleCancel } disabled={ submitting }>
+                                <button type="button" className="btn btn-primary" onClick={ handleCancel } disabled={ submitting }>
                                     Cancel
                                 </button>
                                 <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
                                     Submit
                                 </button>
-                                <button type="button" className={ this.buttonDeleteActivateClass } onClick={ this.handleDelete } disabled={ dirty || submitting }>
-                                    { this.userStatus }
+                                <button type="button" className={ buttonDeleteActivateClass } onClick={ handleDelete } disabled={ dirty || submitting }>
+                                    { userStatus }
                                 </button>
                               </div>
                            </div>
@@ -237,10 +241,9 @@ class ModifyUser extends Component {
             );
             localValues[item.title] = item.value;
         });
-        if (localValues["User Name"] !== this.initialValues["User Name"]) {
-            this.refreshValues = true;
+        if (! this.shouldUpdate) {
+            this.initialValues = localValues;
         }
-        this.initialValues = localValues;
         return fieldArray;
     }
 
