@@ -153,9 +153,11 @@ class MaintainBusinessRules extends Component {
                           this.selectedRow = null;
                           //this.currentPage = 0;
                           this.props.fetchBusinesRules(this.currentPage);
-                          $("button[title='Delete']").prop('disabled',false);
-                          $("button[title='Update']").prop('disabled',false);
-                          $("button[title='Duplicate']").prop('disabled',false);
+                          if (this.writeOnly){
+                            $("button[title='Delete']").prop('disabled',false);
+                            $("button[title='Update']").prop('disabled',false);
+                            $("button[title='Duplicate']").prop('disabled',false);
+                          }
                         }
                       }
                     >
@@ -363,113 +365,97 @@ class MaintainBusinessRules extends Component {
                           this.selectedRows = this.flatGrid.deSelectAll();
                           this.selectedRowItem = null;
                           this.selectedRow = null;
-                          $("button[title='Delete']").prop('disabled',false);
-                          $("button[title='Update']").prop('disabled',false);
-                          $("button[title='Duplicate']").prop('disabled',false);
+                          if (this.writeOnly){
+                            $("button[title='Delete']").prop('disabled',false);
+                            $("button[title='Update']").prop('disabled',false);
+                            $("button[title='Duplicate']").prop('disabled',false);
+                          }
                         }
                       }
                     >
                       <i className="fa fa-window-maximize"></i>
                     </button>
                 </div>
+
+                <div className="btn-group">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Select Dsiplay Columns"
+                    className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
+                    onClick={this.handleToggle}
+                  >
+                    <i className="fa fa-th-large"></i>
+                  </button>
+                </div>
             </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Deselect All"
-                className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
-                onClick={
-                  (event) => {
-                    this.selectedRows = this.flatGrid.deSelectAll();
-                    this.selectedRowItem = null;
-                    this.selectedRow = null;
-                    $("button[title='Delete']").prop('disabled', false);
-                    $("button[title='Update']").prop('disabled', false);
-                    $("button[title='Duplicate']").prop('disabled', false);
+            {
+              this.state.showToggleColumns ?
+                <ShowToggleColumns
+                  columns={this.cols}
+                  saveSelection={this.displaySelectedColumns}
+                /> :
+                <RegOpzFlatGrid
+                  columns={this.selectedViewColumns}
+                  dataSource={this.data}
+                  onSelectRow={this.handleSelectRow.bind(this)}
+                  onUpdateRow={this.handleUpdateRow.bind(this)}
+                  onSort={this.handleSort.bind(this)}
+                  onFilter={this.handleFilter.bind(this)}
+                  onFullSelect={this.handleFullSelect.bind(this)}
+                  readOnly={!this.writeOnly}
+                  ref={(flatGrid) => { this.flatGrid = flatGrid }}
+                />
+            }
+            <ModalAlert
+              onClickOkay={
+                () => {
+                  if (this.operationName == "DELETE") {
+                    this.setState({ showAuditModal: true });
+                  }
+
+                  if (this.operationName == "INSERT") {
+                    console.log("this.operationName........Inside if condition........", this.operationName);
+                    this.setState({ showAuditModal: true });
                   }
                 }
-              >
-                <i className="fa fa-window-maximize"></i>
-              </button>
-            </div>
-            <div className="btn-group">
-              <button
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Select Dsiplay Columns"
-                className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
-                onClick={this.handleToggle}
-              >
-                <i className="fa fa-th-large"></i>
-              </button>
-            </div>
-          {
-            this.state.showToggleColumns ?
-              <ShowToggleColumns
-                columns={this.cols}
-                saveSelection={this.displaySelectedColumns}
-              /> :
-              <RegOpzFlatGrid
-                columns={this.selectedViewColumns}
-                dataSource={this.data}
-                onSelectRow={this.handleSelectRow.bind(this)}
-                onUpdateRow={this.handleUpdateRow.bind(this)}
-                onSort={this.handleSort.bind(this)}
-                onFilter={this.handleFilter.bind(this)}
-                onFullSelect={this.handleFullSelect.bind(this)}
-                ref={(flatGrid) => { this.flatGrid = flatGrid }}
-              />
-          }
-          <ModalAlert
-            onClickOkay={
-              () => {
-                if (this.operationName == "DELETE") {
-                  this.setState({ showAuditModal: true });
-                }
-
-                if (this.operationName == "INSERT") {
-                  console.log("this.operationName........Inside if condition........", this.operationName);
-                  this.setState({ showAuditModal: true });
+              }
+              onClickDiscard={
+                () => {
+                  //  TODO:
                 }
               }
-            }
-            onClickDiscard={
-              () => {
-                //  TODO:
+              ref={
+                (modal) => {
+                  this.modalInstance = modal
+                }
               }
-            }
-            ref={
-              (modal) => {
-                this.modalInstance = modal
-              }
-            }
-          />
-          <Modal
-            show={this.state.isModalOpen}
-            container={this}
-            onHide={(event) => {
-              this.setState({ isModalOpen: false });
-            }}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>{this.modalType} for <h6>{this.selectedRulesAsString}</h6></Modal.Title>
-            </Modal.Header>
+            />
+            <Modal
+              show={this.state.isModalOpen}
+              container={this}
+              onHide={(event) => {
+                this.setState({ isModalOpen: false });
+              }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{this.modalType} for <h6>{this.selectedRulesAsString}</h6></Modal.Title>
+              </Modal.Header>
 
-            <Modal.Body>
-              {this.renderModalBody(this.modalType, this.linkageData, this.selectedRulesAsString)}
-            </Modal.Body>
+              <Modal.Body>
+                {this.renderModalBody(this.modalType, this.linkageData, this.selectedRulesAsString)}
+              </Modal.Body>
 
-            <Modal.Footer>
-              <Button onClick={(event) => {
-                this.setState({ isModalOpen: false })
-              }}>Ok</Button>
-            </Modal.Footer>
-          </Modal>
+              <Modal.Footer>
+                <Button onClick={(event) => {
+                  this.setState({ isModalOpen: false })
+                }}>Ok</Button>
+              </Modal.Footer>
+            </Modal>
 
-          < AuditModal showModal={this.state.showAuditModal}
-            onClickOkay={this.handleAuditOkayClick.bind(this)}
-          />
+            < AuditModal showModal={this.state.showAuditModal}
+              onClickOkay={this.handleAuditOkayClick.bind(this)}
+            />
         </div>
       )
     } else {
@@ -709,9 +695,11 @@ class MaintainBusinessRules extends Component {
         $("button[title='Duplicate']").prop('disabled', true);
       }
       else {
-        $("button[title='Delete']").prop('disabled', false);
-        $("button[title='Update']").prop('disabled', false);
-        $("button[title='Duplicate']").prop('disabled', false);
+        if (this.writeOnly){
+          $("button[title='Delete']").prop('disabled', false);
+          $("button[title='Update']").prop('disabled', false);
+          $("button[title='Duplicate']").prop('disabled', false);
+        }
       }
     }
   }
@@ -858,9 +846,11 @@ class MaintainBusinessRules extends Component {
         $("button[title='Duplicate']").prop('disabled', true);
       }
       else {
-        $("button[title='Delete']").prop('disabled', false);
-        $("button[title='Update']").prop('disabled', false);
-        $("button[title='Duplicate']").prop('disabled', false);
+        if (this.writeOnly){
+          $("button[title='Delete']").prop('disabled', false);
+          $("button[title='Update']").prop('disabled', false);
+          $("button[title='Duplicate']").prop('disabled', false);
+        }
       }
     }
   }
