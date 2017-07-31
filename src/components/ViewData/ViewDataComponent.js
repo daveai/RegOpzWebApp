@@ -17,11 +17,14 @@ import {
   actionDeleteFromSourceData
 } from '../../actions/ViewDataAction';
 import DatePicker from 'react-datepicker';
+import { BASE_URL } from '../../Constant/constant';
+import axios from 'axios';
 import moment from 'moment';
 import RegOpzFlatGrid from '../RegOpzFlatGrid/RegOpzFlatGrid';
 import SourceTreeInfoComponent from './SourceTreeInfoComponent';
 import InfoModal from '../InfoModal/InfoModal';
 import ModalAlert from '../ModalAlert/ModalAlert';
+import ShowToggleColumns from '../MaintainBusinessRules/ShowToggleColumns';
 require('react-datepicker/dist/react-datepicker.css');
 require('./ViewDataComponentStyle.css');
 
@@ -66,6 +69,10 @@ class ViewDataComponent extends Component {
     this.rules = this.props.location.query['rules'];
     this.table = this.props.location.query['table'];
     this.filter = this.props.location.query['filter'];
+
+    this.selectedViewColumns=[];
+    this.handleToggle = this.handleToggle.bind(this);
+    this.displaySelectedColumns = this.displaySelectedColumns.bind(this);
   }
 
   componentWillMount() {
@@ -83,6 +90,25 @@ class ViewDataComponent extends Component {
     else{
       this.pages = 0;
     }
+  }
+
+  handleToggle() {
+    let toggleValue = this.state.showToggleColumns;
+    this.setState({ showToggleColumns: !toggleValue });
+  }
+
+  displaySelectedColumns(columns) {
+    var selectedColumns = [];
+    for (let i = 0; i < columns.length; i++)
+      if (columns[i].checked)
+        selectedColumns.push(columns[i].name);
+
+    this.selectedViewColumns = selectedColumns;
+    console.log(selectedColumns);
+    console.log(this.selectedViewColumns);
+    this.setState({ showToggleColumns: false });
+
+    // The commented part is apparently not working need to look into it
   }
 
   fetchDataToGrid() {
@@ -168,6 +194,9 @@ class ViewDataComponent extends Component {
         this.pages = Math.ceil(this.props.report[0].count / 100);
         this.sourceTableName = this.props.report[0].table_name;
         this.sourceTableCols = this.props.report[0].cols;
+        if (!this.selectedViewColumns.length){
+          this.selectedViewColumns = this.sourceTableCols;
+        }
         this.sql = this.props.report[0].sql;
         return(
           <div>
@@ -450,50 +479,68 @@ class ViewDataComponent extends Component {
                       <i className="fa fa-window-maximize"></i>
                     </button>
                 </div>
+                <div className="btn-group">
+                  <button
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Select Dsiplay Columns"
+                    className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
+                    onClick={this.handleToggle}
+                  >
+                    <i className="fa fa-th-large"></i>
+                  </button>
+                </div>
             </div>
-            <RegOpzFlatGrid
-               columns={this.props.report[0].cols}
-               dataSource={this.props.report[0].rows}
-               onSelectRow={
-                 (indexOfGrid) => {
-                   if(this.selectedItems.length == 1){
-                     this.selectedIndexOfGrid = indexOfGrid;
-                     console.log("Inside Single select ", indexOfGrid);
+            {
+              this.state.showToggleColumns ?
+                <ShowToggleColumns
+                  columns={this.props.report[0].cols}
+                  saveSelection={this.displaySelectedColumns}
+                /> :
+                <RegOpzFlatGrid
+                   columns={this.selectedViewColumns}
+                   dataSource={this.props.report[0].rows}
+                   onSelectRow={
+                     (indexOfGrid) => {
+                       if(this.selectedItems.length == 1){
+                         this.selectedIndexOfGrid = indexOfGrid;
+                         console.log("Inside Single select ", indexOfGrid);
+                       }
+                       console.log("Single select ", indexOfGrid);
+                     }
                    }
-                   console.log("Single select ", indexOfGrid);
-                 }
-               }
-               onUpdateRow = {
-                 (row) => {
-                   console.log("On update row ",row);
-                   let data = {
-                     table_name:this.sourceTableName,
-                     update_info:row,
-                     business_date:this.currentBusinessDate
+                   onUpdateRow = {
+                     (row) => {
+                       console.log("On update row ",row);
+                       let data = {
+                         table_name:this.sourceTableName,
+                         update_info:row,
+                         business_date:this.currentBusinessDate
+                       }
+                       this.props.updateSourceData(data);
+                     }
                    }
-                   this.props.updateSourceData(data);
-                 }
-               }
-               onSort = {() => {}}
-               onFilter = {() => {}}
-               onFullSelect = {
-                 (items) => {
-                   console.log("Selected Items ", items);
-                   if(this.selectedItems.length==0 || (this.selectedItems[0].id != items[0].id)) {
-                     console.log("Inside Selected Items ", items);
-                     this.selectedItems = items;
-                   } else {
-                     this.selectedItems = this.flatGrid.deSelectAll();
-                   }
+                   onSort = {() => {}}
+                   onFilter = {() => {}}
+                   onFullSelect = {
+                     (items) => {
+                       console.log("Selected Items ", items);
+                       if(this.selectedItems.length==0 || (this.selectedItems[0].id != items[0].id)) {
+                         console.log("Inside Selected Items ", items);
+                         this.selectedItems = items;
+                       } else {
+                         this.selectedItems = this.flatGrid.deSelectAll();
+                       }
 
-                 }
-               }
-               ref={
-                 (flatGrid) => {
-                   this.flatGrid = flatGrid;
-                 }
-               }
-            />
+                     }
+                   }
+                   ref={
+                     (flatGrid) => {
+                       this.flatGrid = flatGrid;
+                     }
+                   }
+                />
+            }
           </div>
         )
       }

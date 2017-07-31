@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 import LogOut from '../Authentication/Logout';
 
 export default class TopNav extends Component {
@@ -16,13 +17,14 @@ export default class TopNav extends Component {
                         <ul className="nav navbar-nav navbar-right">
                             <li className="">
                                 <a href="javascript:;" className="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="images/img.jpg" alt=""/>John Smith
+                                    <img src="images/img.jpg" alt="" />John Smith
                                     <span className=" fa fa-angle-down"></span>
                                 </a>
-                                <ul className="dropdown-menu dropdown-usermenu pull-right" style={{ "zIndex" : 9999 }}>
+                                <ul className="dropdown-menu dropdown-usermenu pull-right" style={{ "zIndex": 9999 }}>
                                     <li>
-                                        <a href="javascript:;">
-                                            Profile</a>
+                                        <Link to="/dashboard/profile">
+                                            Profile
+                                        </Link>
                                     </li>
                                     <li>
                                         <a href="javascript:;">
@@ -34,7 +36,7 @@ export default class TopNav extends Component {
                                         <a href="javascript:;">Help</a>
                                     </li>
                                     <li>
-                                        <LogOut/>
+                                        <LogOut />
                                     </li>
                                 </ul>
                             </li>
@@ -42,15 +44,15 @@ export default class TopNav extends Component {
                             <li role="presentation" className="dropdown">
                                 <a href="javascript:;" className="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                     <i className="fa fa-envelope-o"></i>
-                                <span className="badge bg-green">6</span>
+                                    <span className="badge bg-green">6</span>
                                 </a>
                                 <ul id="menu1" className="dropdown-menu list-unstyled msg_list" role="menu">
                                     <li>
                                         <a>
-                                            <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                            <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                                             <span>
                                                 <span>John Smith</span>
-                                            <span className="time">3 mins ago</span>
+                                                <span className="time">3 mins ago</span>
                                             </span>
                                             <span className="message">
                                                 Film festivals used to be do-or-die moments for movie makers. They were where...
@@ -59,10 +61,10 @@ export default class TopNav extends Component {
                                     </li>
                                     <li>
                                         <a>
-                                            <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                            <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                                             <span>
                                                 <span>John Smith</span>
-                                            <span className="time">3 mins ago</span>
+                                                <span className="time">3 mins ago</span>
                                             </span>
                                             <span className="message">
                                                 Film festivals used to be do-or-die moments for movie makers. They were where...
@@ -71,10 +73,10 @@ export default class TopNav extends Component {
                                     </li>
                                     <li>
                                         <a>
-                                            <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                            <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                                             <span>
                                                 <span>John Smith</span>
-                                            <span className="time">3 mins ago</span>
+                                                <span className="time">3 mins ago</span>
                                             </span>
                                             <span className="message">
                                                 Film festivals used to be do-or-die moments for movie makers. They were where...
@@ -83,10 +85,10 @@ export default class TopNav extends Component {
                                     </li>
                                     <li>
                                         <a>
-                                            <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                            <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                                             <span>
                                                 <span>John Smith</span>
-                                            <span className="time">3 mins ago</span>
+                                                <span className="time">3 mins ago</span>
                                             </span>
                                             <span className="message">
                                                 Film festivals used to be do-or-die moments for movie makers. They were where...
@@ -97,7 +99,7 @@ export default class TopNav extends Component {
                                         <div className="text-center">
                                             <a>
                                                 <strong>See All Alerts</strong>
-                                            <i className="fa fa-angle-right"></i>
+                                                <i className="fa fa-angle-right"></i>
                                             </a>
                                         </div>
                                     </li>

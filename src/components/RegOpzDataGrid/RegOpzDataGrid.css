@@ -1,91 +1,111 @@
 .reg_col {
-  display: table-cell;
-  text-align: center;
-  background-color: #fff;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  height: 36px;
-  vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 36px;
+    vertical-align: middle;
 }
+
 .reg_col_first {
-  display: table-cell;
-  text-align: center;
-  background-color: #fff;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
+    display: table-cell;
+    text-align: center;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
 }
+
 .reg_grid_row_marker_holder {
-  width: 30px;
+    width: 30px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
 }
+
 .rowMarker {
-  text-align: center;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  float: left;
-  height: 30px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    float: left;
+    height: 30px;
 }
+
 .rowMarker:first-child {
-  border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
-.rowMarker > span {
-  display: block;
-  width: 30px;
 
+.rowMarker>span {
+    display: block;
+    width: 30px;
 }
-.reg_col > span {
-  display: block;
-  width: 100px;
-}
-.reg_col_first > span {
-  display: block;
-  width: 30px;
 
+.reg_col>span {
+    display: block;
+    width: 100px;
 }
+
+.reg_col_first>span {
+    display: block;
+    width: 30px;
+}
+
 .reg_gridHolder {
-  height: 87vh;
-  position: relative;
+    height: 87vh;
+    position: relative;
 }
+
 .data_grid_container {
-  overflow: auto;
-  height: 69vh;
-  position: relative;
+    overflow: auto;
+    height: 69vh;
+    position: relative;
 }
+
 .reg_header {
-  float: left;
+    float: left;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
+
 .reg_grid_drawing_container {
-  width: 100%;
-  background-color: #ffffff;
-  position: relative;
-  left: 32px;
+    width: 100%;
+    background-color: #ffffff;
+    position: relative;
+    left: 32px;
 }
+
 .reg_horizontal_line {
     height: 30px;
     border-bottom: 1px solid #ddd;
     background-color: white;
 }
+
 .reg_horizontal_line_holder {
     position: absolute;
     top: 0;
     width: 100%;
     left: 0;
 }
+
 .reg_vertical_line_holder {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
 }
+
 .reg_vertical_line {
-  float: left;
-  width: 101px;
-  height: 100%;
-  border-right: 1px solid #ddd;
+    float: left;
+    width: 101px;
+    height: 100%;
+    border-right: 1px solid #ddd;
 }
+
 .reg_cell {
     position: absolute;
     width: 100px;
@@ -93,36 +113,42 @@
     top: 0;
     left: 0;
     background-color: white;
-    color:#3F3F92;
+    color: #3F3F92;
     text-align: center;
     display: table;
 }
-.reg_cell_selected {
-  border: 1px solid red;
 
+.reg_cell_selected {
+    border: 1px solid red;
 }
-.reg_cell > span {
-  display: table-cell;
-  vertical-align: middle;
-  overflow: hidden;
+
+.reg_cell>span {
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
 }
+
 .reg_sheet_buttons_holder {
-  margin-bottom: 10px;
-  margin-left: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
 }
+
 .rightClickContextMenu {
-  width: 220px;
-  height: 250px;
-  background-color: blue;
-  position: absolute;
-  display: none;
+    width: 220px;
+    height: 250px;
+    background-color: blue;
+    position: absolute;
+    display: none;
 }
+
 .mb-10 {
-  margin-bottom: 3px;
+    margin-bottom: 3px;
 }
+
 .reg_ops_button_holder {
     background-color: #f7f7f7;
 }
+
 .breadcrumb {
   margin-bottom: 2px;
 }

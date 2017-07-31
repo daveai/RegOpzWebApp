@@ -41,6 +41,7 @@ import ManageDefChange from './components/ManageDefChange/ManageDefChange';
 import ManageRoles from './components/ManageRoles/ManageRoles';
 import AddRoles from './components/ManageRoles/AddRoles/AddRoles';
 import ManageUsers from './components/ManageUsers/ManageUsers';
+import Profile from './components/Profile/Profile';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -57,12 +58,12 @@ class Index extends Component {
         if (!this.props.user) {
             return (<Login {...this.props} />);
         } else if (this.props.children) {
-          return (<div> { this.props.children } </div>);
+            return (<div> {this.props.children} </div>);
         } else {
-          hashHistory.push('/dashboard');
-          return (<Dashboard {...this.props} />)
-      }
-  }
+            hashHistory.push('/dashboard');
+            return (<Dashboard {...this.props} />)
+        }
+    }
 }
 
 function mapStateToProps(state) {
@@ -83,30 +84,31 @@ ReactDOM.render(
         <Router history={hashHistory}>
             <Route path="/" component={VisibleIndex} />
             <Route path="/" name="Home" component={VisibleIndex}>
-              <Route path="dashboard" name="Dashboard" component={Dashboard} >
-                  <IndexRoute component={DashboardIndex} />
-                  <Route path="capture-report-template" name="Capture Report Template" component={CaptureReportTemplate} />
-                  <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
-                  <Route path="maintain-business-rules" name="Maintain Business Rules" component={MaintainBusinessRules} />
-                  <Route path="maintain-business-rules/add-business-rule" component={AddBusinessRule} />
-                  <Route path="view-data" name="View Data" component={ViewDataComponentV2} />
-                  <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
-                  <Route path="view-report" name="View Report" component={ViewReport} />
-                  <Route path="create-report" name="Create Report" component={CreateReport} />
-                  <Route path="drill-down" name="DrillDown" component={DrillDown} />
-                  <Route path="maintain-report-rules" name="Maintain Report Rules" component={MaintainReportRules} />
-                  <Route path="maintain-report-rules/add-report-rules" name="Add Report Rules" component={AddReportRules} />
-                  <Route path="maintain-report-rules/add-report-agg-rules" name="Add Report Aggregate Rules" component={AddReportAggRules} />
-                  <Route path="maintain-sources" name="Maintain Sources" component={MaintainSources} />
-                  <Route path="maintain-sources/add-sources" name="Add Sources" component={AddSources} />
-                  <Route path="variance-analysis" name="Variance Analysis" component={VarianceAnalysisForm} />
-                  <Route path="variance-analysis/variance-data-grid" name="Variance Analysis Grid" component={VarianceAnalysisGrid} />
-                  <Route path="variance-analysis/variance-chart" name="Variance Analysis Chart" component={VarianceAnalysisChart}/>
-                  <Route path="workflow/manage-def-change" name="Manage Definition Change" component={ManageDefChange} />
-                  <Route path="manage-roles" name="Role Management" component={ManageRoles}/>
-                  <Route path="manage-roles/add-roles" name="Add Role" component={AddRoles}/>
-                  <Route path="manage-users" name="User Management" component={ManageUsers}/>
-              </Route>
+                <Route path="dashboard" name="Dashboard" component={Dashboard} >
+                    <IndexRoute component={DashboardIndex} />
+                    <Route path="profile" component={Profile} name="Profile" />
+                    <Route path="capture-report-template" name="Capture Report Template" component={CaptureReportTemplate} />
+                    <Route path="data-grid" name="Data Grid" component={RegOpzDataGrid} />
+                    <Route path="maintain-business-rules" name="Maintain Business Rules" component={MaintainBusinessRules} />
+                    <Route path="maintain-business-rules/add-business-rule" component={AddBusinessRule} />
+                    <Route path="view-data" name="View Data" component={ViewDataComponentV2} />
+                    <Route path="view-data-on-grid" name="View Data Grid" component={ViewDataComponent} />
+                    <Route path="view-report" name="View Report" component={ViewReport} />
+                    <Route path="create-report" name="Create Report" component={CreateReport} />
+                    <Route path="drill-down" name="DrillDown" component={DrillDown} />
+                    <Route path="maintain-report-rules" name="Maintain Report Rules" component={MaintainReportRules} />
+                    <Route path="maintain-report-rules/add-report-rules" name="Add Report Rules" component={AddReportRules} />
+                    <Route path="maintain-report-rules/add-report-agg-rules" name="Add Report Aggregate Rules" component={AddReportAggRules} />
+                    <Route path="maintain-sources" name="Maintain Sources" component={MaintainSources} />
+                    <Route path="maintain-sources/add-sources" name="Add Sources" component={AddSources} />
+                    <Route path="variance-analysis" name="Variance Analysis" component={VarianceAnalysisForm} />
+                    <Route path="variance-analysis/variance-data-grid" name="Variance Analysis Grid" component={VarianceAnalysisGrid} />
+                    <Route path="variance-analysis/variance-chart" name="Variance Analysis Chart" component={VarianceAnalysisChart} />
+                    <Route path="workflow/manage-def-change" name="Manage Definition Change" component={ManageDefChange} />
+                    <Route path="manage-roles" name="Role Management" component={ManageRoles} />
+                    <Route path="manage-roles/add-roles" name="Add Role" component={AddRoles} />
+                    <Route path="manage-users" name="User Management" component={ManageUsers} />
+                </Route>
             </Route>
         </Router>
     </Provider>
