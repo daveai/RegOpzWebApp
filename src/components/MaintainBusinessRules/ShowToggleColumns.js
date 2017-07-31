@@ -51,7 +51,7 @@ class ShowToggleColumns extends Component {
         let length = value.length;
         let filteredColumns = this.state.columns.filter(element => {
             return (
-                element.name.substring(0, length) === value
+                element.name.toLowerCase().includes(value.toLowerCase())
             );
         });
 

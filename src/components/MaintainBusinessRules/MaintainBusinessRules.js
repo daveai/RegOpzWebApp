@@ -34,7 +34,8 @@ class MaintainBusinessRules extends Component {
   constructor(props) {
     super(props);
     this.cols = [];
-    this.data = []
+    this.data = [];
+    this.selectedViewColumns=[];
     this.newItem = {
       "business_or_validation": "",
       "business_rule": "",
@@ -104,17 +105,20 @@ class MaintainBusinessRules extends Component {
       if (columns[i].checked)
         selectedColumns.push(columns[i].name);
 
-    // this.cols = selectedColumns;
-    // console.log(selectedColumns);
-    // console.log(this.cols);
-    // this.setState({ showToggleColumns: false });
+    this.selectedViewColumns = selectedColumns;
+    console.log(selectedColumns);
+    console.log(this.selectedViewColumns);
+    this.setState({ showToggleColumns: false });
 
-    // The commented part is apparently not working need to look into it 
+    // The commented part is apparently not working need to look into it
   }
 
   render() {
     if (this.props.business_rules.length) {
       this.cols = this.props.business_rules[0].cols;
+      if (!this.selectedViewColumns.length){
+        this.selectedViewColumns = this.cols;
+      }
       this.data = this.props.business_rules[0].rows;
       this.count = this.props.business_rules[0].count;
       this.pages = Math.ceil(this.count / 100);
@@ -344,6 +348,9 @@ class MaintainBusinessRules extends Component {
             </div>
             <div className="btn-group">
               <button
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Select Dsiplay Columns"
                 className="btn btn-circle btn-default business_rules_ops_buttons btn-xs"
                 onClick={this.handleToggle}
               >
@@ -358,7 +365,7 @@ class MaintainBusinessRules extends Component {
                 saveSelection={this.displaySelectedColumns}
               /> :
               <RegOpzFlatGrid
-                columns={this.cols}
+                columns={this.selectedViewColumns}
                 dataSource={this.data}
                 onSelectRow={this.handleSelectRow.bind(this)}
                 onUpdateRow={this.handleUpdateRow.bind(this)}
