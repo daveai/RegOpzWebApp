@@ -1,22 +1,22 @@
-// This Component is not being used yet
-// This Component will render a single role on te screen
-// Can be used by AddRoles (for single entry) as well as ManageRoles (for multiple entry)
-
+/*
+ * ViewRole: Common component to display role informations
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
+import { Label } from 'react-bootstrap';
 
 export default class ViewRole extends Component {
   constructor(props) {
     super(props);
-    this.dataSource = this.props.data;
   }
 
   render() {
-      ((item, index) => {
-          console.log(index, item);
-            <div key={index} className="col-md-4 col-sm-4 col-xs-12">
+      const { item } = this.props;
+      if (typeof item !== 'undefined' && item != null) {
+          return(
               <div className="x_panel_overflow x_panel tile fixed_height_320">
-                <div className="x_title">
+                <div className="x_title role_label">
                     <h2>{ item.role }
                       <small>Role Details</small>
                     </h2>
@@ -34,7 +34,6 @@ export default class ViewRole extends Component {
                     <ul className="to_do">
                       {
                         item.components.map((comp, index) => {
-                          console.log("component", comp);
                           return(
                             <li key={index}>
                               <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
@@ -47,12 +46,11 @@ export default class ViewRole extends Component {
                                       permDisabled ="checked"
                                     }
                                     return(
-                                        <div>
+                                        <div key={index}>
                                           <input
-                                            key={index}
                                             type="checkbox"
                                             defaultChecked={defaultChecked}
-                                            disabled={this.state.checked}/>
+                                            disabled={true}/>
                                         <span className="perm_label">
                                           { perm.permission }
                                         </span>
@@ -68,10 +66,7 @@ export default class ViewRole extends Component {
                   </div>
                 </div>
               </div>
-            </div>
-            );
-          })
-        return(role_list);
-    })(this.dataSource)
+          );
+      }
   }
 }

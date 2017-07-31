@@ -14,6 +14,7 @@ import {
 import Breadcrumbs from 'react-breadcrumbs';
 import InfoModal from '../../InfoModal/InfoModal';
 import ModalAlert from '../../ModalAlert/ModalAlert';
+import ViewRole from '../ViewRole';
 require('./AddRoles.css');
 
 class AddRolesComponent extends Component {
@@ -431,53 +432,7 @@ class AddRolesComponent extends Component {
                 <h4>Do you want to submit changes for this role?</h4>
               </div>
               <div key={formData.role} >
-                <div className="x_panel_overflow x_panel tile fixed_height_320">
-                  <div className="x_title">
-                      <h2>{ formData.role }
-                        <small>Role Details</small>
-                      </h2>
-                    <div className="clearfix"></div>
-                  </div>
-                  <div className="x_content">
-                    <div className="dashboard-widget-content">
-                      <ul className="to_do">
-                        {
-                          formData.components.map((comp, index) => {
-                            console.log("component", comp);
-                            return(
-                              <li key={index}>
-                                <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
-                                  {
-                                    comp.permissions.map((perm, index) => {
-                                      let defaultChecked = null;
-                                      let permDisabled = null;
-                                      if (perm.permission_id) {
-                                        defaultChecked = "checked";
-                                        permDisabled ="checked"
-
-                                        return(
-                                            <div key={index}>
-                                              <input
-                                                key={index}
-                                                type="checkbox"
-                                                defaultChecked={defaultChecked}
-                                                disabled/>
-                                            <span className="perm_label">
-                                              { perm.permission }
-                                            </span>
-                                          </div>
-                                        );
-                                      }
-                                    })
-                                  }
-                              </li>
-                            );
-                          })
-                        }
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <ViewRole item={formData}/>
               </div>
             </div>
           );

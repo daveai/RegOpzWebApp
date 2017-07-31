@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { hashHistory, Link } from 'react-router';
+import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { Label, Button, Modal, Checkbox } from 'react-bootstrap';
 import Breadcrumbs from 'react-breadcrumbs';
 import {
     actionFetchUsers,
@@ -14,6 +13,7 @@ import {
 import {
     actionFetchRoles
 } from '../../../actions/RolesAction';
+import ViewRole from '../../ManageRoles/ViewRole';
 require('./ModifyUser.css');
 
 const selector = formValueSelector('edit-user');
@@ -276,57 +276,7 @@ class ModifyUser extends Component {
     renderPermissions(item) {
         if (typeof item !== 'undefined' && item != null) {
             return(
-                <div className="x_panel_overflow x_panel tile fixed_height_320">
-                  <div className="x_title role_label">
-                      <h2>{ item.role }
-                        <small>Role Details</small>
-                      </h2>
-                    <ul className="nav navbar-right panel_toolbox">
-                      <li>
-                        <Link key={item.id} to={`/dashboard/manage-roles/add-roles?role=${item.role}`}>
-                          <i className="fa fa-wrench" rel="tooltip" title="Edit Role"></i>
-                        </Link>
-                      </li>
-                    </ul>
-                    <div className="clearfix"></div>
-                  </div>
-                  <div className="x_content">
-                    <div className="dashboard-widget-content">
-                      <ul className="to_do">
-                        {
-                          item.components.map((comp, index) => {
-                            return(
-                              <li key={index}>
-                                <h4><i className="fa fa-support"></i> <Label bsStyle="primary">{comp.component}</Label></h4>
-                                  {
-                                    comp.permissions.map((perm, index) => {
-                                      let defaultChecked = null;
-                                      let permDisabled = null;
-                                      if (perm.permission_id) {
-                                        defaultChecked = "checked";
-                                        permDisabled ="checked"
-                                      }
-                                      return(
-                                          <div key={index}>
-                                            <input
-                                              type="checkbox"
-                                              defaultChecked={defaultChecked}
-                                              disabled={true}/>
-                                          <span className="perm_label">
-                                            { perm.permission }
-                                          </span>
-                                        </div>
-                                      );
-                                    })
-                                  }
-                              </li>
-                            );
-                          })
-                        }
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <ViewRole item={item}/>
             );
         }
     }
