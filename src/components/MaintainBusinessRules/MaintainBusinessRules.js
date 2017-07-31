@@ -825,40 +825,6 @@ class MaintainBusinessRules extends Component {
       !isNaN(parseInt(value, 10));
   }
 
-  handleAuditOkayClick(auditInfo) {
-    let data = {};
-    data["change_type"] = this.operationName;
-    data["table_name"] = "business_rules";
-
-    if (this.operationName == "DELETE") {
-      this.auditInfo = {
-        table_name: data["table_name"],
-        id: this.selectedRowItem["id"],
-        change_type: this.operationName,
-      };
-      Object.assign(this.auditInfo, auditInfo);
-      data["audit_info"] = this.auditInfo;
-
-      this.props.deleteBusinessRule(data, this.selectedRowItem['id'], this.selectedRow);
-      this.selectedRowItem = null;
-      this.selectedRow = null;
-      this.setState({ showAuditModal: false });
-    }
-
-    if (this.operationName == "UPDATE") {
-      this.auditInfo = {
-        table_name: data["table_name"],
-        id: this.selectedRowItem["id"],
-        change_type: this.operationName,
-      };
-      Object.assign(this.auditInfo, auditInfo);
-      data["audit_info"] = this.auditInfo;
-      data["update_info"] = this.updateInfo;
-
-      this.props.updateBusinessRule(data);
-      this.setState({ showAuditModal: false });
-    }
-
    handleAuditOkayClick(auditInfo){
      let data={};
      data["change_type"]=this.operationName;
