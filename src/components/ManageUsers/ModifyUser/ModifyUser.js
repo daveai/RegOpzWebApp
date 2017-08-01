@@ -84,8 +84,8 @@ const validate = (values) => {
     const errors = {};
     console.log("Inside validate", values);
 
-    Object.keys(values).forEach((item, index) => {
-        if (!values[item]) {
+    Object.keys(values).forEach((item) => {
+        if (! values[item]) {
             errors[item] = `${item} cannot be empty.`;
         }
     });
