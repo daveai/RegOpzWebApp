@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { bindActionCreators, dispatch } from 'redux';
+import { dispatch } from 'redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import Breadcrumbs from 'react-breadcrumbs';
 import {
@@ -20,60 +20,60 @@ const selector = formValueSelector('edit-user');
 
 const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
     <div className="form-group">
-        <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
-            {label}
-            <span className="required">*</span>
-        </label>
-        <div className="col-md-9 col-sm-9 col-xs-12">
-            <input {...input}
-              placeholder={label}
-              type={type}
-              id={label}
-              readOnly={ readOnly }
-              className="form-control col-md-4 col-xs-12"/>
-            {
-                touched &&
-                ((error &&
-                <div className="alert alert-danger">
-                    { error }
-                </div>))
-            }
-        </div>
+      <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
+        { label }
+        <span className="required">*</span>
+      </label>
+      <div className="col-md-9 col-sm-9 col-xs-12">
+        <input {...input}
+         placeholder={label}
+         type={type}
+         id={label}
+         readOnly={ readOnly }
+         className="form-control col-md-4 col-xs-12"/>
+         {
+            touched &&
+            ((error &&
+            <div className="alert alert-danger">
+              { error }
+            </div>))
+         }
+      </div>
     </div>
 );
 
 const renderSelect = ({ input, label, options, defaultOption, meta: { touched, error }}) => (
     <div className="form-group">
-        <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
-            {label}
-            <span className="required">*</span>
-        </label>
-        <div className="col-md-9 col-sm-9 col-xs-12">
-            <select {...input}
-              id={label}
-              defaultValue={ defaultOption }
-              className="form-control col-md-4 col-xs-12">
-            {
-                ((options) => {
-                    let optionList = [];
-                    options.map((item, index) => {
-                        optionList.push(
-                            <option key={index} value={item.role}>
-                                { item.role }
-                            </option>
-                        );
-                    });
-                    return optionList;
-                })(options)
-            }
-            </select>
-            {
-                touched &&
-                ((error &&
-                <div className="alert alert-danger">
-                    { error }
-                </div>))
-            }
+      <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor={label}>
+        { label }
+        <span className="required">*</span>
+      </label>
+      <div className="col-md-9 col-sm-9 col-xs-12">
+        <select {...input}
+         id={label}
+         defaultValue={ defaultOption }
+         className="form-control col-md-4 col-xs-12">
+         {
+            ((options) => {
+                let optionList = [];
+                options.map((item, index) => {
+                    optionList.push(
+                        <option key={index} value={item.role}>
+                            { item.role }
+                        </option>
+                    );
+                });
+                return optionList;
+            })(options)
+          }
+          </select>
+          {
+              touched &&
+              ((error &&
+               <div className="alert alert-danger">
+                 { error }
+               </div>))
+           }
         </div>
     </div>
 );
@@ -172,43 +172,36 @@ class ModifyUser extends Component {
         }
         return(
             <div className="row form-container">
-                <div className="col col-lg-12">
-                    <div className="x_title">
-                        <h2>User Management <small>Edit a User Permissions</small></h2>
-                        <div className="clearfix"></div>
-                    </div>
-                    <div className="x_content">
-                        <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(handleFormSubmit) }>
-                            { renderFields(dataSource.info, roleList) }
-                            <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                {
-                                    ((roleList, selectedRole) => {
-                                        if (roleList && selectedRole) {
-                                            let permission = roleList.find((item, index) => item.role == selectedRole);
-                                            return renderPermissions(permission);
-                                        } else {
-                                            return(<h2>No role provided...</h2>);
-                                        }
-                                    })(roleList, selectedRole)
-                                }
-                            </div>
-                            <div className="form-group">
-                              <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                <button type="button" className="btn btn-primary" onClick={ handleCancel } disabled={ submitting }>
-                                    Cancel
-                                </button>
-                                <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
-                                    Submit
-                                </button>
-                                <button type="button" className={ buttonDeleteActivateClass } onClick={ handleDelete } disabled={ dirty || submitting }>
-                                    { userStatus }
-                                </button>
-                              </div>
-                           </div>
-                        </form>
-                        <div className="clearfix"></div>
-                    </div>
+              <div className="col col-lg-12">
+                <div className="x_title">
+                  <h2>User Management <small>Edit a User Permissions</small></h2>
+                  <div className="clearfix"></div>
                 </div>
+                <div className="x_content">
+                  <form className="form-horizontal form-label-left" onSubmit={ handleSubmit(handleFormSubmit) }>
+                    { renderFields(dataSource.info, roleList) }
+                    <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    {
+                        renderPermissions(roleList, selectedRole)
+                    }
+                    </div>
+                    <div className="form-group">
+                      <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                        <button type="button" className="btn btn-primary" onClick={ handleCancel } disabled={ submitting }>
+                          Cancel
+                        </button>
+                        <button type="submit" className="btn btn-success" disabled={ pristine || submitting }>
+                          Submit
+                        </button>
+                        <button type="button" className={ buttonDeleteActivateClass } onClick={ handleDelete } disabled={ dirty || submitting }>
+                          { userStatus }
+                        </button>
+                      </div>
+                   </div>
+                  </form>
+                  <div className="clearfix"></div>
+                </div>
+              </div>
             </div>
         );
     }
@@ -273,11 +266,17 @@ class ModifyUser extends Component {
         );
     }
 
-    renderPermissions(item) {
-        if (typeof item !== 'undefined' && item != null) {
-            return(
-                <ViewRole item={item}/>
-            );
+    renderPermissions(roleList, selectedRole) {
+        if (roleList != null && selectedRole != null) {
+            let permission = roleList.find((item, index) => item.role == selectedRole);
+            if (typeof permission !== 'undefined' && permission != null) {
+                return(
+                    <ViewRole item={permission}/>
+                );
+            }
+            return(<h2>No role found!</h2>);
+        } else {
+            return(<h2>Loading...</h2>);
         }
     }
 
