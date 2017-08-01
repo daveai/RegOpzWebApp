@@ -35,8 +35,7 @@ const asyncValidate = (values, dispatch) => {
             console.log("Inside asyncValidate", error);
             throw { name: error.msg };
         }
-      })
-    .catch(err => console.error(err));
+     });
 }
 
 const normaliseContactNumber = value => value && value.replace(/[^\d]/g, '')
