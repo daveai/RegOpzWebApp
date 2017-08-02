@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {dispatch} from 'redux';
+import _ from 'lodash';
 import {actionFetchAuditList} from '../../actions/DefChangeAction';
 
 require('./ManageDefChange.css');
@@ -9,14 +10,18 @@ class DefChangeList extends Component{
 
   constructor(props){
     super(props);
-    this.state = { selectedIndex: null };
+    this.state = {
+      selectedIndex: null ,
+      searchTerm:null,
+      queryResult:[]
+    };
     this.fetchFlag = true;
+
 
   }
 
   componentWillMount(){
     this.props.fetchAuditList();
-
   }
 
   componentWillReceiveProps(nextProps){
@@ -26,25 +31,36 @@ class DefChangeList extends Component{
     }
   }
 
-  // componentWillUpdate(){
-  //   if(this.fetchFlag){
-  //     console.log("componentWillUpdate......",this.fetchFlag);
-  //     this.props.fetchAuditList();
-  //   }
-  // }
+  componentWillUpdate(){
+
+    console.log("Inside componentWillUpdate DefChangeList....");
+  }
 
 
   componentDidUpdate(){
     this.fetchFlag =! this.fetchFlag;
   }
 
+  handleSearch(event){
+    let queryResult=this.props.audit_list.filter((element)=>{
+        return(
+          element.change_type.toLowerCase().includes(event.target.value.toLowerCase())||
+          element.table_name.toLowerCase().includes(event.target.value.toLowerCase())||
+          element.change_reference.toLowerCase().includes(event.target.value.toLowerCase())||
+          element.date_of_change.toLowerCase().includes(event.target.value.toLowerCase())
+        );
+      }
+    );
+    this.setState({searchTerm:event.target.value,queryResult:queryResult});
+  }
   render(){
-    const {audit_list}=this.props;
-    if(typeof(audit_list)=='undefined'){
+    let {audit_list}=this.props;
+    if(!audit_list){
       return(<div> </div>);
     }
+    let audit_list_with_search=this.state.searchTerm?this.state.queryResult:audit_list;
     console.log("Audit List........",audit_list);
-    const msgList=audit_list.map((item,index)=>{
+    const msgList=audit_list_with_search.map((item,index)=>{
           //console.log(item,index);
           return(<li className={ this.state.selectedIndex == index ? "list_item_select" : "list_item_active" }
                       key={index}
@@ -84,9 +100,16 @@ class DefChangeList extends Component{
         });
 
       return(
-        <ul className="list-unstyled msg_list def-change-list">
-          {msgList}
-        </ul>
+        <div>
+            <input className="form-control"
+                  placeholder="Search (YYYY-MM-DD)"
+                  value={this.state.searchTerm}
+                  onChange={this.handleSearch.bind(this)}
+            />
+            <ul className="list-unstyled msg_list def-change-list">
+              {msgList}
+            </ul>
+        </div>
       );
 
   }
