@@ -116,6 +116,7 @@ class MaintainBusinessRules extends Component {
   }
 
   render() {
+    console.log("Inside render MaintianBusinessRule........",this.props.login_details);
     if (this.props.business_rules.length) {
       this.cols = this.props.business_rules[0].cols;
       if (!this.selectedViewColumns.length){
@@ -872,6 +873,7 @@ class MaintainBusinessRules extends Component {
          id:this.selectedRowItem["id"],
          change_type:this.operationName,
          change_reference:`Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
+         maker:this.props.login_details.user
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
@@ -888,6 +890,7 @@ class MaintainBusinessRules extends Component {
          id:this.selectedRowItem["id"],
          change_type:this.operationName,
          change_reference:`Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
+          maker:this.props.login_details.user
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
@@ -903,6 +906,7 @@ class MaintainBusinessRules extends Component {
          id:null,
          change_type:this.operationName,
          change_reference:`Duplicate of Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
+          maker:this.props.login_details.user
        };
        Object.assign(this.auditInfo,auditInfo);
        data["audit_info"]=this.auditInfo;
@@ -944,7 +948,8 @@ function mapStateToProps(state) {
   return {
     business_rules: state.business_rules,
     report_linkage: state.report_linkage,
-    audit_list: state.def_change_store.audit_list
+    audit_list: state.def_change_store.audit_list,
+    login_details:state.login_store
   }
 }
 
