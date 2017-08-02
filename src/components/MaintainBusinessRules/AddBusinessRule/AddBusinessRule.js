@@ -536,6 +536,7 @@ class AddBusinessRule extends Component {
       table_name:data.table_name,
       change_type:data.change_type,
       change_reference:`Rule: ${this.state.form.business_rule} of Source: ${this.state.form.source_id}`,
+      maker:this.props.login_details.user,
     };
     Object.assign(audit_info,this.state.audit_form);
 
@@ -558,6 +559,7 @@ function mapStateToProps(state){
     sources:state.maintain_report_rules_store.sources,
     business_rules: state.business_rules,
     source_table_columns: state.maintain_report_rules_store.source_table_columns,
+    login_details:state.login_store,
   }
 }
 const mapDispatchToProps = (dispatch) => {

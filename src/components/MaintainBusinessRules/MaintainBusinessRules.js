@@ -887,9 +887,9 @@ class MaintainBusinessRules extends Component {
      if(this.operationName == "UPDATE"){
        this.auditInfo={
          table_name:data["table_name"],
-         id:this.selectedRowItem["id"],
+         id:this.updateInfo["id"],
          change_type:this.operationName,
-         change_reference:`Rule: ${this.selectedRowItem["business_rule"]} of Source: ${this.selectedRowItem["source_id"]}`,
+         change_reference:`Rule: ${this.updateInfo["business_rule"]} of Source: ${this.updateInfo["source_id"]}`,
           maker:this.props.login_details.user
        };
        Object.assign(this.auditInfo,auditInfo);
