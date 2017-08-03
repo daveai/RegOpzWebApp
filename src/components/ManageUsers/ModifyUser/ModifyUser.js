@@ -108,17 +108,20 @@ class ModifyUser extends Component {
         this.userIndex = this.props.location.query['userId'];
         this.dataSource = null;
         this.initialValues = {};
+        this.shouldUpdate = true;
         this.userStatus = "Delete";
         this.buttonDeleteActivateClass = "btn btn-danger";
-        this.shouldUpdate = true;
+        this.renderForm = this.renderForm.bind(this);
         this.renderFields = this.renderFields.bind(this);
+        this.renderSelectOption = this.renderSelectOption.bind(this);
+        this.renderPermissions = this.renderPermissions.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     componentWillMount() {
-        console.log("Inside componentWillMount", this.initialValues, this.shouldUpdate)
+        //console.log("Inside componentWillMount", this.initialValues, this.shouldUpdate)
         if (typeof this.userIndex !== 'undefined' && this.userIndex != null) {
             this.props.fetchUser(this.userIndex);
             this.props.fetchRoles();
@@ -128,20 +131,21 @@ class ModifyUser extends Component {
     }
 
     componentWillUpdate() {
-        console.log("Inside componentWillUpdate", this.initialValues, this.shouldUpdate)
+        console.log("Inside componentWillUpdate", this.initialValues, this.shouldUpdate);
         if (this.shouldUpdate) {
             this.props.initialize(this.initialValues);
+            this.shouldUpdate = false;
         }
     }
 
     componentDidUpdate() {
-        console.log("Inside componentDidUpdate", this.initialValues);
-        this.shouldUpdate = ! this.shouldUpdate;
+        //console.log("Inside componentDidUpdate", this.initialValues);
+        //this.shouldUpdate = ! this.shouldUpdate;
     }
 
 
     componentDidMount(){
-          console.log("Inside componentDidMount", this.initialValues, this.shouldUpdate)
+          //console.log("Inside componentDidMount", this.initialValues, this.shouldUpdate)
           document.title = "RegOpz Dashboard | Edit User";
     }
 
@@ -149,7 +153,7 @@ class ModifyUser extends Component {
         if (typeof this.props.userDetails !== 'undefined' && this.props.userDetails != null) {
             this.dataSource = this.props.userDetails[0];
         }
-        console.log("Inside Modify User Render:", this.dataSource);
+        //console.log("Inside Modify User Render:", this.dataSource);
         return(
             <div>
               <Breadcrumbs
@@ -234,7 +238,8 @@ class ModifyUser extends Component {
             );
             localValues[item.title] = item.value;
         });
-        if (! this.shouldUpdate) {
+        if (this.initialValues["User Name"] !== localValues["User Name"]) {
+            this.shouldUpdate = true;
             this.initialValues = localValues;
         }
         return fieldArray;
@@ -283,6 +288,7 @@ class ModifyUser extends Component {
     handleFormSubmit(data) {
         console.log('User Details Submitted!', data);
         this.props.submitUser(data);
+        this.shouldUpdate = true;
         this.handleCancel();
     }
 
@@ -297,7 +303,7 @@ class ModifyUser extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log("On map state of Manage Users:", state);
+    //console.log("On map state of Manage Users:", state);
     return {
         userDetails: state.user_details.error,
         roleList: state.role_management.data,
