@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators, dispatch } from 'redux';
 import { actionAddUser, actionFetchUsers } from '../../actions/UsersAction';
 
-const renderField = ({ input, label, type, meta: { touched, error }}) => (
+const renderField = ({ input, label, type, readOnly, meta: { touched, error }}) => (
     <div className="form-group">
       <label className="control-label col-md-3 col-sm-3 col-xs-12">
         { label }
       </label>
       <div className="col-md-9 col-sm-9 col-xs-12">
-        <input {...input} placeholder={label} type={type} className="form-control col-md-4 col-xs-12"/>
+        <input {...input}
+         placeholder={label}
+         type={type}
+         readOnly={readOnly}
+         className="form-control col-md-4 col-xs-12"/>
         {
             touched &&
             ((error &&
@@ -82,7 +86,7 @@ class Signup extends Component {
     }
 
     render() {
-        const { handleSubmit, pristine, reset, submitting, message } = this.props;
+        const { handleSubmit, asyncValidating, pristine, reset, submitting, message } = this.props;
         if (message) {
             return(<div>{ message.msg }</div>);
         }
@@ -98,6 +102,7 @@ class Signup extends Component {
                       type="text"
                       component={renderField}
                       label="Username"
+                      readOnly={asyncValidating}
                     />
                     <Field
                         name="first_name"
