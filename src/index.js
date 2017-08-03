@@ -108,7 +108,7 @@ ReactDOM.render(
                     <Route path="variance-analysis" name="Variance Analysis" component={authenticate(VarianceAnalysisForm)} />
                     <Route path="variance-analysis/variance-data-grid" name="Variance Analysis Grid" component={VarianceAnalysisGrid} />
                     <Route path="variance-analysis/variance-chart" name="Variance Analysis Chart" component={VarianceAnalysisChart} />
-                    <Route path="workflow/manage-def-change" name="Manage Definition Change" component={ManageDefChange} />
+                    <Route path="workflow/manage-def-change" name="Manage Definition Change" component={authenticate(ManageDefChange)} />
                     <Route path="manage-roles" name="Role Management" component={ManageRoles} />
                     <Route path="manage-roles/add-roles" name="Add Role" component={AddRoles} />
                     <Route path="manage-users" name="User Management" component={ManageUsers} />

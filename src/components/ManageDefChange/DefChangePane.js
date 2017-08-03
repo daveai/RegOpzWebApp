@@ -47,32 +47,82 @@ class DefChangePane extends Component{
 
     return(
       <div className="form-horizontal form-label-left form-def-change-detail">
-        <div className="form-group">
-          <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="comment">Reviwer Comment <span className="required">*</span></label>
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <textArea
-                type="text"
-                value={this.state.comment}
-                minLength="20"
-                maxLength="1000"
-                required="required"
-                className="form-control col-md-6 col-sm-12 col-xs-12"
-                onChange={(event)=>{
-                             this.setState({comment:event.target.value,commentNoOfCharacter:event.target.value.length});
-                           }
-                         }
-              />
-            <Badge>{this.state.commentNoOfCharacter}</Badge>
-          </div>
-        </div>
-        <div className="form-group">
-          <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-            <button type="button" className="btn btn-warning" onClick={this.handleReject.bind(this)}> Reject</button>
-            <button type="button" className="btn btn-success" onClick={this.handleApprove.bind(this)}>Approve</button>
-          </div>
-       </div>
-       <div className="clearfix" />
-       <div className="ln_solid" />
+        {
+          ((viewOnly,maker)=>{
+            if(!viewOnly && maker !='self'){
+              return(
+                <div>
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="comment">Reviwer Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <textArea
+                        type="text"
+                        value={this.state.comment}
+                        minLength="20"
+                        maxLength="1000"
+                        required="required"
+                        className="form-control col-md-6 col-sm-12 col-xs-12"
+                        onChange={(event)=>{
+                                     this.setState({comment:event.target.value,commentNoOfCharacter:event.target.value.length});
+                                   }
+                                 }
+                      />
+                    <Badge>{this.state.commentNoOfCharacter}</Badge>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button type="button" className="btn btn-warning" onClick={this.handleReject.bind(this)}> Reject</button>
+                    <button type="button" className="btn btn-success" onClick={this.handleApprove.bind(this)}>Approve</button>
+                  </div>
+               </div>
+
+              <div className="clearfix" />
+              <div className="ln_solid" />
+            </div>
+
+
+              );
+            } else if(maker=='self'){
+
+              return(
+                <div>
+                <div className="form-group">
+                  <label className="control-label col-md-3 col-sm-3 col-xs-12" htmlFor="comment">Regression Comment <span className="required">*</span></label>
+                  <div className="col-md-6 col-sm-6 col-xs-12">
+                    <textArea
+                        type="text"
+                        value={this.state.comment}
+                        minLength="20"
+                        maxLength="1000"
+                        required="required"
+                        className="form-control col-md-6 col-sm-12 col-xs-12"
+                        onChange={(event)=>{
+                                     this.setState({comment:event.target.value,commentNoOfCharacter:event.target.value.length});
+                                   }
+                                 }
+                      />
+                    <Badge>{this.state.commentNoOfCharacter}</Badge>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div className="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button type="button" className="btn btn-warning" onClick={this.handleRegress.bind(this)}> Regress</button>
+                  </div>
+               </div>
+
+              <div className="clearfix" />
+              <div className="ln_solid" />
+            </div>
+
+              );
+
+            }
+          })(this.props.viewOnly,this.props.maker )
+        }
+
+
+
        <div>
          <h3>{this.item.change_type}
            <small> on <span className="badge">{this.item.table_name}</span> of record id :
@@ -273,6 +323,7 @@ class DefChangePane extends Component{
   handleReject(){
     if(this.state.comment != null && this.state.comment.length > 20){
       this.item.status="REJECTED";
+      this.item.checker=this.props.login_details.user;
       this.item.checker_comment=this.state.comment;
       this.props.onReject(this.item);
       this.setState({comment:null});
@@ -286,6 +337,7 @@ class DefChangePane extends Component{
   handleApprove(){
     if(this.state.comment != null && this.state.comment.length > 20){
       this.item.status="APPROVED";
+      this.item.checker=this.props.login_details.user;
       this.item.checker_comment=this.state.comment;
       this.props.onApprove(this.item);
       this.setState({comment:null});
@@ -293,6 +345,21 @@ class DefChangePane extends Component{
     } else{
       this.setState({isModalOpen:true});
     }
+  }
+
+  handleRegress(){
+    console.log("handleRegress........",this.props.login_details);
+    if(this.state.comment != null && this.state.comment.length > 20){
+      this.item.status="REGRESSED";
+      this.item.checker=this.props.login_details.user;
+      this.item.checker_comment=this.state.comment;
+      this.props.onRegress(this.item);
+      this.setState({comment:null});
+      this.setState({commentNoOfCharacter:0});
+    } else{
+      this.setState({isModalOpen:true});
+    }
+
   }
 
 }
@@ -307,7 +374,8 @@ const mapDispatchToProps=(dispatch)=>{
 
 function mapStateToProps(state){
   return{
-    record_detail:state.def_change_store.record_detail
+    record_detail:state.def_change_store.record_detail,
+    login_details:state.login_store
   };
 }
 

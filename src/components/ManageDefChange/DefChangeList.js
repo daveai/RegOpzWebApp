@@ -16,6 +16,7 @@ class DefChangeList extends Component{
       queryResult:[]
     };
     this.fetchFlag = true;
+    this.auditListWithPrivilege=[];
 
 
   }
@@ -45,7 +46,7 @@ class DefChangeList extends Component{
     let searchList = RegExp(`(${event.target.value.toLowerCase().replace(/[,+&\:\ ]$/,'').replace(/[,+&\:\ ]/g,'|')})`,'i');
 
     console.log("handleSearch",searchList)
-    let queryResult=this.props.audit_list.filter((element)=>{
+    let queryResult=this.auditListWithPrivilege.filter((element)=>{
         return(
           element.id.toString().match(searchList)||
           element.change_type.match(searchList)||
@@ -65,15 +66,22 @@ class DefChangeList extends Component{
     if(!audit_list){
       return(<div> </div>);
     }
-    let audit_list_with_search=this.state.searchTerm?this.state.queryResult:audit_list;
-    console.log("Audit List........",audit_list);
+
+    let userOnlyAuditList=audit_list.filter((element)=>{
+                                    return( element.maker==this.props.user);
+                                  });
+
+    this.auditListWithPrivilege=this.props.viewAllChange?audit_list:userOnlyAuditList;
+    let audit_list_with_search=this.state.searchTerm?this.state.queryResult:this.auditListWithPrivilege;
+    console.log("Audit List........",userOnlyAuditList);
     const msgList=audit_list_with_search.map((item,index)=>{
           //console.log(item,index);
           return(<li className={ this.state.selectedIndex == index ? "list_item_select" : "list_item_active" }
                       key={index}
                       onClick={(event)=>{
-                        this.setState({ selectedIndex: index })
-                        this.props.onSelectListItem(item);
+                        this.setState({ selectedIndex: index });
+                        const maker=item.maker==this.props.user?'self':'other';
+                        this.props.onSelectListItem(item,maker);
                       }
                     }>
                     <div className="mail_list">
