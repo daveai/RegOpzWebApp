@@ -19,7 +19,7 @@ export default function authenticate(ComposedComponent){
           return <div> <h2> You do not have privilege to perform this functionality. Please contact the administrator.</h2></div>
         }
         console.log("Render function called, Authentication.....",component);
-        const newProps={privileges:component.permissions}
+        const newProps={user:this.props.login_details.user,privileges:component.permissions}
 
         return <ComposedComponent {...this.props} {...newProps}/>
       }
