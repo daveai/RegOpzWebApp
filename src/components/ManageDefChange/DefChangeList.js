@@ -42,15 +42,22 @@ class DefChangeList extends Component{
   }
 
   handleSearch(event){
+    let searchList = RegExp(`(${event.target.value.toLowerCase().replace(/[,+&\:\ ]$/,'').replace(/[,+&\:\ ]/g,'|')})`,'i');
+
+    console.log("handleSearch",searchList)
     let queryResult=this.props.audit_list.filter((element)=>{
         return(
-          element.change_type.toLowerCase().includes(event.target.value.toLowerCase())||
-          element.table_name.toLowerCase().includes(event.target.value.toLowerCase())||
-          element.change_reference.toLowerCase().includes(event.target.value.toLowerCase())||
-          element.date_of_change.toLowerCase().includes(event.target.value.toLowerCase())
+          element.id.toString().match(searchList)||
+          element.change_type.match(searchList)||
+          element.table_name.match(searchList)||
+          element.change_reference.match(searchList)||
+          element.date_of_change.match(searchList)||
+          element.maker.match(searchList)||
+          element.maker_comment.match(searchList)
         );
       }
     );
+    //console.log("queryResult",queryResult)
     this.setState({searchTerm:event.target.value,queryResult:queryResult});
   }
   render(){
