@@ -30,6 +30,7 @@ class MaintainReportRules extends Component {
 
     this.searchAnywhere = this.searchAnywhere.bind(this);
   }
+
   searchAnywhere(textInputValue, possibleSuggestionsArray) {
     var lowerCaseQuery = textInputValue.toLowerCase()
 
@@ -37,6 +38,7 @@ class MaintainReportRules extends Component {
         return suggestion.toLowerCase().includes(lowerCaseQuery)
     })
   }
+
   convertTagsToString(tags){
     let selectedTags = [];
     for(let i = 0; i < tags.length; i++){
@@ -44,6 +46,7 @@ class MaintainReportRules extends Component {
     }
     return selectedTags.toString();
   }
+
   handleDeleteReport(i) {
       let tags = this.tags.reportTags;
       tags.splice(i, 1);
@@ -74,6 +77,7 @@ class MaintainReportRules extends Component {
       // re-render
       this.setState({ reportTags: tags });
   }
+
   handleDeleteCountry(i) {
       let tags = this.tags.countryTags;
       tags.splice(i, 1);
@@ -105,15 +109,21 @@ class MaintainReportRules extends Component {
       // re-render
       this.setState({ countryTags: tags });
   }
+
   componentWillMount(){
     this.props.fetchReportTemplateList();
   }
+
   render() {
-      if(typeof this.props.report_template_list == 'undefined'){
+      const { privileges } = this.props;
+      console.log("User has permission for:", privileges);
+
+      if(typeof this.props.report_template_list == 'undefined') {
         return(
           <h1>Loading...</h1>
         )
       }
+
       this.tags.countrySuggestions = [];
       this.tags.reportSuggestions = [];
       this.props.report_template_list.country_suggestion.map(function(country,index){
@@ -123,9 +133,8 @@ class MaintainReportRules extends Component {
       this.props.report_template_list.report_suggestion.map(function(report,index){
         this.tags.reportSuggestions.push(report.report_id)
       }.bind(this))
-      const { reportTags, reportSuggestions } = this.tags;
-      const { countryTags, countrySuggestions } = this.tags;
-      console.log('before coolapsible countrylist',this.props.report_template_list);
+      const { reportTags, reportSuggestions, countryTags, countrySuggestions } = this.tags;
+      console.log('before coolapsible countrylist', this.props.report_template_list);
       return (
           <div className="reg_maintain_report_rules_container container">
             <Breadcrumbs
@@ -174,9 +183,9 @@ class MaintainReportRules extends Component {
               </div>
             </div>
             {
-                  this.props.report_template_list.country.map(function(countrylist,countrylistindex){
+                  this.props.report_template_list.country.map(function(countrylist,countrylistindex) {
                   return(
-                  <div className="maintain_rep_rules_accordion_holder" >
+                  <div key={countrylistindex} className="maintain_rep_rules_accordion_holder">
                     <Collapsible trigger={countrylist.country} >
                       {
                         this.props.report_template_list.country[countrylistindex].report.map(function(reportlist,reportlistindex){
@@ -217,7 +226,6 @@ class MaintainReportRules extends Component {
             }
           </div>
       )
-
   }
 }
 const mapDispatchToProps = (dispatch) => {

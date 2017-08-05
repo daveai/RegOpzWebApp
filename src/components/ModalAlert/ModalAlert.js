@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Modal, Button} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+
 export default class ModalAlert extends Component {
   constructor(props) {
     super(props);

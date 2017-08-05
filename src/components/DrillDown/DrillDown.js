@@ -33,10 +33,10 @@ class DrillDownComponent extends Component {
     this.linkageData = null;
     this.auditInfo={};
   }
-  componentWillMount(){
+  componentWillMount() {
     this.props.drillDown(this.report_id,this.sheet,this.cell);
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     console.log('Inside componentWillReceiveProps');
     if (this.nextPropsCount == 0) {
       console.log('Inside if of componentWillReceiveProps');

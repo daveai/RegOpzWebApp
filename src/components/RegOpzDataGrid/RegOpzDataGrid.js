@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
+import ModalAlert from '../ModalAlert/ModalAlert';
 import moment from 'moment';
 import RegOpzDataGridHeader from './RegOpzDataGridHeader';
 import RegOpzDataGridSideMarker from './RegOpzGridSideMarker';
@@ -39,6 +40,7 @@ class RegOpzDataGrid extends Component {
     this.gridWidth = 0;
     this.rulesIdAsSubQuery = "";
     this.linkageData = null;
+    this.modalAlert = null;
   }
 
   componentWillMount() {
@@ -97,7 +99,11 @@ class RegOpzDataGrid extends Component {
                         title="Drill Down"
                         onClick={
                           (event) => {
-                            hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
+                              if (this.selectedCell == null) {
+                                  this.modalAlert.open("Please select one cell!");
+                              } else {
+                                  hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
+                              }
                           }
                         }
                         className="btn btn-circle btn-primary business_rules_ops_buttons btn-xs"
@@ -234,6 +240,11 @@ class RegOpzDataGrid extends Component {
               />
           </div>
         </div>
+
+        <ModalAlert
+         ref={ (modalAlert) => { this.modalAlert = modalAlert }}
+        />
+
         <Modal
           show={this.state.isModalOpen}
           container={this}
