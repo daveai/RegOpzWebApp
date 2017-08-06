@@ -26,7 +26,8 @@ class DrillDownComponent extends Component {
     super(props);
     this.state = {
       isModalOpen:false,
-      showAuditModal:false
+      showAuditModal:false,
+      showDeleteBtn: true
     };
     this.type = this.props.location.query['type'];
     this.report_id = this.props.location.query['report_id'];
@@ -228,17 +229,25 @@ class DrillDownComponent extends Component {
                     >
                       <i id={item.id} className="fa fa-history"></i>
                     </button>
-                    <button id={item.id}
-                            type="button"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Delete"
-                            className="btn btn-warning btn-xs"
-                            onClick={()=>{this.handleDelete(item,index)}}
-                            disabled={ ! this.writeOnly }
-                    >
-                      <i id={item.id} className="fa fa-remove"></i>
-                    </button>
+                    {
+                        ((showDeleteBtn) => {
+                            if (showDeleteBtn) {
+                                return(
+                                    <button id={item.id}
+                                            type="button"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Delete"
+                                            className="btn btn-warning btn-xs"
+                                            onClick={()=>{this.handleDelete(item,index)}}
+                                            disabled={ ! this.writeOnly }
+                                    >
+                                      <i id={item.id} className="fa fa-remove"></i>
+                                    </button>
+                                );
+                            }
+                        })(this.state.showDeleteBtn)
+                    }
                   </td>
                   );
                 }else{
@@ -435,13 +444,14 @@ class DrillDownComponent extends Component {
     //set audit info
     this.auditInfo={
       id:item.id,
+      maker: this.props.user,
       table_name:'report_calc_def',
       index:index,
       change_type:'DELETE',
       change_reference:`Rule: ${item.cell_calc_ref} of : ${item.report_id}->${item.sheet_id}->${item.cell_id} [ Source: ${item.source_id} ]`,
     }
     //console.log('Inside delete....auditInfo',this.auditInfo);
-    this.setState({showAuditModal:true});
+    this.setState({ showAuditModal: true });
     //this.forceUpdate();
     //this.props.deleteRuleData(item.id,'report_calc_def',index);
     //this.props.drillDown(this.report_id,this.sheet,this.cell);
@@ -457,7 +467,7 @@ class DrillDownComponent extends Component {
     Object.assign(this.auditInfo,auditInfo);
     console.log("handleAuditInfo.....:",this.auditInfo);
     this.props.deleteRuleData(this.auditInfo.id,this.auditInfo.table_name,this.auditInfo.index,this.auditInfo);
-
+    this.setState({ showAuditModal: false, showDeleteBtn: false });
   }
 
   renderChangeHistory(linkageData){
@@ -596,7 +606,8 @@ function mapStateToProps(state){
   console.log("On map state", state);
   return{
     drill_down_result:state.captured_report.drill_down_result,
-    audit_list:state.def_change_store.audit_list
+    audit_list:state.def_change_store.audit_list,
+    user: state.login_store.user
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -512,6 +512,7 @@ class AddReportRules extends Component {
 
     let audit_info={
       id:this.state.form.id,
+      maker: this.props.user,
       table_name:data.table_name,
       change_type:data.change_type,
       change_reference:`Rule: ${this.state.form.cell_calc_ref} of : ${this.state.form.report_id}->${this.state.form.sheet_id}->${this.state.form.cell_id} [ Source: ${this.state.form.source_id} ]`,
@@ -520,7 +521,7 @@ class AddReportRules extends Component {
 
     data['audit_info']=audit_info;
 
-    console.log('inside submit',this.state.form);
+    console.log('inside submit', data, this.state.form);
     if(this.state.requestType == "add"){
       this.props.insertRuleData(data);
     }
@@ -528,7 +529,7 @@ class AddReportRules extends Component {
       this.props.updateRuleData(this.state.form.id,data);
     }
 
-    hashHistory.push(`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`);
+    hashHistory.push(`/dashboard/drill-down?type=rules&report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`);
   }
 }
 function mapStateToProps(state){
@@ -538,6 +539,7 @@ function mapStateToProps(state){
     business_rule: state.maintain_report_rules_store.business_rules,
     source_table_columns: state.maintain_report_rules_store.source_table_columns,
     drill_down_result:state.captured_report.drill_down_result,
+    user: state.login_store.name
   }
 }
 const mapDispatchToProps = (dispatch) => {
