@@ -28,7 +28,8 @@ class RegOpzDataGrid extends Component {
     this.state = {
       isModalOpen:false,
       startDate: null,
-      endDate: null
+      endDate: null,
+      filterText: null
     };
     this.numberofCols = 52;
     this.numberofRows = 1000;
@@ -83,7 +84,7 @@ class RegOpzDataGrid extends Component {
       console.log('grid hight',this.gridHight);
       if(typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
         let linkageData = this.props.audit_list;
-        const { startDate, endDate } = this.state;
+        const { startDate, endDate, filterText } = this.state;
         if (startDate != null) {
             linkageData = linkageData.filter(item => {
                 let audit_date = new Date(item.date_of_change);
@@ -97,6 +98,17 @@ class RegOpzDataGrid extends Component {
                 let end_date = new Date(endDate)
                 return audit_date.getTime() < end_date.getTime();
             });
+        }
+        if (filterText != null) {
+            linkageData = linkageData.filter(element =>
+                element.id.toString().match(filterText) ||
+                element.change_type.match(filterText) ||
+                element.table_name.match(filterText) ||
+                element.change_reference.match(filterText) ||
+                element.date_of_change.match(filterText) ||
+                element.maker.match(filterText) ||
+                element.maker_comment.match(filterText)
+            );
         }
         this.linkageData = linkageData;
       }
@@ -278,8 +290,8 @@ class RegOpzDataGrid extends Component {
 
           <Modal.Body>
               <div className="container">
-                <div className="col col-lg-6">
-                  <div className="row">
+                <div className="row">
+                  <div className="col col-lg-6">
                     <div className="input-group">
                       <DatePicker
                           selected={this.state.startDate}
@@ -289,9 +301,7 @@ class RegOpzDataGrid extends Component {
                       />
                     </div>
                   </div>
-                </div>
-                <div className="col col-lg-6">
-                  <div className="row">
+                  <div className="col col-lg-6">
                     <div className="input-group">
                       <DatePicker
                           selected={this.state.endDate}
@@ -299,6 +309,23 @@ class RegOpzDataGrid extends Component {
                           placeholderText="Select end date"
                           className="view_data_date_picker_input form-control"
                       />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col col-lg-6">
+                    <div className="input-group">
+                      <input
+                        className="form-control"
+                        placeholder="Enter Filter Text"
+                        value={this.state.filterText}
+                        onChange={(event) => {
+                            this.setState({ filterText: event.target.value });
+                        }}
+                      />
+                      <span className="input-group-addon">
+                        <i className="fa fa-filter"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
