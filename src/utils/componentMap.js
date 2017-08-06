@@ -9,7 +9,7 @@ export const componentMaptoName={
     CreateReport: "Create Report",
     DrillDownComponent: "DrillDown",
     MaintainReportRules: "Maintain Report Rules",
-    AddReportRules: "Add Report Rules",
+    AddReportRules: "Maintain Report Rules",
     AddReportAggRules: "Add Report Aggregate Rules",
     MaintainSources: "Maintain Sources",
     AddSources: "Add Sources",

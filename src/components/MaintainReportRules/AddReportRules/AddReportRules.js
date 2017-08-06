@@ -58,11 +58,13 @@ class AddReportRules extends Component {
     this.handleAggRefDrag = this.handleAggRefDrag.bind(this);
 
     this.searchAnywhere = this.searchAnywhere.bind(this);
+
+    this.writeOnly = _.find(this.props.privileges, {permission: "Edit Report Rules"}) ? true : false;
   }
 
   componentWillMount() {
     this.props.fetchSources();
-    if(typeof this.state.ruleIndex != 'undefined') {
+    if(typeof this.state.ruleIndex != 'undefined' && typeof this.props.drill_down_result != 'undefined') {
       Object.assign(this.state.form , this.props.drill_down_result.cell_rules[this.state.ruleIndex]);
       this.props.fetchBusinessRulesBySourceId(this.state.form.source_id);
       this.initialiseFormFields();
@@ -253,7 +255,7 @@ class AddReportRules extends Component {
                       value={this.state.form.cell_calc_ref}
                       type="text"
                       required="required"
-                      readOnly={this.state.viewOnly}
+                      readOnly={this.state.viewOnly || ! this.writeOnly}
                       className="form-control col-md-7 col-xs-12"
                       onChange={
                         (event) => {
@@ -288,7 +290,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     {
                       (()=>{
-                      if(this.state.requestType!='view'){
+                      if(this.state.requestType!='view' && this.writeOnly){
                          return(
                             <select
                               value = {this.state.form.source_id}
@@ -330,7 +332,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     {
                       (()=>{
-                        if(this.state.requestType!='view'){
+                        if(this.state.requestType!='view' && this.writeOnly){
 
                             return(
                               <ReactTags tags={rulesTags}
@@ -366,7 +368,7 @@ class AddReportRules extends Component {
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     {
                       (()=>{
-                        if(this.state.requestType!='view'){
+                        if(this.state.requestType!='view' && this.writeOnly){
                           return(
                               <ReactTags tags={aggRefTags}
                               suggestions={fieldsSuggestions}
@@ -398,7 +400,7 @@ class AddReportRules extends Component {
                     <input
                       type="text"
                       placeholder="Enter Aggregation function"
-                      readOnly={this.state.viewOnly}
+                      readOnly={this.state.viewOnly || ! this.writeOnly}
                       required="required"
                       className="form-control col-md-7 col-xs-12"
                       value={this.state.form.aggregation_func}
@@ -450,7 +452,7 @@ class AddReportRules extends Component {
                       required="required"
                       className="form-control col-md-7 col-xs-12"
                       value={this.state.audit_form.comment}
-                      readOnly={this.state.viewOnly}
+                      readOnly={this.state.viewOnly || ! this.writeOnly}
                       maxLength="1000"
                       minLength="20"
                       onChange={
@@ -476,7 +478,7 @@ class AddReportRules extends Component {
                       Cancel</button>
                     {
                       (()=>{
-                      if(this.state.requestType!='view'){
+                      if(this.state.requestType!='view' && this.writeOnly){
                         console.log("this.state.requestType........",this.state.requestType);
                         return(<button type="submit" className="btn btn-success" >Submit</button>);
                       }
@@ -494,7 +496,7 @@ class AddReportRules extends Component {
 
   handleCancel(event){
     console.log('inside cancel');
-    hashHistory.push(`/dashboard/drill-down?report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`)
+    hashHistory.push(`/dashboard/drill-down?type=rules&report_id=${this.state.form.report_id}&sheet=${encodeURI(this.state.form.sheet_id)}&cell=${this.state.form.cell_id}`)
   }
 
   handleSubmit(event){

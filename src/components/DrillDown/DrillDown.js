@@ -1,22 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {bindActionCreators, dispatch} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators, dispatch}  from 'redux';
 import {
-  actionDrillDown
+    Link,
+    hashHistory
+} from 'react-router';
+import _ from 'lodash';
+import {
+    actionDrillDown
 } from '../../actions/CaptureReportAction';
 import {
-  actionDeleteRuleData
+    actionDeleteRuleData
 } from '../../actions/MaintainReportRuleAction';
-import {actionFetchAuditList} from '../../actions/DefChangeAction';
 import {
-  Link,
-  hashHistory
-} from 'react-router';
+    actionFetchAuditList
+} from '../../actions/DefChangeAction';
 import AuditModal from '../AuditModal/AuditModal';
-import './DrillDownStyle.css';
+require('./DrillDownStyle.css');
+
 class DrillDownComponent extends Component {
   constructor(props){
     super(props);
@@ -24,6 +28,7 @@ class DrillDownComponent extends Component {
       isModalOpen:false,
       showAuditModal:false
     };
+    this.type = this.props.location.query['type'];
     this.report_id = this.props.location.query['report_id'];
     this.sheet = this.props.location.query['sheet'];
     this.cell = this.props.location.query['cell'];
@@ -31,7 +36,14 @@ class DrillDownComponent extends Component {
     this.drillDownResult = null;
     this.nextPropsCount = 0;
     this.linkageData = null;
-    this.auditInfo={};
+    this.auditInfo= {};
+    if (this.type === "rules") {
+      this.viewOnly = _.find(this.props.privileges, {permission: "View Report Rules"}) ? true : false;
+      this.writeOnly = _.find(this.props.privileges, {permission: "Edit Report Rules"}) ? true : false;
+    } else {
+      this.viewOnly = true;
+      this.writeOnly = false;
+    }
   }
   componentWillMount() {
     this.props.drillDown(this.report_id,this.sheet,this.cell);
@@ -44,7 +56,7 @@ class DrillDownComponent extends Component {
       this.nextPropsCount = this.nextPropsCount + 1;
     }
   };
-  render(){
+  render() {
     console.log('drill down result',this.props.drill_down_result)
     this.drillDownResult = this.props.drill_down_result;
     if( typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
@@ -126,7 +138,7 @@ class DrillDownComponent extends Component {
       return(
         <ol className="breadcrumb">
           <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
-          <li><a href={'#/dashboard/data-grid?report_id=' + this.report_id + '&reporting_date=' + this.reporting_date}>{`${this.report_id} (Manage Report Rules)`}</a></li>
+          <li><a href={'#/dashboard/data-grid?type=rules&report_id=' + this.report_id + '&reporting_date=' + this.reporting_date}>{`${this.report_id} (Manage Report Rules)`}</a></li>
           <li><a href={window.location.href}>{`${this.report_id} (${this.sheet})(${this.cell})`}</a></li>
         </ol>
       )
@@ -223,6 +235,7 @@ class DrillDownComponent extends Component {
                             title="Delete"
                             className="btn btn-warning btn-xs"
                             onClick={()=>{this.handleDelete(item,index)}}
+                            disabled={ ! this.writeOnly }
                     >
                       <i id={item.id} className="fa fa-remove"></i>
                     </button>
@@ -254,7 +267,7 @@ class DrillDownComponent extends Component {
     }
     else {
       return(
-        <tr>
+        <tr key={index}>
           <td><a href={`#/dashboard/view-data-on-grid?origin=drilldown&report_id=${this.report_id}&sheet_id=${this.sheet}&cell_id=${this.cell}&reporting_date=${this.reporting_date}&cell_calc_ref=${item.cell_calc_ref}&source_id=${item.source_id}`}>{item.cell_calc_ref}</a></td>
           <td>{item.source_id}</td>
           <td><span style={{maxWidth: "204px", display: "block"}}>{item.aggregation_ref.toString().replace(/,/g,", ")}</span></td>
@@ -304,7 +317,7 @@ class DrillDownComponent extends Component {
         console.log('Maintain report rules')
         return(
           <div className="alert alert-success reg_cell_formula">
-            <button type="button" className="btn btn-primary btn-sm" onClick={this.handleAddAggRule.bind(this)}>Add Fromula</button>
+            <button type="button" className="btn btn-primary btn-sm" onClick={this.handleAddAggRule.bind(this)} disabled={! this.writeOnly}>Add Fromula</button>
             No Rules defined for {`[${this.report_id} -> ${this.sheet} -> ${this.cell}]`}
           </div>
         )
@@ -398,9 +411,9 @@ class DrillDownComponent extends Component {
   showAddRuleButton(){
     if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
       return(
-        <div className="row">
+        <div className="row add_btn">
           <div className="col col-lg-12">
-            <button type="button" className="btn btn-primary" onClick={()=>{this.handleAddRule()}}>Add</button>
+            <button type="button" className="btn btn-primary" onClick={()=>{this.handleAddRule()}} disabled={ ! this.writeOnly }>Add</button>
           </div>
         </div>
       )

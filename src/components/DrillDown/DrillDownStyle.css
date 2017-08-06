@@ -26,6 +26,10 @@
   color: #5A738E;
 }
 
+.add_btn {
+    margin-top: 10px;
+}
+
 .table-content-wrap {
   word-break: break-all;
 }
