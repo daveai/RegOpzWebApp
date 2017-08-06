@@ -7,7 +7,7 @@ export const componentMaptoName={
     ViewDataComponent: "View Data Grid",
     ViewReport: "View Report",
     CreateReport: "Create Report",
-    DrillDown: "DrillDown",
+    DrillDownComponent: "DrillDown",
     MaintainReportRules: "Maintain Report Rules",
     AddReportRules: "Add Report Rules",
     AddReportAggRules: "Add Report Aggregate Rules",

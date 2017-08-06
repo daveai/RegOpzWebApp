@@ -11,9 +11,30 @@ export default function authenticate(ComposedComponent) {
         }
 
         render() {
-            const name = componentMaptoName[getDisplayName(ComposedComponent).replace("Connect(",'').replace(")",'')];
+            let name = componentMaptoName[getDisplayName(ComposedComponent).replace("Connect(",'').replace(")",'')];
+            //console.log("Render function called, Authentication.....", this.props.login_details);
+            if (name == "DrillDown") {
+                let type = this.props.location.query['type'];
+                if (typeof type !== undefined || type !== null) {
+                    switch (type) {
+                        case 'rules':
+                            name = "Maintain Report Rules";
+                            break;
+                        case 'report':
+                            name = "View Report"
+                            break;
+                        default:
+                            return (
+                                <div>
+                                    <h2>
+                                        Invalid DrillDown Requested. Please contact the administrator.
+                                    </h2>
+                                </div>
+                            );
+                    }
+                }
+            }
             console.log("Render function,Authentication.....", name);
-            console.log("Render function called, Authentication.....", this.props.login_details);
             const component = _.find(this.props.login_details.permission, { component: name });
             if(! component) {
                 return (

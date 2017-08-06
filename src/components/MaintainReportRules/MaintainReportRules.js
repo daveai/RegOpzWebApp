@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import Breadcrumbs from 'react-breadcrumbs';
+import { Link } from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators, dispatch} from 'redux';
 import _ from 'lodash';
@@ -54,7 +55,6 @@ class MaintainReportRules extends Component {
       let reports = this.convertTagsToString(this.tags.reportTags)
       let country = this.convertTagsToString(this.tags.countryTags)
       this.props.fetchReportTemplateList(reports ? reports:'ALL', country ? country:'ALL');
-
   }
 
   handleAdditionReport(tag) {
@@ -205,7 +205,7 @@ class MaintainReportRules extends Component {
                                     this.props.report_template_list.country[countrylistindex].report[reportlistindex].reportversions.map(function(reportversion,reportversionindex){
                                       return(
                                         <tr>
-                                          <td><a href={`#/dashboard/data-grid?report_id=${reportversion.report_id}`}>{reportversion.report_id}</a></td>
+                                          <td><Link to={`/dashboard/data-grid?type=rules&report_id=${reportversion.report_id}`}>{reportversion.report_id}</Link></td>
                                           <td>{reportversion.valid_from}</td>
                                           <td>{reportversion.valid_to}</td>
                                           <td>{reportversion.last_updated_by}</td>

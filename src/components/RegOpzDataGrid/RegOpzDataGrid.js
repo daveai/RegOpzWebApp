@@ -31,6 +31,7 @@ class RegOpzDataGrid extends Component {
     this.numberofRows = 1000;
     this.data = [];
     this.selectedSheet = 0;
+    this.report_type = this.props.location.query['type'];
     this.report_id = this.props.location.query['report_id'];
     this.reporting_date = this.props.location.query['reporting_date'];
     this.cell_format_yn = 'Y';
@@ -102,7 +103,7 @@ class RegOpzDataGrid extends Component {
                               if (this.selectedCell == null) {
                                   this.modalAlert.open("Please select one cell!");
                               } else {
-                                  hashHistory.push(`/dashboard/drill-down?report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
+                                  hashHistory.push(`/dashboard/drill-down?type=${this.report_type}&report_id=${this.report_id}&sheet=${encodeURI(this.props.captured_report[this.selectedSheet].sheet)}&cell=${this.selectedCell}&reporting_date=${this.reporting_date}`);
                               }
                           }
                         }
