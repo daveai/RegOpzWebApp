@@ -100,14 +100,15 @@ class RegOpzDataGrid extends Component {
             });
         }
         if (filterText != null) {
+            let matchText = RegExp(`(${filterText.toString().toLowerCase().replace(/[,+&\:\ ]$/,'').replace(/[,+&\:\ ]/g,'|')})`,'i');
             linkageData = linkageData.filter(element =>
-                element.id.toString().match(filterText) ||
-                element.change_type.match(filterText) ||
-                element.table_name.match(filterText) ||
-                element.change_reference.match(filterText) ||
-                element.date_of_change.match(filterText) ||
-                element.maker.match(filterText) ||
-                element.maker_comment.match(filterText)
+                element.id.toString().match(matchText) ||
+                element.change_type.match(matchText) ||
+                element.table_name.match(matchText) ||
+                element.change_reference.match(matchText) ||
+                element.date_of_change.match(matchText) ||
+                element.maker.match(matchText) ||
+                element.maker_comment.match(matchText)
             );
         }
         this.linkageData = linkageData;
@@ -313,7 +314,7 @@ class RegOpzDataGrid extends Component {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col col-lg-6">
+                  <div className="col col-lg-6 col-lg-offset-3">
                     <div className="input-group">
                       <input
                         className="form-control"
@@ -349,24 +350,24 @@ class RegOpzDataGrid extends Component {
     }
   }
 
-  renderBreadCrumb() {
-    console.log('reporting_date', this.reporting_date);
-    if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
-      return(
-        <ol className="breadcrumb">
-          <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
-          <li><a href={window.location.href}>{`${this.report_id} (Manage Report Rules)`}</a></li>
-        </ol>
-      )
-    } else {
-      return(
-        <ol className="breadcrumb">
-          <li><a href="#/dashboard/view-report">View Report</a></li>
-          <li><a href={window.location.href}>{`${this.report_id} (${this.reporting_date})`}</a></li>
-        </ol>
-      )
-    }
-  }
+  // renderBreadCrumb() {
+  //   console.log('reporting_date', this.reporting_date);
+  //   if (this.reporting_date == undefined || this.reporting_date == 'undefined') {
+  //     return(
+  //       <ol className="breadcrumb">
+  //         <li><a href={'#/dashboard/maintain-report-rules'}>Maintain Report Rules</a></li>
+  //         <li><a href={window.location.href}>{`${this.report_id} (Manage Report Rules)`}</a></li>
+  //       </ol>
+  //     )
+  //   } else {
+  //     return(
+  //       <ol className="breadcrumb">
+  //         <li><a href="#/dashboard/view-report">View Report</a></li>
+  //         <li><a href={window.location.href}>{`${this.report_id} (${this.reporting_date})`}</a></li>
+  //       </ol>
+  //     )
+  //   }
+  // }
 
   handleStartDateChange(date) {
     this.setState({ startDate: date });
@@ -377,20 +378,20 @@ class RegOpzDataGrid extends Component {
   }
 
   renderChangeHistory(linkageData){
-    if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
+    if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0) {
       return(
         <div>
           <h4>No audit change report found!</h4>
         </div>
       )
+    }
     else {
       return(
         <div className="dashboard-widget-content">
           <ul className="list-unstyled timeline widget">
           {
-            linkageData.map(function(item,index){
-              return(
-                <li>
+            linkageData.map((item,index) => (
+                <li key={index}>
                   <div className="block">
                     <div className="block_content">
                       <h2 className="title"></h2>
@@ -409,8 +410,8 @@ class RegOpzDataGrid extends Component {
                             </h6>
                             <p>{item.maker_comment}</p>
                               <div><h5>Change Summary</h5>
-
-                                  {((item)=>{
+                                  {
+                                    ((item)=>{
                                       if (item.change_type=="UPDATE"){
                                           console.log("Update Info........",item.update_info);
                                           const update_list=item.update_info.map((uitem,uindex)=>{
@@ -451,8 +452,8 @@ class RegOpzDataGrid extends Component {
                                                 </table>
                                             )
                                       }
-                                  })(item)}
-
+                                  })(item)
+                              }
                               </div>
                               <Media>
                                 <Media.Left>
@@ -492,7 +493,7 @@ class RegOpzDataGrid extends Component {
                   </div>
                 </li>
               )
-            })
+            )
           }
         </ul>
         </div>
