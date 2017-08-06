@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Modal, Media, Label, Badge } from 'react-bootstrap';
 import ModalAlert from '../ModalAlert/ModalAlert';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import RegOpzDataGridHeader from './RegOpzDataGridHeader';
 import RegOpzDataGridSideMarker from './RegOpzGridSideMarker';
@@ -14,7 +15,7 @@ import {
   actionFetchReportData,
   actionDrillDown
 } from '../../actions/CaptureReportAction';
-import {actionFetchAuditList} from '../../actions/DefChangeAction';
+import { actionFetchAuditList } from '../../actions/DefChangeAction';
 import { hashHistory, routerContext } from 'react-router';
 import Breadcrumbs from 'react-breadcrumbs';
 import {BASE_URL} from '../../Constant/constant';
@@ -25,7 +26,9 @@ class RegOpzDataGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen:false
+      isModalOpen:false,
+      startDate: null,
+      endDate: null
     };
     this.numberofCols = 52;
     this.numberofRows = 1000;
@@ -54,7 +57,7 @@ class RegOpzDataGrid extends Component {
           : this.alphaSequence((i / 26) - 1) + String.fromCharCode((65 + i % 26) + "");
   }
 
-  render(){
+  render() {
     if (this.props.captured_report.length > 0) {
       this.data = this.props.captured_report[this.selectedSheet].matrix;
       this.selectedSheetName = this.props.captured_report[this.selectedSheet]['sheet'];
@@ -78,8 +81,24 @@ class RegOpzDataGrid extends Component {
           }
       }.bind(this));
       console.log('grid hight',this.gridHight);
-      if( typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
-        this.linkageData = this.props.audit_list;
+      if(typeof this.props.audit_list != 'undefined' && this.props.audit_list.length ){
+        let linkageData = this.props.audit_list;
+        const { startDate, endDate } = this.state;
+        if (startDate != null) {
+            linkageData = linkageData.filter(item => {
+                let audit_date = new Date(item.date_of_change);
+                let start_date = new Date(startDate)
+                return audit_date.getTime() > start_date.getTime();
+            });
+        }
+        if (endDate != null) {
+            linkageData = linkageData.filter(item => {
+                let audit_date = new Date(item.date_of_change);
+                let end_date = new Date(endDate)
+                return audit_date.getTime() < end_date.getTime();
+            });
+        }
+        this.linkageData = linkageData;
       }
       return(
         <div className="reg_gridHolder">
@@ -258,6 +277,33 @@ class RegOpzDataGrid extends Component {
           </Modal.Header>
 
           <Modal.Body>
+              <div className="container">
+                <div className="col col-lg-6">
+                  <div className="row">
+                    <div className="input-group">
+                      <DatePicker
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDateChange.bind(this)}
+                          placeholderText="Select start date"
+                          className="view_data_date_picker_input form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col col-lg-6">
+                  <div className="row">
+                    <div className="input-group">
+                      <DatePicker
+                          selected={this.state.endDate}
+                          onChange={this.handleEndDateChange.bind(this)}
+                          placeholderText="Select end date"
+                          className="view_data_date_picker_input form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="clear"></div>
+              </div>
             { this.renderChangeHistory(this.linkageData) }
           </Modal.Body>
 
@@ -295,6 +341,14 @@ class RegOpzDataGrid extends Component {
     }
   }
 
+  handleStartDateChange(date) {
+    this.setState({ startDate: date });
+  }
+
+  handleEndDateChange(date) {
+    this.setState({ endDate: date });
+  }
+
   renderChangeHistory(linkageData){
     if(!linkageData || typeof(linkageData) == 'undefined' || linkageData == null || linkageData.length == 0)
       return(
@@ -321,9 +375,7 @@ class RegOpzDataGrid extends Component {
                           </Media.Left>
                           <Media.Body>
                             <Media.Heading>Buisness Rule Change for id: {item.id}
-                              <h5>
-                                <small>{item.change_reference}</small>
-                              </h5>
+                              <small>{item.change_reference}</small>
                             </Media.Heading>
                             <h6>
                               <Badge>{item.change_type}</Badge> by {item.maker} on {moment(item.date_of_change).format('ll')} {moment(item.date_of_change).format('LTS')}

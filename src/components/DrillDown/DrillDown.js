@@ -450,12 +450,9 @@ class DrillDownComponent extends Component {
       change_type:'DELETE',
       change_reference:`Rule: ${item.cell_calc_ref} of : ${item.report_id}->${item.sheet_id}->${item.cell_id} [ Source: ${item.source_id} ]`,
     }
-    //console.log('Inside delete....auditInfo',this.auditInfo);
     this.setState({ showAuditModal: true });
-    //this.forceUpdate();
-    //this.props.deleteRuleData(item.id,'report_calc_def',index);
-    //this.props.drillDown(this.report_id,this.sheet,this.cell);
   }
+  
   handleAddRule(event){
     console.log('Inside add rule');
     hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add`
