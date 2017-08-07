@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import {
-    LineChart,
+    PieChart,
+    Pie,
     XAxis,
     YAxis,
     CartesianGrid,
-    Line,
     Tooltip,
     Legend,
     ResponsiveContainer
 } from 'recharts';
 
-class LineChartWidget extends Component {
+class PieChartWidget extends Component {
     constructor(props) {
         super(props);
     }
@@ -28,33 +28,28 @@ class LineChartWidget extends Component {
                     </div>
                     <div className="count_bottom">
                         <ResponsiveContainer height={this.props.height} width="100%">
-                            <LineChart data={this.props.data}>
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                {
-                                    this.props.displayGrid &&
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                }
+                            <PieChart>
                                 {
                                     this.props.showTooltip &&
                                     <Tooltip />
                                 }
                                 {
-                                    this.props.showLegend &&
-                                    <Legend />
-                                }
-                                {
-                                    this.props.keys.map(element => {
+                                    this.props.keys.map((element, index) => {
                                         return (
-                                            <Line
+                                            <Pie
                                                 onClick={this.props.handleClick}
-                                                name={element.legend}
-                                                dataKey={element.key}
+                                                data={this.props.data}
+                                                nameKey="name"
+                                                valueKey={element.key}
+                                                fill={element.color}
+                                                innerRadius={element.innerRadius}
+                                                outerRadius={element.outerRadius}
+                                                label
                                             />
                                         );
                                     })
                                 }
-                            </LineChart>
+                            </PieChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
@@ -63,4 +58,4 @@ class LineChartWidget extends Component {
     }
 }
 
-export default LineChartWidget;
+export default PieChartWidget;

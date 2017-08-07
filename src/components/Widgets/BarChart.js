@@ -43,12 +43,18 @@ class BarChartWidget extends Component {
                                     this.props.showLegend &&
                                     <Legend />
                                 }
-                                <Bar
-                                    onClick={this.props.handleClick}
-                                    name={this.props.legend}
-                                    dataKey="value"
-                                    fill={this.props.barColor}
-                                />
+                                {
+                                    this.props.keys.map(element => {
+                                        return (
+                                            <Bar
+                                                onClick={this.props.handleClick}
+                                                name={element.legend}
+                                                dataKey={element.key}
+                                                fill={element.color}
+                                            />
+                                        );
+                                    })
+                                }
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

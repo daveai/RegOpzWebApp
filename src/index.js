@@ -55,20 +55,34 @@ if (localStorage.RegOpzToken) {
 }
 
 class Index extends Component {
+    componentWillMount() {
+        console.log('Component Mounted');
+        if (this.props.user && !this.props.children) {
+            hashHistory.push('/dashboard');
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('Component Recieved Props');
+        if (nextProps.user && !nextProps.children) {
+            hashHistory.push('/dashboard');
+        }
+    }
+
     render() {
         console.log('Render Function Called,Index........');
-        console.log("user,name,role,permission...",this.props.user,this.props.name,this.props.role,this.props.permission);
+        console.log("user,name,role,permission...", this.props.user, this.props.name, this.props.role, this.props.permission);
         //console.log(this.props);
-        if (!this.props.user){
+        if (!this.props.user) {
             return (<Login {...this.props} />);
         } else if (this.props.children) {
             return (<div> {this.props.children} </div>);
         } else {
-            hashHistory.push('/dashboard');
             return (<Dashboard {...this.props} />)
         }
     }
 }
+
 
 function mapStateToProps(state) {
     return {
