@@ -15,6 +15,9 @@ import {
   actionInsertRuleData,
   actionUpdateRuleData
 } from '../../../actions/MaintainReportRuleAction';
+import {
+    actionFetchAuditList
+} from '../../../actions/DefChangeAction';
 import './AddReportRules.css';
 
 class AddReportRules extends Component {
@@ -49,6 +52,9 @@ class AddReportRules extends Component {
     };
     this.state.readOnly = this.state.requestType=="update"|| this.state.requestType=="view"?"readonly":"";
     this.state.viewOnly=this.state.requestType=="view"?"readonly":"";
+
+    this.shouldUpdate = true;
+
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAddition = this.handleAddition.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -70,6 +76,16 @@ class AddReportRules extends Component {
       this.initialiseFormFields();
     }
   }
+
+  componentWillUpdate() {
+      const { id } = this.state.form;
+      const { fetchAuditList } = this.props;
+      if (this.shouldUpdate && id !== null && typeof fetchAuditList === 'function') {
+          fetchAuditList(`${[].push(id)}`, 'report_calc_def');
+          this.shouldUpdate = false;
+      }
+  }
+
   searchAnywhere(textInputValue, possibleSuggestionsArray) {
     var lowerCaseQuery = textInputValue.toLowerCase()
 
@@ -558,6 +574,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateRuleData:(id,data) => {
       dispatch(actionUpdateRuleData(id,data));
+    },
+    fetchAuditList: (id_list, table_name) => {
+      dispatch(actionFetchAuditList(id_list, table_name));
     }
   }
 }
