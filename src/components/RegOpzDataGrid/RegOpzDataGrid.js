@@ -108,7 +108,8 @@ class RegOpzDataGrid extends Component {
                 element.change_reference.match(matchText) ||
                 element.date_of_change.match(matchText) ||
                 element.maker.match(matchText) ||
-                element.maker_comment.match(matchText)
+                element.maker_comment.match(matchText) ||
+                element.status.match(matchText)
             );
         }
         this.linkageData = linkageData;
@@ -282,7 +283,7 @@ class RegOpzDataGrid extends Component {
           show={this.state.isModalOpen}
           container={this}
           onHide={(event) => {
-              this.setState({isModalOpen:false});
+              this.setState({isModalOpen:false, filterText: null, startDate: null, endDate: null});
             }}
         >
           <Modal.Header closeButton>
@@ -292,29 +293,7 @@ class RegOpzDataGrid extends Component {
           <Modal.Body>
               <div className="container">
                 <div className="row">
-                  <div className="col col-lg-6">
-                    <div className="input-group">
-                      <DatePicker
-                          selected={this.state.startDate}
-                          onChange={this.handleStartDateChange.bind(this)}
-                          placeholderText="Select start date"
-                          className="view_data_date_picker_input form-control"
-                      />
-                    </div>
-                  </div>
-                  <div className="col col-lg-6">
-                    <div className="input-group">
-                      <DatePicker
-                          selected={this.state.endDate}
-                          onChange={this.handleEndDateChange.bind(this)}
-                          placeholderText="Select end date"
-                          className="view_data_date_picker_input form-control"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col col-lg-6 col-lg-offset-3">
+                  <div className="col col-md-6">
                     <div className="input-group">
                       <input
                         className="form-control"
@@ -329,6 +308,28 @@ class RegOpzDataGrid extends Component {
                       </span>
                     </div>
                   </div>
+                  <div className="col col-md-3">
+                    <div className="input-group">
+                      <DatePicker
+                          dateFormat="DD-MMM-YYYY"
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDateChange.bind(this)}
+                          placeholderText="Select start date"
+                          className="view_data_date_picker_input form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="col col-md-3">
+                    <div className="input-group">
+                      <DatePicker
+                          dateFormat="DD-MMM-YYYY"
+                          selected={this.state.endDate}
+                          onChange={this.handleEndDateChange.bind(this)}
+                          placeholderText="Select end date"
+                          className="view_data_date_picker_input form-control"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="clear"></div>
               </div>
@@ -337,7 +338,7 @@ class RegOpzDataGrid extends Component {
 
           <Modal.Footer>
             <Button onClick={(event) => {
-                this.setState({isModalOpen:false})
+                this.setState({isModalOpen:false, filterText: null, startDate: null, endDate: null})
               }}>Ok</Button>
           </Modal.Footer>
         </Modal>

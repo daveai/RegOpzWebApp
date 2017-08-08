@@ -27,7 +27,7 @@ class DrillDownComponent extends Component {
     this.state = {
       isModalOpen:false,
       showAuditModal:false,
-      showDeleteBtn: true
+      showDeleteBtn: ""
     };
     this.type = this.props.location.query['type'];
     this.report_id = this.props.location.query['report_id'];
@@ -231,7 +231,7 @@ class DrillDownComponent extends Component {
                     </button>
                     {
                         ((showDeleteBtn) => {
-                            if (showDeleteBtn) {
+                            if (!showDeleteBtn) {
                                 return(
                                     <button id={item.id}
                                             type="button"
@@ -246,7 +246,7 @@ class DrillDownComponent extends Component {
                                     </button>
                                 );
                             }
-                        })(this.state.showDeleteBtn)
+                        })(this.state.showDeleteBtn.includes("["+item.id+"]"))
                     }
                   </td>
                   );
@@ -452,7 +452,7 @@ class DrillDownComponent extends Component {
     }
     this.setState({ showAuditModal: true });
   }
-  
+
   handleAddRule(event){
     console.log('Inside add rule');
     hashHistory.push(`dashboard/maintain-report-rules/add-report-rules?request=add`
@@ -463,8 +463,9 @@ class DrillDownComponent extends Component {
   handleOkayClick(auditInfo){
     Object.assign(this.auditInfo,auditInfo);
     console.log("handleAuditInfo.....:",this.auditInfo);
+    let showDeleteBtn = this.state.showDeleteBtn + "[" + this.auditInfo.id+"]";
     this.props.deleteRuleData(this.auditInfo.id,this.auditInfo.table_name,this.auditInfo.index,this.auditInfo);
-    this.setState({ showAuditModal: false, showDeleteBtn: false });
+    this.setState({ showAuditModal: false, showDeleteBtn: showDeleteBtn });
   }
 
   renderChangeHistory(linkageData){
