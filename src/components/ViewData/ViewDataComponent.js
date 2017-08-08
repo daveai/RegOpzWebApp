@@ -496,6 +496,7 @@ class ViewDataComponent extends Component {
                 <ShowToggleColumns
                   columns={this.props.report[0].cols}
                   saveSelection={this.displaySelectedColumns}
+                  selectedViewColumns={this.selectedViewColumns}
                 /> :
                 <RegOpzFlatGrid
                    columns={this.selectedViewColumns}

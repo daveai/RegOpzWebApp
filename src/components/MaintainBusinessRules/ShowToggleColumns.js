@@ -6,14 +6,17 @@ class ShowToggleColumns extends Component {
         super(props);
 
         var columns = [];
+        let isChecked = false;
         for (let i = 0; i < this.props.columns.length; i++) {
+            isChecked = this.props.selectedViewColumns.includes(this.props.columns[i]);
             let columnObject = {
                 name: this.props.columns[i],
                 index: i,
-                checked: false
+                checked: isChecked
             }
             columns.push(columnObject);
         }
+        //console.log('filteredColumns',this.props.selectedViewColumns);
 
         this.state = {
             value: '',
@@ -30,15 +33,17 @@ class ShowToggleColumns extends Component {
 
     componentWillReceiveProps(nextProps) {
         var columns = [];
+        let isChecked = false;
         for (let i = 0; i < nextProps.columns.length; i++) {
+            isChecked = nextProps.selectedViewColumns.includes(nextProps.columns[i]);
             let columnObject = {
                 name: nextProps.columns[i],
                 index: i,
-                checked: false
+                checked: isChecked
             }
             columns.push(columnObject);
         }
-
+        //console.log('nextProps filteredColumns',nextProps.selectedViewColumns);
         this.setState({
             value: '',
             columns: columns,

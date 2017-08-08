@@ -395,6 +395,7 @@ class MaintainBusinessRules extends Component {
                 <ShowToggleColumns
                   columns={this.cols}
                   saveSelection={this.displaySelectedColumns}
+                  selectedViewColumns={this.selectedViewColumns}
                 /> :
                 <RegOpzFlatGrid
                   columns={this.selectedViewColumns}
