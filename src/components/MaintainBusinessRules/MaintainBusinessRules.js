@@ -809,7 +809,7 @@ class MaintainBusinessRules extends Component {
       this.modalType = "Rule Audit";
       this.selectedRulesAsString = params.business_rule_list.toString();
       this.selectedRulesIdAsString = params.rule_id_list.length > 0 ? params.rule_id_list.toString() : "id";
-      this.props.fetchAuditList(this.selectedRulesIdAsString, "business_rules");
+      this.props.fetchAuditList(this.selectedRulesIdAsString, [].push("business_rules"));
       this.setState({ isModalOpen: true })
     }
   }
