@@ -501,10 +501,10 @@ class RegOpzDataGrid extends Component {
       )
     }
   }
-  showHistory(event){
+  showHistory(event) {
     this.rulesIdAsSubQuery = `select id from report_calc_def where report_id= '${this.report_id}'`;
-    this.props.fetchAuditList(this.rulesIdAsSubQuery, [].push("report_calc_def", "report_comp_agg_def"));
-    this.setState({isModalOpen:true})
+    this.props.fetchAuditList(this.rulesIdAsSubQuery, encodeURI("'report_calc_def','report_comp_agg_def'"));
+    this.setState({ isModalOpen:true })
   }
 }
 
